@@ -1,0 +1,71 @@
+import RendererConstants from "../renderers/constants";
+import Renderer from "../renderers/renderer";
+import Connection from "./connection";
+import Coordinates from "./coordinates";
+import Field, { AnyFieldCls, DummyField, NumberField, OptConnectField, TextField } from "./field";
+import inject, { InjectMsg } from "./inject";
+import { clearMainWorkspace, getMainWorkspace, setMainWorkspace } from "./main-workspace";
+import NodeSvg from "./nodesvg";
+import WorkspaceSvg from "./workspace-svg";
+import { ColorStyle } from "./visual-types";
+import { parseColor } from "../util/parse-color";
+import { Eventer } from "../util/eventer";
+import * as Path from '../util/path';
+import * as SVG from '@svgdotjs/svg.js';
+import * as UID from '../util/uid';
+import hasProp from "../util/has-prop";
+import EventEmitter from "../util/emitter";
+import '../events/events';
+import WorkspaceController from "../controllers/base";
+import WASDController from "../controllers/wasd";
+declare const Kabel: {
+    UIX: {
+        events: Eventer;
+        /**
+         * State Manager, Makes thing possible: E.G (the 'typing' state when you type in a input box..)
+         * Used in controllers so you dont move when typing characters like a w s or d etc.
+         */
+        userState: import("../util/user-state").UserState;
+    };
+    Utils: {
+        Path: typeof Path;
+        SVG: typeof SVG;
+        parseColor: typeof parseColor;
+        UID: typeof UID;
+        EventEmitter: typeof EventEmitter;
+        hasProp: typeof hasProp;
+    };
+    RendererConstants: typeof RendererConstants;
+    Renderer: typeof Renderer;
+    CategoryColors: {
+        [key: string]: ColorStyle;
+    };
+    Connection: typeof Connection;
+    Coordinates: typeof Coordinates;
+    Field: typeof Field;
+    DummyField: typeof DummyField;
+    FieldMap: {
+        [key: string]: AnyFieldCls;
+        field_both: typeof OptConnectField;
+        field_string: typeof TextField;
+        field_num: typeof NumberField;
+        field_dummy: typeof DummyField;
+        field_str: typeof TextField;
+        connection: typeof import("./field").ConnectableField;
+    };
+    NumberField: typeof NumberField;
+    OptConnectField: typeof OptConnectField;
+    TextField: typeof TextField;
+    inject: typeof inject;
+    InjectMsg: typeof InjectMsg;
+    clearMainWorkspace: typeof clearMainWorkspace;
+    getMainWorkspace: typeof getMainWorkspace;
+    setMainWorkspace: typeof setMainWorkspace;
+    NodeSvg: typeof NodeSvg;
+    Nodes: {};
+    WorkspaceSvg: typeof WorkspaceSvg;
+    WorkspaceController: typeof WorkspaceController;
+    WASDController: typeof WASDController;
+};
+export default Kabel;
+//# sourceMappingURL=core.d.ts.map

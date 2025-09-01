@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Kabel Test</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        function initKabel() {
+            function main() {
+                const k = Kabel;
+
+                const el = document.createElement('div');
+                Object.assign(el.style, {
+                    width: '100vw',
+                    height: '100vh',
+                    background: '#f0f0f0'
+                });
+                document.body.appendChild(el);
+
+                // Use WASDController with acceleration
+                const ws = k.inject(el, {
+                    Controller: k.Controllers?.WASDController || Kabel.WASDController,
+                    moveSpeed: 6, // optional, base speed
+                    controls: {
+                        wasd: true,
+                        wasdSmooth: true,
+                        wasdAccelerate: 1,
+                        wasdFriction: 0.9
+                    }
+                });
+
+                // Define custom node type
+                k.Nodes['my_node'] = {
+                    init() {
+                        this.jsonInit({
+                            previousConnection: true,
+                            nextConnection: true,
+                            labelText: 'TopbarText',
+                            type: 'my_node',
+                            primaryColor: '#cc0c00',
+                            tertiraryColor: '#660500',
+                            arguments: [
+                                {
+                                    name: 'FLD',
+                                    type: 'field_str',
+                                    label: 'LabelText: ',
+                                    value: 'ValueText'
+                                },
+                                {
+                                    name: 'Dummy',
+                                    type: 'field_dummy',
+                                    label: 'Label with no input!'
+                                }
+                            ]
+                        });
+                    }
+                };
+
+                // Create nodes
+                const node = new k.NodeSvg(k.Nodes['my_node'], ws);
+                node.init();
+
+                const node1 = new k.NodeSvg(k.Nodes['my_node'], ws);
+                node1.init();
+                node1.relativeCoords.set(20, 0);
+
+                node.nextConnection.to = node1;
+                node1.previousConnection.from = node;
+
+                ws.redraw();
+
+                // Expose for debugging
+                window.ws = ws;
+                window.nodes = [node, node1];
+            }
+
+            if (typeof Kabel !== 'undefined') {
+                main();
+            }
+        }
+    </script>
+
+    <script src="./kabel.js" onload="initKabel()"></script>
+</body>
+
+</html>

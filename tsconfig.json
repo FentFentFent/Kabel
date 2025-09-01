@@ -1,0 +1,25 @@
+{
+	"compilerOptions": {
+		// File Layout
+		"rootDir": "./",
+		"outDir": "./dist",
+
+		// Environment Settings
+		"module": "nodeNext",
+		"target": "ES2022",
+		"types": [],
+
+		// Outputs
+		"sourceMap": true,
+		"declaration": true,
+		"declarationMap": true,
+
+		// Type Safety
+		"strict": true,
+		"noUncheckedIndexedAccess": true,
+		"exactOptionalPropertyTypes": true,
+		"skipLibCheck": true
+	},
+	"include": ["src/**/*", "util/uid.ts", "util/user-state.ts"],
+	"exclude": ["node_modules", "dist"]
+}

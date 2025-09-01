@@ -1,0 +1,83 @@
+import Connection from "./connection";
+import { NodePrototype } from "./node-types";
+import { ColorStyle, Color } from './visual-types';
+import Field, { AnyField } from "./field";
+import Coordinates from "./coordinates";
+import EventEmitter from '../util/emitter';
+import { G } from "@svgdotjs/svg.js";
+import WorkspaceSvg from "./workspace-svg";
+/** Represents a JSON structure to initialize a field on a node */
+export interface InputFieldJson {
+    label: string;
+    type: string;
+    name: string;
+    [key: string]: any;
+}
+/** Represents a JSON structure to initialize a NodeSvg */
+export interface NodeJson {
+    primaryColor?: Color;
+    secondaryColor?: Color;
+    tertiraryColor?: Color;
+    previousConnection?: any;
+    nextConnection?: any;
+    labelText?: string;
+    arguments?: InputFieldJson[];
+    category?: string;
+    type: string;
+}
+export interface NodeEvents {
+    "REMOVING": null;
+    "INITING": null;
+    "NODE_DRAG": null;
+}
+declare class NodeSvg extends EventEmitter<NodeEvents> {
+    previousConnection: Connection | null;
+    nextConnection: Connection | null;
+    type: string | null;
+    prototype: NodePrototype | null;
+    colors: ColorStyle;
+    labelText: string;
+    _fieldColumn: Set<AnyField>;
+    relativeCoords: Coordinates;
+    id: string;
+    svgGroup: G | null;
+    workspace: WorkspaceSvg | null;
+    static REMOVING: keyof NodeEvents;
+    static INITING: keyof NodeEvents;
+    constructor(prototype: NodePrototype | null, workspace?: WorkspaceSvg, svgGroup?: G);
+    allFields(): AnyField[];
+    /** Get field by name */
+    getFieldByName(name: string): AnyField | null | undefined;
+    getField(name: string): AnyField | null | undefined;
+    getFieldValue(name: string): any | undefined;
+    getFieldDisplayValue(name: string): any | undefined;
+    /**
+     * Initiates the node, calling prototype methods.
+     */
+    init(): void;
+    /** Returns whether this node has a category style applied */
+    hasCategoryStyle(): boolean;
+    /** Returns the category name or null if none */
+    getCategoryName(): string | null;
+    /** Returns the node's current ColorStyle */
+    getStyle(): ColorStyle;
+    /** Internal helper: attach a field to this node */
+    _appendFieldItem(field: AnyField): void;
+    /** Initialize node from a NodeJson object */
+    jsonInit(json: NodeJson): void;
+    /** Apply field definitions from a JSON-like array without full NodeJson */
+    applyJsonArguments(args: InputFieldJson[]): void;
+    appendConnection(name: string): Field;
+    appendNumber(name: string): Field;
+    appendText(name: string): Field;
+    /** Field that can hold a connection or raw value */
+    appendOptLink(name: string): Field;
+    setCategoryName(name: string): void;
+    setStyle(style: ColorStyle): void;
+    setColor(primary: Color, secondary: Color, tertirary: Color): void;
+    setLabelText(text: string): string;
+    /** Add or replace a previous/next connection based on argument */
+    setConnection(prevOrNext: string | number | boolean): Connection | null;
+}
+export default NodeSvg;
+//# sourceMappingURL=nodesvg.d.ts.map

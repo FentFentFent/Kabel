@@ -1,0 +1,203 @@
+import Connection from "./connection";
+import { G, Rect, Svg } from '@svgdotjs/svg.js';
+/**
+ * Options used to initialize a Field.
+ */
+export interface FieldOptions {
+    name: string;
+    /** Human-readable label for the field */
+    label: string;
+    /** Key used to identify the field type in FieldTypesMap */
+    type: string;
+    /** Field value (optional) */
+    value?: any;
+    /** Only used by OptConnectField to determine internal value type */
+    fld_type?: "number" | "string";
+    [key: string]: any;
+}
+export interface FieldVisualInfo {
+    measuredWidth: number;
+    measuredHeight: number;
+    background: Rect;
+    svg: Svg;
+    nodeGroup: G;
+    fieldGroup: G;
+}
+/**
+ * Base class for all fields.
+ * @template T The type of the value stored in the field
+ */
+declare class Field<T = any> {
+    label: string;
+    name: string;
+    type: string;
+    protected value: T | null;
+    static register(name: string, cls: Function): void;
+    static unregister(name: string): void;
+    constructor();
+    /**
+     * Set field name to something else.
+     * @param name string
+     * @returns the new name.
+     */
+    setName(name: string): string;
+    /**
+     * Initialize the field from JSON options.
+     * @param json FieldOptions object
+     */
+    fromJson(json: FieldOptions): void;
+    /** @returns The field's name/key */
+    getName(): string;
+    /** @returns The human-readable label */
+    getLabel(): string;
+    /**
+     * Set the human-readable label
+     * @param label New label
+     * @returns The updated label
+     */
+    setLabel(label: string): string;
+    /** @returns Whether this field is a raw value field (text/number) */
+    hasRaw(): boolean;
+    /** @returns Whether this field supports connections */
+    hasConnectable(): boolean;
+    /** @returns Whether we have a custom editor/input look */
+    isCustomEditor(): boolean;
+    /**
+     * Make the input's custom look.
+     * @param fieldVisualInfo - The visual info of the field, mutate this if needed.
+     */
+    makeInputMain(fieldVisualInfo: FieldVisualInfo): void;
+    /** Return width & height of your field's custom editor */
+    measureMyself(): {
+        width: null;
+        height: null;
+    };
+    /** @returns The stored value */
+    getValue(): T | null;
+    /**
+     * Set the stored value
+     * @param val New value
+     */
+    setValue(val: T): void;
+    /** @returns The value as it should be displayed (can differ from internal value) */
+    getDisplayValue(): T | null;
+}
+/**
+ * Used when you want just a label with no actual value. Any value related methods are no-op.
+ */
+export declare class DummyField {
+    label: string;
+    name: string;
+    type: string;
+    constructor();
+    /**
+     * Set field name to something else.
+     * @param name string
+     * @returns the new name.
+     */
+    setName(name: string): string;
+    /**
+     * Initialize the field from JSON options.
+     * @param json FieldOptions object
+     */
+    fromJson(json: FieldOptions): void;
+    /** @returns Whether this field is a raw value field (text/number) */
+    hasRaw(): boolean;
+    /** @returns Whether this field supports connections */
+    hasConnectable(): boolean;
+    /** @returns The field's name/key */
+    getName(): string;
+    /** @returns The human-readable label */
+    getLabel(): string;
+    /**
+     * Set the human-readable label
+     * @param label New label
+     * @returns The updated label
+     */
+    setLabel(label: string): string;
+    /** @returns Whether we have a custom editor/input look */
+    isCustomEditor(): boolean;
+    /**
+     * Make the input.
+     * @param fieldVisualInfo - The visual info of the field, mutate this if needed.
+     */
+    makeInputMain(fieldVisualInfo: FieldVisualInfo): void;
+    /** Return width & height of your field's custom editor */
+    measureMyself(): {
+        width: number;
+        height: number;
+    };
+    /**
+     * Dummy fields have no value.
+     * @returns {null}
+     */
+    getValue(): null;
+    /**
+     * No-op for dummy fields
+     */
+    setValue(_: any): void;
+    /** @returns The value as it should be displayed (can differ from internal value) */
+    getDisplayValue(): null;
+}
+/**
+ * Base class for fields that can be connected to other fields.
+ * @template T The type of the value stored in the field
+ */
+export declare class ConnectableField<T = any> extends Field<T> {
+    connection: Connection;
+    constructor();
+    hasConnectable(): boolean;
+    hasRaw(): boolean;
+    /** Disconnect this field from any connected field */
+    disconnect(): void;
+}
+/** Field storing a numeric value */
+export declare class NumberField extends Field<number> {
+    constructor();
+    setValue(val: number): void;
+}
+/** Field storing a string value */
+export declare class TextField extends Field<string> {
+    constructor();
+    setValue(val: string): void;
+}
+/**
+ * Optional connectable field.
+ * Can store either a number or string depending on fld_type.
+ */
+export declare class OptConnectField extends ConnectableField<number | string> {
+    fldType: "number" | "string";
+    constructor();
+    /**
+     * Set field type.
+     * @param type "number"|"string"
+     */
+    setFieldType(type: "number" | "string"): void;
+    /**
+     * Initialize from JSON, respecting fld_type
+     * @param json FieldOptions
+     */
+    fromJson(json: FieldOptions): void;
+    /**
+     * Set the value, converting to number or string depending on fld_type
+     * @param val The new value
+     */
+    setValue(val: number | string): void;
+    /**
+     * @returns Display value for UI purposes (never null)
+     */
+    getDisplayValue(): string;
+}
+export type AnyField = Field | OptConnectField | NumberField | TextField | DummyField;
+export type AnyFieldCls = typeof Field | typeof OptConnectField | typeof NumberField | typeof TextField | typeof DummyField;
+export declare const FieldMap: {
+    field_both: typeof OptConnectField;
+    field_string: typeof TextField;
+    field_num: typeof NumberField;
+    field_dummy: typeof DummyField;
+    field_str: typeof TextField;
+    connection: typeof ConnectableField;
+    [key: string]: AnyFieldCls;
+};
+export default Field;
+//# sourceMappingURL=field.d.ts.map

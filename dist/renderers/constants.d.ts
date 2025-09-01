@@ -1,0 +1,41 @@
+import { Color } from "../src/visual-types";
+declare class RendererConstants {
+    CORNER_RADIUS: number;
+    NODE_BASE_WIDTH: number;
+    NODE_BASE_HEIGHT: number;
+    TOPBAR_HEIGHT: number;
+    FOOTER_HEIGHT: number;
+    PADDING_BIG: number;
+    PADDING_MEDIUM: number;
+    PADDING_SMALL: number;
+    FIELD_SPACEY: number;
+    FIELD_RAW_BASE_WIDTH: number;
+    FIELD_RAW_BASE_HEIGHT: number;
+    INPUT_BOX_PADDING: number;
+    INPUT_BOX_TEXT_ANCHOR: 'start' | 'middle';
+    LABEL_SPACING: number;
+    FIELD_RAW_COLOR: Color;
+    FIELD_RAW_TEXT_COLOR: Color;
+    FIELD_RAW_OUTLINE_COLOR: Color;
+    FIELD_RAW_OUTLINE_STROKE: number;
+    NODE_BG_COLOR: Color;
+    NODE_OUTLINE_COLOR: Color;
+    CONNECTOR_TRIANGLE: boolean;
+    CONNECTION_STROKE_WIDTH: number;
+    CONNECTION_STROKE_COLOR_CHOICE: number;
+    CONNECTOR_TRI_SIZE: number;
+    CONNECTOR_RADIUS: number;
+    FONT_FAMILY: string;
+    FONT_SIZE: number;
+    FONT_COLOR: Color;
+    FIELD_MARGIN_X: number;
+    FIELD_MARGIN_Y: number;
+    TOPBAR_LABEL_MARGIN_X: number;
+    TOPBAR_LABEL_MARGIN_Y: number;
+    TOPBAR_LABEL_BOLDED: boolean;
+    CONNECTOR_LINE_WIDTH: number;
+    CONNECTOR_LINE_CURVED: boolean;
+    constructor(overrides?: Partial<RendererConstants>);
+}
+export default RendererConstants;
+//# sourceMappingURL=constants.d.ts.map

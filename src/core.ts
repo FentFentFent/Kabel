@@ -28,6 +28,8 @@ import WidgetPrototypes from "./widget-prototypes";
 import Widget from "./widget";
 import ContextOptsRegistry, {ContextMenu} from "./ctx-menu-registry";
 import { Showable } from "./context-menu";
+import escapeAttr from "../util/escape-html";
+import unescapeAttr from "../util/unescape-html";
 Field.register = function (name: string, cls: Function) {
     FieldMap[name] = cls as AnyFieldCls;
 }
@@ -54,7 +56,9 @@ const Kabel = {
         EventEmitter,
         hasProp,
         styler,
-        Styler
+        Styler,
+        escapeHTML: escapeAttr,
+        unescapeHTML: unescapeAttr,
     },
     Widget,
     CategoryColors,

@@ -10,10 +10,10 @@ declare class Eventer {
     private eventRegistry;
     registerEvent(type: EventType, setupFn: EventSetupFn): this;
     tagElement(el: Element, tags?: string[] | string): this;
-    destroyByTag(tag: string): 0 | 1;
+    destroyByTag(tag: string): 1 | 0;
     addElement(el: Element, types: EventType | EventType[], args?: EventArgs): this;
     refresh(): void;
-    destroyElement(el: Element, type?: EventType): 0 | 1;
+    destroyElement(el: Element, type?: EventType): 1 | 0;
     private setupElement;
 }
 declare const eventer: Eventer;

@@ -32,9 +32,9 @@ export interface NodeJson {
 }
 
 export type NodeStyle = ColorStyle & {
-	[key in keyof RendererConstants]?: RendererConstants[key];
+    [key in keyof RendererConstants]?: RendererConstants[key];
 } & {
-	[key: string]: any; 
+    [key: string]: any;
 };
 
 
@@ -245,6 +245,53 @@ class NodeSvg extends EventEmitter<NodeEvents> {
         console.warn('Invalid prevOrNext argument for NodeSvg.setConnection');
         return null;
     }
+    /** Copies another NodeSvg into this node */
+    fromNode(other: NodeSvg) {
+        if (!other) return;
+
+        // Copy primitive props
+        this.type = other.type;
+        this.labelText = other.labelText;
+        this.relativeCoords = new Coordinates(other.relativeCoords.x, other.relativeCoords.y);
+
+        // Copy colors
+        this.colors = { ...other.colors };
+
+        // Copy connections
+        this.previousConnection = other.previousConnection
+            ? new Connection(null, this, true)
+            : null;
+        this.nextConnection = other.nextConnection
+            ? new Connection(this, null, false)
+            : null;
+
+        // Copy fields
+        this._fieldColumn.clear();
+        for (let field of other._fieldColumn) {
+            const FieldCls = field.constructor as AnyFieldCls;
+            const newField = new FieldCls();
+
+            // Copy basic properties
+            newField.setName(field.getName());
+            if ('getValue' in field && 'setValue' in newField) {
+                newField.setValue(field.getValue());
+            }
+            if ('getLabel' in field && 'setLabel' in newField) {
+                newField.setLabel(field.getLabel())
+            }
+            this._appendFieldItem(newField);
+        }
+
+        // Copy workspace reference
+        this.workspace = other.workspace;
+
+        // Copy prototype reference
+        this.prototype = other.prototype;
+
+
+        return this;
+    }
+
 }
 
 export default NodeSvg;

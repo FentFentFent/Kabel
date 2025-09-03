@@ -9107,6 +9107,8 @@ const Path = __importStar(__webpack_require__(/*! ../util/path */ "./util/path.t
 const parse_color_1 = __webpack_require__(/*! ../util/parse-color */ "./util/parse-color.ts");
 const field_1 = __importDefault(__webpack_require__(/*! ../src/field */ "./src/field.ts"));
 const eventer_1 = __importDefault(__webpack_require__(/*! ../util/eventer */ "./util/eventer.ts"));
+const escape_html_1 = __importDefault(__webpack_require__(/*! ../util/escape-html */ "./util/escape-html.ts"));
+const unescape_html_1 = __importDefault(__webpack_require__(/*! ../util/unescape-html */ "./util/unescape-html.ts"));
 function drawState(nodeGroup, id) {
     return {
         id,
@@ -9481,7 +9483,8 @@ class Renderer {
     refreshNodeTransforms() {
         const nodeGroups = this.svg.find(`.${this.constructor.NODE_G_TAG}`);
         for (let nodeG of nodeGroups) {
-            const node = this.getWs().getNode(nodeG.attr('data-node-id'));
+            const node = this.getWs().getNode((0, unescape_html_1.default)(nodeG.attr('data-node-id')));
+            console.log(node);
             if (!node)
                 continue;
             const screenPos = this._ws.workspaceToScreen(node.relativeCoords.x, node.relativeCoords.y);
@@ -9505,7 +9508,7 @@ class Renderer {
             category: ''
         };
         // Main node group
-        const nodeGroup = this.svg.group().attr({ 'data-node-id': node.id, 'class': this.constructor.NODE_G_TAG });
+        const nodeGroup = this.svg.group().attr({ 'data-node-id': (0, escape_html_1.default)(node.id), 'class': this.constructor.NODE_G_TAG });
         // compute screen position from workspace-space relativeCoords
         const screenPos = this._ws.workspaceToScreen(node.relativeCoords.x, node.relativeCoords.y);
         // apply it to the top-level node group
@@ -9703,6 +9706,131 @@ exports["default"] = Connection;
 
 /***/ }),
 
+/***/ "./src/context-menu.ts":
+/*!*****************************!*\
+  !*** ./src/context-menu.ts ***!
+  \*****************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const unescape_html_1 = __importDefault(__webpack_require__(/*! ../util/unescape-html */ "./util/unescape-html.ts"));
+const coordinates_1 = __importDefault(__webpack_require__(/*! ./coordinates */ "./src/coordinates.ts"));
+const ctx_menu_registry_1 = __importDefault(__webpack_require__(/*! ./ctx-menu-registry */ "./src/ctx-menu-registry.ts"));
+const nodesvg_1 = __importDefault(__webpack_require__(/*! ./nodesvg */ "./src/nodesvg.ts"));
+const widget_1 = __importDefault(__webpack_require__(/*! ./widget */ "./src/widget.ts"));
+const workspace_svg_1 = __importDefault(__webpack_require__(/*! ./workspace-svg */ "./src/workspace-svg.ts"));
+class ContextMenuHTML {
+    workspace;
+    controller;
+    widget;
+    options;
+    constructor(workspace) {
+        this.workspace = workspace;
+        this.controller = this.workspace.controller;
+        this.widget = new widget_1.default(this.workspace, {
+            coords: new coordinates_1.default(0, 0),
+            name: 'k_contextmenu',
+            className: 'KabelContextMenu'
+        });
+        this.widget.show = () => {
+            this.widget.container.classList.add('show');
+            this.widget.container.style.display = 'flex';
+            this.widget.visible = true;
+        };
+        this.widget.hide = () => {
+            this.widget.container.classList.remove('show');
+            this.widget.container.style.display = 'none';
+            this.widget.visible = false;
+        };
+        this.widget.container.style.removeProperty('height');
+        this.widget.container.style.removeProperty('width');
+        this.widget.hide();
+        this.options = ctx_menu_registry_1.default;
+        this.initListeners();
+    }
+    renderOptions(target) {
+        // Clear any previous options
+        this.widget.container.innerHTML = '';
+        // Filter options based on showFor
+        const filteredOptions = this.options.filter(opt => {
+            if (!target)
+                return false;
+            const showFor = Array.isArray(opt.showFor) ? opt.showFor : [opt.showFor];
+            if (target instanceof nodesvg_1.default && showFor.includes('node'))
+                return true;
+            if (target instanceof workspace_svg_1.default && showFor.includes('ws'))
+                return true;
+            if (target instanceof HTMLElement && !(target instanceof SVGSVGElement) && showFor.includes('html'))
+                return true;
+            return false;
+        });
+        filteredOptions.forEach((opt, i) => {
+            const el = document.createElement('div');
+            el.className = 'KabelContextOption';
+            el.textContent = opt.label || 'Option ' + i;
+            el.addEventListener('click', () => {
+                if (target)
+                    opt.click(target);
+                this.hide();
+            });
+            if (opt.onHoverStart)
+                el.addEventListener('mouseenter', () => opt.onHoverStart?.());
+            if (opt.onHoverEnd)
+                el.addEventListener('mouseleave', () => opt.onHoverEnd?.());
+            this.widget.container.appendChild(el);
+        });
+    }
+    initListeners() {
+        // Show the menu on right-click
+        this.workspace.svg.node.addEventListener('contextmenu', e => {
+            e.preventDefault();
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            this.widget.setCoords(new coordinates_1.default(mouseX, mouseY));
+            this.renderOptions(this.target);
+            this.widget.show();
+        });
+        // Hide menu on click elsewhere
+        document.addEventListener('mousedown', e => {
+            if (!this.widget.container.contains(e.target)) {
+                this.hide();
+            }
+        });
+    }
+    hide() {
+        this.widget.hide();
+    }
+    get mousePos() {
+        return this.controller.mousePos;
+    }
+    get target() {
+        let el = document.elementFromPoint(this.mousePos.x, this.mousePos.y);
+        if (el === this.workspace.svg.node)
+            return this.workspace;
+        while (el && el !== document.body) {
+            // Node check
+            if (el.tagName.toLowerCase() === 'g' && el.hasAttribute('data-node-id')) {
+                const nodeId = (0, unescape_html_1.default)(el.getAttribute('data-node-id'));
+                const node = this.workspace.getNode(nodeId);
+                if (node)
+                    return node;
+            }
+            el = el.parentElement;
+        }
+        // fallback
+        return document.elementFromPoint(this.mousePos.x, this.mousePos.y);
+    }
+}
+exports["default"] = ContextMenuHTML;
+
+
+/***/ }),
+
 /***/ "./src/coordinates.ts":
 /*!****************************!*\
   !*** ./src/coordinates.ts ***!
@@ -9823,6 +9951,7 @@ const renderer_map_1 = __webpack_require__(/*! ./renderer-map */ "./src/renderer
 const styler_1 = __importStar(__webpack_require__(/*! ../util/styler */ "./util/styler.ts"));
 const widget_prototypes_1 = __importDefault(__webpack_require__(/*! ./widget-prototypes */ "./src/widget-prototypes.ts"));
 const widget_1 = __importDefault(__webpack_require__(/*! ./widget */ "./src/widget.ts"));
+const ctx_menu_registry_1 = __webpack_require__(/*! ./ctx-menu-registry */ "./src/ctx-menu-registry.ts");
 field_1.default.register = function (name, cls) {
     field_1.FieldMap[name] = cls;
 };
@@ -9838,6 +9967,7 @@ const Kabel = {
          */
         userState: user_state_1.default
     },
+    ContextMenu: ctx_menu_registry_1.ContextMenu,
     Utils: {
         Path,
         SVG,
@@ -9888,6 +10018,74 @@ Object.defineProperty(Kabel, '_mainWorkspace', {
     }
 });
 exports["default"] = Kabel;
+
+
+/***/ }),
+
+/***/ "./src/ctx-menu-registry.ts":
+/*!**********************************!*\
+  !*** ./src/ctx-menu-registry.ts ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ContextMenu = void 0;
+const ContextOptsRegistry = [];
+const ContextMenu = {
+    registerOption(id, option) {
+        const opt = {
+            id,
+            click: option.click,
+            label: option.label,
+            onHoverStart: option.onHoverStart || (() => { }),
+            onHoverEnd: option.onHoverEnd || (() => { }),
+            showFor: option.showFor || undefined
+        };
+        ContextOptsRegistry.push(opt);
+    },
+    unregisterOption(id) {
+        const index = ContextOptsRegistry.findIndex(opt => opt.id === id);
+        if (index >= 0)
+            ContextOptsRegistry.splice(index, 1);
+    }
+};
+exports.ContextMenu = ContextMenu;
+ContextMenu.registerOption('k_delete', {
+    showFor: ['node'],
+    label: 'Delete', // required
+    click: (t) => {
+        const target = t;
+        if (!target.workspace)
+            return;
+        target.workspace.removeNode(target);
+    }
+});
+ContextMenu.registerOption('k_deleteall', {
+    showFor: 'ws',
+    label: 'Delete all', // required
+    click: (t) => {
+        const target = t;
+        const isSure = window.confirm(`Are you sure you want to delete ${Array.from(target._nodeDB.keys()).length} nodes?`);
+        if (!isSure)
+            return;
+        for (let [id, _] of target._nodeDB) {
+            target.removeNodeById(id);
+        }
+    }
+});
+ContextMenu.registerOption('k_duplicate', {
+    showFor: 'node',
+    label: 'Duplicate',
+    click: t => {
+        const node = t;
+        if (!node.workspace)
+            return;
+        node.workspace.cloneNode(node);
+    }
+});
+exports["default"] = ContextOptsRegistry;
 
 
 /***/ }),
@@ -10641,6 +10839,44 @@ class NodeSvg extends emitter_1.default {
         console.warn('Invalid prevOrNext argument for NodeSvg.setConnection');
         return null;
     }
+    /** Copies another NodeSvg into this node */
+    fromNode(other) {
+        if (!other)
+            return;
+        // Copy primitive props
+        this.type = other.type;
+        this.labelText = other.labelText;
+        this.relativeCoords = new coordinates_1.default(other.relativeCoords.x, other.relativeCoords.y);
+        // Copy colors
+        this.colors = { ...other.colors };
+        // Copy connections
+        this.previousConnection = other.previousConnection
+            ? new connection_1.default(null, this, true)
+            : null;
+        this.nextConnection = other.nextConnection
+            ? new connection_1.default(this, null, false)
+            : null;
+        // Copy fields
+        this._fieldColumn.clear();
+        for (let field of other._fieldColumn) {
+            const FieldCls = field.constructor;
+            const newField = new FieldCls();
+            // Copy basic properties
+            newField.setName(field.getName());
+            if ('getValue' in field && 'setValue' in newField) {
+                newField.setValue(field.getValue());
+            }
+            if ('getLabel' in field && 'setLabel' in newField) {
+                newField.setLabel(field.getLabel());
+            }
+            this._appendFieldItem(newField);
+        }
+        // Copy workspace reference
+        this.workspace = other.workspace;
+        // Copy prototype reference
+        this.prototype = other.prototype;
+        return this;
+    }
 }
 exports["default"] = NodeSvg;
 
@@ -10734,7 +10970,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/* Workspace wrapper: horizontal layout */\r\n.KabelWorkspaceWrapper {\r\n\tdisplay: flex;\r\n\tflex-direction: row;\r\n\twidth: 100%;\r\n\theight: 100%;\r\n\tbackground: #f0f0f0; /* light gray background */\r\n\toverflow: hidden;\r\n\tposition: relative;\r\n}\r\n\r\n/* Toolbox panel (left) */\r\n.KabelToolbox {\r\n\twidth: 12%;\r\n\tmin-width: 150px;\r\n\theight: 100%;\r\n\tbackground: rgba(240, 240, 240, 0.95);\r\n\tborder-right: 1px solid #ccc;\r\n\tbox-sizing: border-box;\r\n\tdisplay: flex;\r\n\tflex-direction: column;\r\n\tpadding: 8px;\r\n\toverflow-y: auto;\r\n}\r\n\r\n/* Category buttons */\r\n.KabelToolbox button {\r\n\tbackground: #fff;\r\n\tborder: 1px solid #ccc;\r\n\tborder-radius: 4px;\r\n\tmargin-bottom: 4px;\r\n\tpadding: 6px;\r\n\tcursor: pointer;\r\n\ttext-align: left;\r\n\ttransition: background 0.2s, color 0.2s;\r\n}\r\n\r\n.KabelToolbox button:hover {\r\n\tbackground: #e6e6e6;\r\n\tcolor: #333;\r\n}\r\n\r\n/* Flyout panel (right) */\r\n.KabelFlyout {\r\n\twidth: 20%;\r\n\theight: 100%;\r\n\tbackground: rgba(255, 255, 255, 0.95);\r\n\tborder-left: 1px solid #ccc;\r\n\tbox-sizing: border-box;\r\n\toverflow-y: auto;\r\n\tposition: relative; /* for absolute positioning of nodes inside */\r\n\tdisplay: none; /* hidden by default */\r\n\tpadding: 8px;\r\n}\r\n\r\n/* Flyout nodes */\r\n.KabelFlyoutNode {\r\n\tpadding: 6px 10px;\r\n\tmargin-bottom: 4px;\r\n\tborder-radius: 4px;\r\n\tcursor: pointer;\r\n\tuser-select: none;\r\n\ttransition: background 0.2s;\r\n}\r\n\r\n.KabelFlyoutNode:hover {\r\n\tbackground: #e0e0e0;\r\n}\r\n\r\n/* SVG workspace area */\r\n.KabelWorkspaceWrapper svg {\r\n\tflex: 1;\r\n\twidth: 100%;\r\n\theight: 100%;\r\n\tbackground: #fff; /* white canvas background */\r\n\tdisplay: block;\r\n}\r\n");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/* Workspace wrapper: horizontal layout */\r\n.KabelWorkspaceWrapper {\r\n    display: flex;\r\n    flex-direction: row;\r\n    width: 100%;\r\n    height: 100%;\r\n    background: #f0f0f0;\r\n    /* light gray background */\r\n    overflow: hidden;\r\n    position: relative;\r\n}\r\n\r\n/* Toolbox panel (left) */\r\n.KabelToolbox {\r\n    width: 12%;\r\n    min-width: 150px;\r\n    height: 100%;\r\n    background: rgba(240, 240, 240, 0.95);\r\n    border-right: 1px solid #ccc;\r\n    box-sizing: border-box;\r\n    display: flex;\r\n    flex-direction: column;\r\n    padding: 8px;\r\n    overflow-y: auto;\r\n}\r\n\r\n/* Context menu container */\r\n.KabelContextMenu {\r\n    position: absolute;\r\n    background: #1e1e2f;\r\n    color: #000000;\r\n    border-radius: 6px;\r\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);\r\n    padding: 4px 0;\r\n    font-family: 'Segoe UI', sans-serif;\r\n    font-size: 14px;\r\n    min-width: 160px;\r\n    z-index: 9999;\r\n    user-select: none;\r\n    overflow: visible;\r\n    height: auto;\r\n    transition: opacity 0.15s ease, transform 0.15s ease;\r\n    opacity: 0;\r\n    transform: scale(0.95);\r\n    display: flex;\r\n    flex-direction: column;\r\n}\r\n\r\n/* Show state */\r\n.KabelContextMenu.show {\r\n    opacity: 1;\r\n    transform: scale(1);\r\n}\r\n\r\n/* Individual option */\r\n.KabelContextOption {\r\n    padding: 8px 16px;\r\n    cursor: pointer;\r\n    transition: background 0.15s ease, color 0.15s ease;\r\n}\r\n\r\n.KabelContextOption:hover {\r\n    background: #b0adb0;\r\n    color: #fff;\r\n}\r\n\r\n/* Optional: active click effect */\r\n.KabelContextOption:active {\r\n    background: #fff;\r\n    color: #000;\r\n}\r\n\r\n/* Scrollbar if too many options */\r\n.KabelContextMenu::-webkit-scrollbar {\r\n    width: 6px;\r\n}\r\n\r\n.KabelContextMenu::-webkit-scrollbar-thumb {\r\n    background: rgba(255, 255, 255, 0.2);\r\n    border-radius: 3px;\r\n}\r\n\r\n/* Category buttons */\r\n.KabelToolbox button {\r\n    background: #fff;\r\n    border: 1px solid #ccc;\r\n    border-radius: 4px;\r\n    margin-bottom: 4px;\r\n    padding: 6px;\r\n    cursor: pointer;\r\n    text-align: left;\r\n    transition: background 0.2s, color 0.2s;\r\n}\r\n\r\n.KabelToolbox button:hover {\r\n    background: #e6e6e6;\r\n    color: #333;\r\n}\r\n\r\n/* Flyout panel (right) */\r\n.KabelFlyout {\r\n    width: 20%;\r\n    height: 100%;\r\n    background: rgba(255, 255, 255, 0.95);\r\n    border-left: 1px solid #ccc;\r\n    box-sizing: border-box;\r\n    overflow-y: auto;\r\n    position: relative;\r\n    /* for absolute positioning of nodes inside */\r\n    display: none;\r\n    /* hidden by default */\r\n    padding: 8px;\r\n}\r\n\r\n/* Flyout nodes */\r\n.KabelFlyoutNode {\r\n    padding: 6px 10px;\r\n    margin-bottom: 4px;\r\n    border-radius: 4px;\r\n    cursor: pointer;\r\n    user-select: none;\r\n    transition: background 0.2s;\r\n}\r\n\r\n.KabelFlyoutNode:hover {\r\n    background: #e0e0e0;\r\n}\r\n\r\n/* SVG workspace area */\r\n.KabelWorkspaceWrapper svg {\r\n    flex: 1;\r\n    width: 100%;\r\n    height: 100%;\r\n    background: #fff;\r\n    /* white canvas background */\r\n    display: block;\r\n}");
 
 /***/ }),
 
@@ -10971,6 +11207,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const coordinates_1 = __importDefault(__webpack_require__(/*! ./coordinates */ "./src/coordinates.ts"));
+const nodesvg_1 = __importDefault(__webpack_require__(/*! ./nodesvg */ "./src/nodesvg.ts"));
 const svg_js_1 = __webpack_require__(/*! @svgdotjs/svg.js */ "./node_modules/@svgdotjs/svg.js/dist/svg.node.cjs");
 const workspace_coords_1 = __importDefault(__webpack_require__(/*! ./workspace-coords */ "./src/workspace-coords.ts"));
 const base_1 = __importDefault(__webpack_require__(/*! ../controllers/base */ "./controllers/base.ts"));
@@ -10981,6 +11218,7 @@ const prototypes_1 = __importDefault(__webpack_require__(/*! ./prototypes */ "./
 const headless_node_1 = __importDefault(__webpack_require__(/*! ./headless-node */ "./src/headless-node.ts"));
 const widget_1 = __importDefault(__webpack_require__(/*! ./widget */ "./src/widget.ts"));
 const widget_prototypes_1 = __importDefault(__webpack_require__(/*! ./widget-prototypes */ "./src/widget-prototypes.ts"));
+const context_menu_1 = __importDefault(__webpack_require__(/*! ./context-menu */ "./src/context-menu.ts"));
 function resolveController(options) {
     if (options?.controls) {
         if (options?.controls.wasd) {
@@ -11023,6 +11261,10 @@ class WorkspaceSvg {
      */
     _widgetDB;
     /**
+     * A manager for the context menu widget
+     */
+    _ctxMenu;
+    /**
      * Creates a new WorkspaceSvg instance.
      * @param root - The root HTML element containing the workspace.
      * @param wsTop - The top-level wrapper element for the SVG.
@@ -11045,6 +11287,13 @@ class WorkspaceSvg {
         this.noRedraw = false;
         this.controller = new (options.Controller ?? resolveController(options))(this);
         this._widgetDB = new Map();
+        this._ctxMenu = new context_menu_1.default(this);
+    }
+    cloneNode(nodeSvg) {
+        const n = new nodesvg_1.default(nodeSvg.prototype, this);
+        n.init();
+        n.fromNode(nodeSvg);
+        this.redraw();
     }
     _addWidgetToDB(wdgt) {
         this._widgetDB.set(wdgt.id, wdgt);
@@ -11254,6 +11503,27 @@ class EventEmitter {
     }
 }
 exports["default"] = EventEmitter;
+
+
+/***/ }),
+
+/***/ "./util/escape-html.ts":
+/*!*****************************!*\
+  !*** ./util/escape-html.ts ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+function escapeAttr(s) {
+    return s.replace(/&/g, "&amp;")
+        .replace(/'/g, "&apos;")
+        .replace(/"/g, "&quot;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+}
+exports["default"] = escapeAttr;
 
 
 /***/ }),
@@ -11744,6 +12014,27 @@ function generateUID(strategy = "uuidv4", opts = {}) {
         }
     }
 }
+
+
+/***/ }),
+
+/***/ "./util/unescape-html.ts":
+/*!*******************************!*\
+  !*** ./util/unescape-html.ts ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+function unescapeAttr(s) {
+    return s.replace(/&lt;/g, "<")
+        .replace(/&gt;/g, ">")
+        .replace(/&quot;/g, '"')
+        .replace(/&apos;/g, "'")
+        .replace(/&amp;/g, "&");
+}
+exports["default"] = unescapeAttr;
 
 
 /***/ }),

@@ -8,6 +8,7 @@ import WorkspaceController from '../controllers/base';
 import Toolbox from "./toolbox";
 import NodePrototypes from "./prototypes";
 import Widget from "./widget";
+import ContextMenuHTML from "./context-menu";
 /**
  * Represents the visual workspace containing nodes and connections.
  * Handles rendering, panning, and coordinate transformations.
@@ -42,12 +43,17 @@ declare class WorkspaceSvg {
      */
     _widgetDB: Map<string, Widget>;
     /**
+     * A manager for the context menu widget
+     */
+    _ctxMenu: ContextMenuHTML;
+    /**
      * Creates a new WorkspaceSvg instance.
      * @param root - The root HTML element containing the workspace.
      * @param wsTop - The top-level wrapper element for the SVG.
      * @param options - Configuration and renderer override options.
      */
     constructor(root: HTMLElement, wsTop: HTMLElement, options: InjectOptions);
+    cloneNode(nodeSvg: NodeSvg): void;
     _addWidgetToDB(wdgt: Widget): void;
     _delWidgetFromDB(wdgt: Widget): void;
     newWidget(type: string): void | Widget;

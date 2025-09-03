@@ -12,6 +12,7 @@ import NodePrototypes from "./prototypes";
 import newHeadlessNode from "./headless-node";
 import Widget from "./widget";
 import WidgetPrototypes from "./widget-prototypes";
+import ContextMenuHTML from "./context-menu";
 
 
 function resolveController(options: InjectOptions): typeof WorkspaceController {
@@ -62,6 +63,11 @@ class WorkspaceSvg {
      * A list of widgets active in this workspace
      */
     _widgetDB: Map<string, Widget>
+
+    /**
+     * A manager for the context menu widget
+     */
+    _ctxMenu: ContextMenuHTML
     /**
      * Creates a new WorkspaceSvg instance.
      * @param root - The root HTML element containing the workspace.
@@ -86,6 +92,13 @@ class WorkspaceSvg {
         this.noRedraw = false;
         this.controller = new (options.Controller ?? resolveController(options))(this);
         this._widgetDB = new Map();
+        this._ctxMenu = new ContextMenuHTML(this);
+    }
+    cloneNode(nodeSvg: NodeSvg) {
+        const n = new NodeSvg(nodeSvg.prototype, this);
+        n.init();
+        n.fromNode(nodeSvg);
+        this.redraw();
     }
     _addWidgetToDB(wdgt: Widget) {
         this._widgetDB.set(wdgt.id, wdgt);

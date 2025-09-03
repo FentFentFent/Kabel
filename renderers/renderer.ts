@@ -8,6 +8,8 @@ import { Color, ColorStyle, Hex } from "../src/visual-types";
 import Field, { AnyField, DummyField } from "../src/field";
 import eventer from '../util/eventer';
 import Connection, { Connectable } from "../src/connection";
+import escapeAttr from '../util/escape-html';
+import unescapeAttr from '../util/unescape-html';
 export interface ConnectorToFrom {
     to: Connection,
     from: Connection,
@@ -441,7 +443,8 @@ class Renderer {
     refreshNodeTransforms() {
         const nodeGroups: List<G> = this.svg.find(`.${(this.constructor as typeof Renderer).NODE_G_TAG}`) as List<G>;
         for (let nodeG of nodeGroups) {
-            const node: NodeSvg | undefined = this.getWs().getNode(nodeG.attr('data-node-id'));
+            const node: NodeSvg | undefined = this.getWs().getNode(unescapeAttr(nodeG.attr('data-node-id')));
+            console.log(node);
             if (!node) continue;
             const screenPos = this._ws.workspaceToScreen(
                 node.relativeCoords.x,
@@ -468,7 +471,7 @@ class Renderer {
         };
 
         // Main node group
-        const nodeGroup = this.svg.group().attr({ 'data-node-id': node.id, 'class': (this.constructor as typeof Renderer).NODE_G_TAG });
+        const nodeGroup = this.svg.group().attr({ 'data-node-id': escapeAttr(node.id), 'class': (this.constructor as typeof Renderer).NODE_G_TAG });
         // compute screen position from workspace-space relativeCoords
         const screenPos = this._ws.workspaceToScreen(
             node.relativeCoords.x,

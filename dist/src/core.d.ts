@@ -22,6 +22,7 @@ import WASDController from "../controllers/wasd";
 import { RMap } from "./renderer-map";
 import { Styler } from "../util/styler";
 import Widget from "./widget";
+import { Showable } from "./context-menu";
 declare const Kabel: {
     UIX: {
         events: Eventer;
@@ -30,6 +31,16 @@ declare const Kabel: {
          * Used in controllers so you dont move when typing characters like a w s or d etc.
          */
         userState: import("../util/user-state").UserState;
+    };
+    ContextMenu: {
+        registerOption(id: string, option: {
+            click: (target: NodeSvg | WorkspaceSvg | HTMLElement) => void;
+            onHoverStart?: () => void;
+            onHoverEnd?: () => void;
+            label: string;
+            showFor: Showable | Showable[];
+        }): void;
+        unregisterOption(id: string): void;
     };
     Utils: {
         Path: typeof Path;

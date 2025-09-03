@@ -84,6 +84,8 @@ declare class NodeSvg extends EventEmitter<NodeEvents> {
     setLabelText(text: string): string;
     /** Add or replace a previous/next connection based on argument */
     setConnection(prevOrNext: string | number | boolean): Connection | null;
+    /** Copies another NodeSvg into this node */
+    fromNode(other: NodeSvg): this | undefined;
 }
 export default NodeSvg;
 //# sourceMappingURL=nodesvg.d.ts.map

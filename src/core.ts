@@ -26,12 +26,15 @@ import { RMap } from "./renderer-map";
 import styler, { Styler } from "../util/styler";
 import WidgetPrototypes from "./widget-prototypes";
 import Widget from "./widget";
+import ContextOptsRegistry, {ContextMenu} from "./ctx-menu-registry";
+import { Showable } from "./context-menu";
 Field.register = function (name: string, cls: Function) {
     FieldMap[name] = cls as AnyFieldCls;
 }
 Field.unregister = function (name: string) {
     delete FieldMap[name];
 }
+
 
 const Kabel = {
     UIX: {
@@ -42,6 +45,7 @@ const Kabel = {
          */
         userState
     },
+    ContextMenu,
     Utils: {
         Path,
         SVG,

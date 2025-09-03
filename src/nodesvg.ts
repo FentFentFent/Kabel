@@ -9,6 +9,7 @@ import { generateUID } from "../util/uid";
 import EventEmitter from '../util/emitter';
 import { G } from "@svgdotjs/svg.js";
 import WorkspaceSvg from "./workspace-svg";
+import RendererConstants from "../renderers/constants";
 /** Represents a JSON structure to initialize a field on a node */
 export interface InputFieldJson {
     label: string;
@@ -21,7 +22,7 @@ export interface InputFieldJson {
 export interface NodeJson {
     primaryColor?: Color;
     secondaryColor?: Color;
-    tertiraryColor?: Color;
+    tertiaryColor?: Color;
     previousConnection?: any; // Presence triggers creation of a previous connection
     nextConnection?: any;     // Presence triggers creation of a next connection
     labelText?: string;
@@ -29,6 +30,14 @@ export interface NodeJson {
     category?: string;        // Optional node category for color theming
     type: string;
 }
+
+export type NodeStyle = ColorStyle & {
+	[key in keyof RendererConstants]?: RendererConstants[key];
+} & {
+	[key: string]: any; 
+};
+
+
 export interface NodeEvents {
     "REMOVING": null;
     "INITING": null;
@@ -39,7 +48,7 @@ class NodeSvg extends EventEmitter<NodeEvents> {
     nextConnection: Connection | null;
     type: string | null;
     prototype: NodePrototype | null;
-    colors: ColorStyle;      // Node's color scheme
+    colors: NodeStyle;      // Node's color scheme
     labelText: string;       // Displayed node label
     _fieldColumn: Set<AnyField>; // Stores attached fields
     relativeCoords: Coordinates;
@@ -55,7 +64,7 @@ class NodeSvg extends EventEmitter<NodeEvents> {
         this.colors = {
             primary: '#000000',   // Topbar & connection color
             secondary: '#000000', // Field & dropdown backgrounds
-            tertirary: '#000000', // Outline color
+            tertiary: '#000000', // Outline color
             category: ''          // Node category name (optional)
         };
         this.previousConnection = new Connection(null, this, true); //1st arg is from, 2nd is to, third is if this conn is prev
@@ -139,7 +148,7 @@ class NodeSvg extends EventEmitter<NodeEvents> {
     jsonInit(json: NodeJson) {
         if (json.primaryColor) this.colors.primary = json.primaryColor;
         if (json.secondaryColor) this.colors.secondary = json.secondaryColor;
-        if (json.tertiraryColor) this.colors.tertirary = json.tertiraryColor;
+        if (json.tertiaryColor) this.colors.tertiary = json.tertiaryColor;
 
         // Apply category colors if defined
         if (json.category && CategoryColors[json.category]) {
@@ -217,8 +226,8 @@ class NodeSvg extends EventEmitter<NodeEvents> {
         Object.assign(this.colors, {}, style);
     }
 
-    setColor(primary: Color, secondary: Color, tertirary: Color): void {
-        this.setStyle({ primary, secondary, tertirary });
+    setColor(primary: Color, secondary: Color, tertiary: Color): void {
+        this.setStyle({ primary, secondary, tertiary });
     }
 
     setLabelText(text: string): string {

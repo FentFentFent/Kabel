@@ -9151,7 +9151,13 @@ class Renderer {
         return Object.assign(this._constants, c);
     }
     get constants() {
-        return this._constants;
+        if (!this.node)
+            return this._constants;
+        const { primary, secondary, tertiary, ...restColors } = this.node.colors;
+        return {
+            ...this._constants,
+            ...restColors
+        };
     }
     set constants(c) {
         this.setConstants(c);
@@ -9518,7 +9524,7 @@ class Renderer {
         // Topbar
         state.topbar = nodeGroup.path(Path.roundedRect(width, c.TOPBAR_HEIGHT, radius))
             .fill((0, parse_color_1.parseColor)(colors.primary))
-            .stroke({ color: (0, parse_color_1.parseColor)(colors.tertirary), width: 2 });
+            .stroke({ color: (0, parse_color_1.parseColor)(colors.tertiary), width: 2 });
         // add the X button
         this.drawNodeXButton();
         this.drawNodeLabel(nodeGroup);
@@ -9813,6 +9819,10 @@ const user_state_1 = __importDefault(__webpack_require__(/*! ../util/user-state 
 __webpack_require__(/*! ../events/events */ "./events/events.ts");
 const base_1 = __importDefault(__webpack_require__(/*! ../controllers/base */ "./controllers/base.ts"));
 const wasd_1 = __importDefault(__webpack_require__(/*! ../controllers/wasd */ "./controllers/wasd.ts"));
+const renderer_map_1 = __webpack_require__(/*! ./renderer-map */ "./src/renderer-map.ts");
+const styler_1 = __importStar(__webpack_require__(/*! ../util/styler */ "./util/styler.ts"));
+const widget_prototypes_1 = __importDefault(__webpack_require__(/*! ./widget-prototypes */ "./src/widget-prototypes.ts"));
+const widget_1 = __importDefault(__webpack_require__(/*! ./widget */ "./src/widget.ts"));
 field_1.default.register = function (name, cls) {
     field_1.FieldMap[name] = cls;
 };
@@ -9823,7 +9833,7 @@ const Kabel = {
     UIX: {
         events: eventer_1.default,
         /**
-         * State Manager, Makes thing possible: E.G (the 'typing' state when you type in a input box..)
+         * State Manager, Makes things possible: E.G (the 'typing' state when you type in a input box..)
          * Used in controllers so you dont move when typing characters like a w s or d etc.
          */
         userState: user_state_1.default
@@ -9834,10 +9844,11 @@ const Kabel = {
         parseColor: parse_color_1.parseColor,
         UID,
         EventEmitter: emitter_1.default,
-        hasProp: has_prop_1.default
+        hasProp: has_prop_1.default,
+        styler: styler_1.default,
+        Styler: styler_1.Styler
     },
-    RendererConstants: constants_1.default,
-    Renderer: renderer_1.default,
+    Widget: widget_1.default,
     CategoryColors: colors_1.default,
     Connection: connection_1.default,
     Coordinates: coordinates_1.default,
@@ -9854,9 +9865,15 @@ const Kabel = {
     setMainWorkspace: main_workspace_1.setMainWorkspace,
     NodeSvg: nodesvg_1.default,
     Nodes: prototypes_1.default,
+    Widgets: widget_prototypes_1.default,
     WorkspaceSvg: workspace_svg_1.default,
     WorkspaceController: base_1.default,
-    WASDController: wasd_1.default
+    WASDController: wasd_1.default,
+    nodeRendering: {
+        rendererMap: renderer_map_1.RMap,
+        Renderer: renderer_1.default,
+        RendererConstants: constants_1.default
+    }
 };
 // Export a getter/setter incase someone needs more internal access to main workspace and doesnt like the method interface.
 Object.defineProperty(Kabel, '_mainWorkspace', {
@@ -9922,9 +9939,12 @@ class Field {
      * @param json FieldOptions object
      */
     fromJson(json) {
-        this.name = json.name;
-        this.label = json.label;
-        this.type = json.type;
+        if (json.name !== undefined)
+            this.name = json.name;
+        if (json.label !== undefined)
+            this.label = json.label;
+        if (json.type !== undefined)
+            this.type = json.type;
         if (json.value !== undefined)
             this.value = json.value;
     }
@@ -10008,9 +10028,12 @@ class DummyField {
      * @param json FieldOptions object
      */
     fromJson(json) {
-        this.name = json.name;
-        this.label = json.label;
-        this.type = json.type;
+        if (json.name !== undefined)
+            this.name = json.name;
+        if (json.label !== undefined)
+            this.label = json.label;
+        if (json.type !== undefined)
+            this.type = json.type;
     }
     /** @returns Whether this field is a raw value field (text/number) */
     hasRaw() {
@@ -10171,6 +10194,143 @@ exports["default"] = Field;
 
 /***/ }),
 
+/***/ "./src/flyout.ts":
+/*!***********************!*\
+  !*** ./src/flyout.ts ***!
+  \***********************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const headless_node_1 = __importDefault(__webpack_require__(/*! ./headless-node */ "./src/headless-node.ts"));
+const parse_color_1 = __webpack_require__(/*! ../util/parse-color */ "./util/parse-color.ts");
+class Flyout {
+    container;
+    visible;
+    toolbox;
+    constructor(toolbox) {
+        this.toolbox = toolbox;
+        this.container = document.createElement('div');
+        this.container.className = 'KabelFlyout';
+        this.visible = false;
+        if (toolbox) {
+            toolbox.workspace._wsTop.appendChild(this.container);
+        }
+        else {
+            document.body.appendChild(this.container);
+        }
+    }
+    fill(nodes) {
+        this.container.innerHTML = '';
+        nodes.forEach(node => {
+            let _headlessNode = (0, headless_node_1.default)(node.type);
+            if (!_headlessNode)
+                return;
+            const nodeEl = document.createElement('div');
+            nodeEl.className = 'KabelFlyoutNode';
+            nodeEl.textContent = _headlessNode.labelText;
+            nodeEl.style.backgroundColor = (0, parse_color_1.parseColor)(_headlessNode.colors.primary);
+            nodeEl.style.padding = '4px 8px';
+            nodeEl.style.cursor = 'pointer';
+            nodeEl.style.fontFamily = this.toolbox.workspace.renderer.constants.FONT_FAMILY;
+            nodeEl.style.fontSize = `${this.toolbox.workspace.renderer.constants.FONT_SIZE}px`;
+            nodeEl.style.color = (0, parse_color_1.parseColor)(this.toolbox.workspace.renderer.constants.FONT_COLOR);
+            nodeEl.addEventListener('mousedown', (e) => {
+                if (!this.toolbox)
+                    return;
+                // create ghost node element
+                const ghostEl = document.createElement('div');
+                ghostEl.className = 'KabelGhostNode';
+                ghostEl.textContent = _headlessNode.labelText;
+                ghostEl.style.position = 'absolute';
+                ghostEl.style.pointerEvents = 'none';
+                ghostEl.style.backgroundColor = (0, parse_color_1.parseColor)(_headlessNode.colors.primary);
+                ghostEl.style.padding = '4px 8px';
+                ghostEl.style.fontFamily = this.toolbox.workspace.renderer.constants.FONT_FAMILY;
+                ghostEl.style.fontSize = `${this.toolbox.workspace.renderer.constants.FONT_SIZE}px`;
+                ghostEl.style.color = (0, parse_color_1.parseColor)(this.toolbox.workspace.renderer.constants.FONT_COLOR);
+                document.body.appendChild(ghostEl);
+                const moveGhost = (ev) => {
+                    ghostEl.style.left = ev.clientX + 4 + 'px';
+                    ghostEl.style.top = ev.clientY + 4 + 'px';
+                };
+                const releaseGhost = (ev) => {
+                    document.removeEventListener('mousemove', moveGhost);
+                    document.removeEventListener('mouseup', releaseGhost);
+                    // check if over workspace svg
+                    const svg = this.toolbox.workspace.svg.node;
+                    const rect = svg.getBoundingClientRect();
+                    if (ev.clientX >= rect.left &&
+                        ev.clientX <= rect.right &&
+                        ev.clientY >= rect.top &&
+                        ev.clientY <= rect.bottom) {
+                        // convert to svg coordinates
+                        const svgX = ev.clientX - rect.left;
+                        const svgY = ev.clientY - rect.top;
+                        // convert to workspace coordinates
+                        const { x: wsX, y: wsY } = this.toolbox.workspace.screenToWorkspace(svgX, svgY);
+                        // spawn node
+                        this.toolbox.workspace.spawnAt(node.type, wsX, wsY);
+                    }
+                    // remove ghost element
+                    ghostEl.remove();
+                };
+                document.addEventListener('mousemove', moveGhost);
+                document.addEventListener('mouseup', releaseGhost);
+                e.preventDefault();
+            });
+            this.container.appendChild(nodeEl);
+        });
+        this.show();
+    }
+    show() {
+        this.container.style.display = 'block';
+        this.visible = true;
+    }
+    hide() {
+        this.container.style.display = 'none';
+        this.visible = false;
+    }
+    clear() {
+        this.container.innerHTML = '';
+    }
+}
+exports["default"] = Flyout;
+
+
+/***/ }),
+
+/***/ "./src/headless-node.ts":
+/*!******************************!*\
+  !*** ./src/headless-node.ts ***!
+  \******************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const nodesvg_1 = __importDefault(__webpack_require__(/*! ./nodesvg */ "./src/nodesvg.ts"));
+const prototypes_1 = __importDefault(__webpack_require__(/*! ./prototypes */ "./src/prototypes.ts"));
+function newHeadlessNode(type) {
+    const proto = prototypes_1.default[type];
+    if (!proto)
+        return;
+    const node = new nodesvg_1.default(proto);
+    node.init();
+    return node;
+}
+exports["default"] = newHeadlessNode;
+
+
+/***/ }),
+
 /***/ "./src/index.ts":
 /*!**********************!*\
   !*** ./src/index.ts ***!
@@ -10205,13 +10365,17 @@ exports.InjectMsg = void 0;
 exports["default"] = inject;
 const main_workspace_1 = __webpack_require__(/*! ./main-workspace */ "./src/main-workspace.ts");
 const workspace_svg_1 = __importDefault(__webpack_require__(/*! ./workspace-svg */ "./src/workspace-svg.ts"));
+const styler_1 = __importDefault(__webpack_require__(/*! ../util/styler */ "./util/styler.ts"));
+// @ts-ignore
+const styles_css_1 = __importDefault(__webpack_require__(/*! ./styles.css */ "./src/styles.css"));
+const kabelStyles = styles_css_1.default;
 class InjectMsg {
     msg;
     constructor(msg) {
         this.msg = msg;
     }
     err() {
-        console.warn(`Failed to inject workspace: ${this.msg}`);
+        console.error(`Failed to inject workspace: ${this.msg}`);
     }
     wrn() {
         console.warn(`Inject warning: ${this.msg}`);
@@ -10222,6 +10386,7 @@ class InjectMsg {
 }
 exports.InjectMsg = InjectMsg;
 function inject(element, options = {}) {
+    styler_1.default.appendStyles('KabelStyles', kabelStyles);
     const root = typeof element == 'string' ? document.querySelector(`#${element}`) : element;
     if ((!root) && typeof element == 'string') {
         (new InjectMsg(`Document does not contain root element (Check element ID).`)).err();
@@ -10308,7 +10473,7 @@ class NodeSvg extends emitter_1.default {
         this.colors = {
             primary: '#000000', // Topbar & connection color
             secondary: '#000000', // Field & dropdown backgrounds
-            tertirary: '#000000', // Outline color
+            tertiary: '#000000', // Outline color
             category: '' // Node category name (optional)
         };
         this.previousConnection = new connection_1.default(null, this, true); //1st arg is from, 2nd is to, third is if this conn is prev
@@ -10392,8 +10557,8 @@ class NodeSvg extends emitter_1.default {
             this.colors.primary = json.primaryColor;
         if (json.secondaryColor)
             this.colors.secondary = json.secondaryColor;
-        if (json.tertiraryColor)
-            this.colors.tertirary = json.tertiraryColor;
+        if (json.tertiaryColor)
+            this.colors.tertiary = json.tertiaryColor;
         // Apply category colors if defined
         if (json.category && colors_1.default[json.category]) {
             const style = colors_1.default[json.category];
@@ -10459,8 +10624,8 @@ class NodeSvg extends emitter_1.default {
     setStyle(style) {
         Object.assign(this.colors, {}, style);
     }
-    setColor(primary, secondary, tertirary) {
-        this.setStyle({ primary, secondary, tertirary });
+    setColor(primary, secondary, tertiary) {
+        this.setStyle({ primary, secondary, tertiary });
     }
     setLabelText(text) {
         return this.labelText = text;
@@ -10558,6 +10723,218 @@ exports.RMap = RMap;
 
 /***/ }),
 
+/***/ "./src/styles.css":
+/*!************************!*\
+  !*** ./src/styles.css ***!
+  \************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/* Workspace wrapper: horizontal layout */\r\n.KabelWorkspaceWrapper {\r\n\tdisplay: flex;\r\n\tflex-direction: row;\r\n\twidth: 100%;\r\n\theight: 100%;\r\n\tbackground: #f0f0f0; /* light gray background */\r\n\toverflow: hidden;\r\n\tposition: relative;\r\n}\r\n\r\n/* Toolbox panel (left) */\r\n.KabelToolbox {\r\n\twidth: 12%;\r\n\tmin-width: 150px;\r\n\theight: 100%;\r\n\tbackground: rgba(240, 240, 240, 0.95);\r\n\tborder-right: 1px solid #ccc;\r\n\tbox-sizing: border-box;\r\n\tdisplay: flex;\r\n\tflex-direction: column;\r\n\tpadding: 8px;\r\n\toverflow-y: auto;\r\n}\r\n\r\n/* Category buttons */\r\n.KabelToolbox button {\r\n\tbackground: #fff;\r\n\tborder: 1px solid #ccc;\r\n\tborder-radius: 4px;\r\n\tmargin-bottom: 4px;\r\n\tpadding: 6px;\r\n\tcursor: pointer;\r\n\ttext-align: left;\r\n\ttransition: background 0.2s, color 0.2s;\r\n}\r\n\r\n.KabelToolbox button:hover {\r\n\tbackground: #e6e6e6;\r\n\tcolor: #333;\r\n}\r\n\r\n/* Flyout panel (right) */\r\n.KabelFlyout {\r\n\twidth: 20%;\r\n\theight: 100%;\r\n\tbackground: rgba(255, 255, 255, 0.95);\r\n\tborder-left: 1px solid #ccc;\r\n\tbox-sizing: border-box;\r\n\toverflow-y: auto;\r\n\tposition: relative; /* for absolute positioning of nodes inside */\r\n\tdisplay: none; /* hidden by default */\r\n\tpadding: 8px;\r\n}\r\n\r\n/* Flyout nodes */\r\n.KabelFlyoutNode {\r\n\tpadding: 6px 10px;\r\n\tmargin-bottom: 4px;\r\n\tborder-radius: 4px;\r\n\tcursor: pointer;\r\n\tuser-select: none;\r\n\ttransition: background 0.2s;\r\n}\r\n\r\n.KabelFlyoutNode:hover {\r\n\tbackground: #e0e0e0;\r\n}\r\n\r\n/* SVG workspace area */\r\n.KabelWorkspaceWrapper svg {\r\n\tflex: 1;\r\n\twidth: 100%;\r\n\theight: 100%;\r\n\tbackground: #fff; /* white canvas background */\r\n\tdisplay: block;\r\n}\r\n");
+
+/***/ }),
+
+/***/ "./src/toolbox.ts":
+/*!************************!*\
+  !*** ./src/toolbox.ts ***!
+  \************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const flyout_1 = __importDefault(__webpack_require__(/*! ./flyout */ "./src/flyout.ts"));
+class Toolbox {
+    type;
+    workspace;
+    wsOptions;
+    _flyout;
+    _contents;
+    container;
+    constructor(workspace) {
+        this.workspace = workspace;
+        this.wsOptions = this.getOptions();
+        this.type = this.wsOptions.toolbox?.type == 'flyout' ? 2 : 1;
+        this._contents = this.wsOptions.toolbox?.contents ?? [];
+        // pass toolbox reference to flyout
+        this._flyout = new flyout_1.default(this);
+        this.container = document.createElement('div');
+        this.container.className = 'KabelToolbox';
+        this.container.style.position = 'absolute';
+        this.container.style.left = '0';
+        this.container.style.top = '0';
+        this.container.style.width = '20%';
+        this.container.style.height = '100%';
+        this.container.style.background = 'rgba(240,240,240,0.9)';
+        this.container.style.overflowY = 'auto';
+        workspace._wsTop.appendChild(this.container);
+        if (this.type === 1)
+            this.initCategoryToolbox();
+        if (this.type === 2)
+            this.initFlyoutToolbox();
+    }
+    getOptions() {
+        return this.workspace.options;
+    }
+    initCategoryToolbox() {
+        const categories = this._contents;
+        categories.forEach(category => {
+            const btn = document.createElement('button');
+            btn.textContent = category.name;
+            btn.style.display = 'block';
+            btn.style.width = '100%';
+            btn.style.padding = '6px';
+            btn.style.marginBottom = '2px';
+            btn.addEventListener('click', e => {
+                e.stopPropagation();
+                this._flyout.clear();
+                this._flyout.fill(category.contents);
+                this._flyout.show();
+            });
+            this.container.appendChild(btn);
+        });
+        // clicking workspace hides flyout
+        this.workspace.svg.on('click', () => this._flyout.hide());
+    }
+    initFlyoutToolbox() {
+        this.container.style.display = 'none';
+        const nodes = this._contents;
+        this._flyout.fill(nodes);
+    }
+}
+exports["default"] = Toolbox;
+
+
+/***/ }),
+
+/***/ "./src/widget-prototypes.ts":
+/*!**********************************!*\
+  !*** ./src/widget-prototypes.ts ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const WidgetPrototypes = {};
+exports["default"] = WidgetPrototypes;
+
+
+/***/ }),
+
+/***/ "./src/widget.ts":
+/*!***********************!*\
+  !*** ./src/widget.ts ***!
+  \***********************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const coordinates_1 = __importDefault(__webpack_require__(/*! ./coordinates */ "./src/coordinates.ts"));
+const uid_1 = __webpack_require__(/*! ../util/uid */ "./util/uid.ts");
+class Widget {
+    workspace;
+    container;
+    coords;
+    width;
+    height;
+    visible;
+    name;
+    id;
+    options;
+    static WIDGET_GLOBAL_ID = 0;
+    constructor(workspace, options = { name: `Untitled(${Widget.WIDGET_GLOBAL_ID++})` }) {
+        this.workspace = workspace;
+        this.coords = options.coords ?? new coordinates_1.default(0, 0);
+        this.width = options.width ?? 200;
+        this.height = options.height ?? 100;
+        this.visible = false;
+        this.name = options.name;
+        this.id = (0, uid_1.generateUID)('nanoid', { alphabet: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0129384756!)@(#*$&%^' });
+        this.options = options;
+        this.container = document.createElement("div");
+        this.container.className = options.className ?? "KabelWidget";
+        this.container.style.position = "absolute";
+        this.container.style.left = `${this.coords.x}px`;
+        this.container.style.top = `${this.coords.y}px`;
+        this.container.style.width = `${this.width}px`;
+        this.container.style.height = `${this.height}px`;
+        this.container.style.background = "rgba(255,255,255,0.9)";
+        this.container.style.border = "1px solid #aaa";
+        this.container.style.borderRadius = "4px";
+        this.container.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
+        this.container.style.pointerEvents = "auto";
+        this.container.style.zIndex = "1000"; // overlays nodes
+        if (options.html)
+            this.container.innerHTML = options.html;
+        this.workspace._wsTop.appendChild(this.container);
+        this.hide();
+        if (typeof options.init !== 'undefined' && options.init) {
+            options.init(this, this.container);
+        }
+    }
+    // Show the widget
+    show() {
+        this.container.style.display = "block";
+        this.visible = true;
+    }
+    // Hide the widget
+    hide() {
+        this.container.style.display = "none";
+        this.visible = false;
+    }
+    // Move the widget to new coords
+    setCoords(coords) {
+        this.coords = coords;
+        this.container.style.left = `${coords.x}px`;
+        this.container.style.top = `${coords.y}px`;
+    }
+    // Update the HTML content
+    setHTML(html) {
+        this.container.innerHTML = html;
+    }
+    // Bring widget back from the dead after a .destroy call
+    reanimate() {
+        this.container = document.createElement("div");
+        this.container.className = this.options.className ?? "KabelWidget";
+        this.container.style.position = "absolute";
+        this.container.style.left = `${this.coords.x}px`;
+        this.container.style.top = `${this.coords.y}px`;
+        this.container.style.width = `${this.width}px`;
+        this.container.style.height = `${this.height}px`;
+        this.container.style.background = "rgba(255,255,255,0.9)";
+        this.container.style.border = "1px solid #aaa";
+        this.container.style.borderRadius = "4px";
+        this.container.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
+        this.container.style.pointerEvents = "auto";
+        this.container.style.zIndex = "1000"; // overlays nodes
+        if (this.options.html)
+            this.container.innerHTML = this.options.html;
+        this.workspace._wsTop.appendChild(this.container);
+        this.workspace._addWidgetToDB(this);
+    }
+    // Destroy widget & cleanup.
+    destroy() {
+        this.container.remove();
+        this.workspace._delWidgetFromDB(this);
+    }
+}
+exports["default"] = Widget;
+
+
+/***/ }),
+
 /***/ "./src/workspace-coords.ts":
 /*!*********************************!*\
   !*** ./src/workspace-coords.ts ***!
@@ -10599,6 +10976,11 @@ const workspace_coords_1 = __importDefault(__webpack_require__(/*! ./workspace-c
 const base_1 = __importDefault(__webpack_require__(/*! ../controllers/base */ "./controllers/base.ts"));
 const wasd_1 = __importDefault(__webpack_require__(/*! ../controllers/wasd */ "./controllers/wasd.ts"));
 const renderer_map_1 = __webpack_require__(/*! ./renderer-map */ "./src/renderer-map.ts");
+const toolbox_1 = __importDefault(__webpack_require__(/*! ./toolbox */ "./src/toolbox.ts"));
+const prototypes_1 = __importDefault(__webpack_require__(/*! ./prototypes */ "./src/prototypes.ts"));
+const headless_node_1 = __importDefault(__webpack_require__(/*! ./headless-node */ "./src/headless-node.ts"));
+const widget_1 = __importDefault(__webpack_require__(/*! ./widget */ "./src/widget.ts"));
+const widget_prototypes_1 = __importDefault(__webpack_require__(/*! ./widget-prototypes */ "./src/widget-prototypes.ts"));
 function resolveController(options) {
     if (options?.controls) {
         if (options?.controls.wasd) {
@@ -10628,7 +11010,18 @@ class WorkspaceSvg {
     options;
     /** Flag to temporarily prevent redraws */
     noRedraw;
+    /**
+     * A class instance that moves the camera based on user interactions.
+     */
     controller;
+    /**
+     * Toolbox for the workspace.
+     */
+    toolbox;
+    /**
+     * A list of widgets active in this workspace
+     */
+    _widgetDB;
     /**
      * Creates a new WorkspaceSvg instance.
      * @param root - The root HTML element containing the workspace.
@@ -10638,16 +11031,44 @@ class WorkspaceSvg {
     constructor(root, wsTop, options) {
         wsTop.style.width = '100%';
         wsTop.style.height = '100%';
-        this._camera = new workspace_coords_1.default(0, 0);
-        this._nodeDB = new Map();
         this._root = root;
         this._wsTop = wsTop;
         this.svg = (0, svg_js_1.SVG)().addTo(this._wsTop).size('100%', '100%');
         this.options = options;
         let RClass = renderer_map_1.RMap.resolve(options.renderer);
         this.renderer = new RClass(this, this.options.rendererOverrides || {});
+        if (this.options.toolbox) {
+            this.toolbox = new toolbox_1.default(this);
+        }
+        this._camera = new workspace_coords_1.default(0, 0);
+        this._nodeDB = new Map();
         this.noRedraw = false;
         this.controller = new (options.Controller ?? resolveController(options))(this);
+        this._widgetDB = new Map();
+    }
+    _addWidgetToDB(wdgt) {
+        this._widgetDB.set(wdgt.id, wdgt);
+    }
+    _delWidgetFromDB(wdgt) {
+        this._widgetDB.delete(wdgt.id);
+    }
+    newWidget(type) {
+        const opts = widget_prototypes_1.default[type];
+        if (!opts)
+            return;
+        if (opts.cls) {
+            const wdgt = new (opts.cls)(this, opts);
+            this._addWidgetToDB(wdgt);
+            return wdgt;
+        }
+        const wdgt = new widget_1.default(this, opts);
+        this._addWidgetToDB(wdgt);
+        return wdgt;
+    }
+    getWidget(id) {
+        if (this._widgetDB.has(id))
+            return this._widgetDB.get(id);
+        return undefined;
     }
     /**
      * Returns the current width and height of the workspace's svg content size in pixels.
@@ -10724,8 +11145,32 @@ class WorkspaceSvg {
         if (this._nodeDB.has(id)) {
             console.warn(`Node with id ${id} already exists, overwriting.`);
         }
+        if (node.workspace !== this) {
+            node.workspace = this;
+        }
         this._nodeDB.set(id, node);
         this.redraw();
+    }
+    /**
+     * Create a new node of *type*.
+     * @param type - The node's prototype name.
+     */
+    newNode(type) {
+        if (!prototypes_1.default[type])
+            return;
+        const node = (0, headless_node_1.default)(type);
+        if (!node)
+            return;
+        this.addNode(node);
+        return node;
+    }
+    spawnAt(type, x, y) {
+        const node = this.newNode(type);
+        if (!node)
+            return;
+        node.relativeCoords.set(x, y);
+        this.redraw();
+        return node;
     }
     /**
      * Removes a node by its ID.
@@ -11106,6 +11551,54 @@ function rotatePath(path, angle, cx = 0, cy = 0) {
 
 /***/ }),
 
+/***/ "./util/styler.ts":
+/*!************************!*\
+  !*** ./util/styler.ts ***!
+  \************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Styler = void 0;
+class Styler {
+    styles;
+    constructor() {
+        this.styles = new Map();
+    }
+    appendStyles(id, css) {
+        if (this.styles.has(id))
+            return; // Do not append if id exists
+        const styleEl = document.createElement('style');
+        styleEl.id = id;
+        styleEl.textContent = css;
+        document.head.appendChild(styleEl);
+        this.styles.set(id, styleEl);
+    }
+    removeStyles(id) {
+        const styleEl = this.styles.get(id);
+        if (!styleEl)
+            return;
+        styleEl.remove();
+        this.styles.delete(id);
+    }
+    updateStyles(id, css) {
+        const styleEl = this.styles.get(id);
+        if (!styleEl)
+            return;
+        styleEl.textContent = css;
+    }
+    hasStyles(id) {
+        return this.styles.has(id);
+    }
+}
+exports.Styler = Styler;
+const styler = new Styler();
+exports["default"] = styler;
+
+
+/***/ }),
+
 /***/ "./util/uid.ts":
 /*!*********************!*\
   !*** ./util/uid.ts ***!
@@ -11339,6 +11832,35 @@ exports["default"] = userState;
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
 /******/ 	
 /************************************************************************/
 /******/ 	

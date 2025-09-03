@@ -23,6 +23,9 @@ import '../events/events'
 import WorkspaceController from "../controllers/base";
 import WASDController from "../controllers/wasd";
 import { RMap } from "./renderer-map";
+import styler, { Styler } from "../util/styler";
+import WidgetPrototypes from "./widget-prototypes";
+import Widget from "./widget";
 Field.register = function (name: string, cls: Function) {
     FieldMap[name] = cls as AnyFieldCls;
 }
@@ -34,7 +37,7 @@ const Kabel = {
     UIX: {
         events: eventer as Eventer,
         /**
-         * State Manager, Makes thing possible: E.G (the 'typing' state when you type in a input box..)
+         * State Manager, Makes things possible: E.G (the 'typing' state when you type in a input box..)
          * Used in controllers so you dont move when typing characters like a w s or d etc.
          */
         userState
@@ -45,8 +48,11 @@ const Kabel = {
         parseColor,
         UID,
         EventEmitter,
-        hasProp
+        hasProp,
+        styler,
+        Styler
     },
+    Widget,
     CategoryColors,
     Connection,
     Coordinates,
@@ -63,6 +69,7 @@ const Kabel = {
     setMainWorkspace,
     NodeSvg,
     Nodes: NodePrototypes,
+    Widgets: WidgetPrototypes,
     WorkspaceSvg,
     WorkspaceController,
     WASDController,

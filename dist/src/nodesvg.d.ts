@@ -6,6 +6,7 @@ import Coordinates from "./coordinates";
 import EventEmitter from '../util/emitter';
 import { G } from "@svgdotjs/svg.js";
 import WorkspaceSvg from "./workspace-svg";
+import RendererConstants from "../renderers/constants";
 /** Represents a JSON structure to initialize a field on a node */
 export interface InputFieldJson {
     label: string;
@@ -17,7 +18,7 @@ export interface InputFieldJson {
 export interface NodeJson {
     primaryColor?: Color;
     secondaryColor?: Color;
-    tertiraryColor?: Color;
+    tertiaryColor?: Color;
     previousConnection?: any;
     nextConnection?: any;
     labelText?: string;
@@ -25,6 +26,11 @@ export interface NodeJson {
     category?: string;
     type: string;
 }
+export type NodeStyle = ColorStyle & {
+    [key in keyof RendererConstants]?: RendererConstants[key];
+} & {
+    [key: string]: any;
+};
 export interface NodeEvents {
     "REMOVING": null;
     "INITING": null;
@@ -35,7 +41,7 @@ declare class NodeSvg extends EventEmitter<NodeEvents> {
     nextConnection: Connection | null;
     type: string | null;
     prototype: NodePrototype | null;
-    colors: ColorStyle;
+    colors: NodeStyle;
     labelText: string;
     _fieldColumn: Set<AnyField>;
     relativeCoords: Coordinates;
@@ -60,7 +66,7 @@ declare class NodeSvg extends EventEmitter<NodeEvents> {
     /** Returns the category name or null if none */
     getCategoryName(): string | null;
     /** Returns the node's current ColorStyle */
-    getStyle(): ColorStyle;
+    getStyle(): NodeStyle;
     /** Internal helper: attach a field to this node */
     _appendFieldItem(field: AnyField): void;
     /** Initialize node from a NodeJson object */
@@ -74,7 +80,7 @@ declare class NodeSvg extends EventEmitter<NodeEvents> {
     appendOptLink(name: string): Field;
     setCategoryName(name: string): void;
     setStyle(style: ColorStyle): void;
-    setColor(primary: Color, secondary: Color, tertirary: Color): void;
+    setColor(primary: Color, secondary: Color, tertiary: Color): void;
     setLabelText(text: string): string;
     /** Add or replace a previous/next connection based on argument */
     setConnection(prevOrNext: string | number | boolean): Connection | null;

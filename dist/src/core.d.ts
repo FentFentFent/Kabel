@@ -7,6 +7,7 @@ import inject, { InjectMsg } from "./inject";
 import { clearMainWorkspace, getMainWorkspace, setMainWorkspace } from "./main-workspace";
 import NodeSvg from "./nodesvg";
 import WorkspaceSvg from "./workspace-svg";
+import { NodePrototype } from "./node-types";
 import { ColorStyle } from "./visual-types";
 import { parseColor } from "../util/parse-color";
 import { Eventer } from "../util/eventer";
@@ -18,11 +19,14 @@ import EventEmitter from "../util/emitter";
 import '../events/events';
 import WorkspaceController from "../controllers/base";
 import WASDController from "../controllers/wasd";
+import { RMap } from "./renderer-map";
+import { Styler } from "../util/styler";
+import Widget from "./widget";
 declare const Kabel: {
     UIX: {
         events: Eventer;
         /**
-         * State Manager, Makes thing possible: E.G (the 'typing' state when you type in a input box..)
+         * State Manager, Makes things possible: E.G (the 'typing' state when you type in a input box..)
          * Used in controllers so you dont move when typing characters like a w s or d etc.
          */
         userState: import("../util/user-state").UserState;
@@ -34,9 +38,10 @@ declare const Kabel: {
         UID: typeof UID;
         EventEmitter: typeof EventEmitter;
         hasProp: typeof hasProp;
+        styler: Styler;
+        Styler: typeof Styler;
     };
-    RendererConstants: typeof RendererConstants;
-    Renderer: typeof Renderer;
+    Widget: typeof Widget;
     CategoryColors: {
         [key: string]: ColorStyle;
     };
@@ -62,10 +67,18 @@ declare const Kabel: {
     getMainWorkspace: typeof getMainWorkspace;
     setMainWorkspace: typeof setMainWorkspace;
     NodeSvg: typeof NodeSvg;
-    Nodes: {};
+    Nodes: {
+        [key: string]: NodePrototype;
+    };
+    Widgets: import("./widget-prototypes").WidgetPrototypeList;
     WorkspaceSvg: typeof WorkspaceSvg;
     WorkspaceController: typeof WorkspaceController;
     WASDController: typeof WASDController;
+    nodeRendering: {
+        rendererMap: typeof RMap;
+        Renderer: typeof Renderer;
+        RendererConstants: typeof RendererConstants;
+    };
 };
 export default Kabel;
 //# sourceMappingURL=core.d.ts.map

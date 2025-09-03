@@ -18,7 +18,7 @@ You can install Kabel in two main ways:
 **Using npm (recommended):**
 ```bash
 cd path/to/your/project
-npm install kabel
+npm install @kabel-project/kabel
 ```
 
 **Cloning from GitHub (Experimental builds):**

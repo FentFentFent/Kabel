@@ -29,20 +29,19 @@
                     background: '#f0f0f0'
                 });
                 document.body.appendChild(el);
-
-                // Use WASDController with acceleration
-                const ws = k.inject(el, {
-                    Controller: k.Controllers?.WASDController || Kabel.WASDController,
-                    moveSpeed: 6, // optional, base speed
-                    controls: {
-                        wasd: true,
-                        wasdSmooth: true,
-                        wasdAccelerate: 1,
-                        wasdFriction: 0.9
-                    }
-                });
-
-                // Define custom node type
+                /**
+                 *{
+                        type: 'category',
+                        contents: [{
+                            name: "Cat",
+                            color: "#cc0c00",
+                            contents: [{
+                                type: 'my_node',
+                                arguments: {}
+                            }]
+                        }]
+                    } 
+                 */
                 k.Nodes['my_node'] = {
                     init() {
                         this.jsonInit({
@@ -51,7 +50,7 @@
                             labelText: 'TopbarText',
                             type: 'my_node',
                             primaryColor: '#cc0c00',
-                            tertiraryColor: '#660500',
+                            tertiaryColor: '#660500',
                             arguments: [
                                 {
                                     name: 'FLD',
@@ -68,6 +67,47 @@
                         });
                     }
                 };
+                k.Widgets['testWidget'] = {
+                    name: 'Test Widget',
+                    width: 150,
+                    height: 100,
+                    coords: new k.Coordinates(50, 50),
+                    html: '<button id="counterBtn">Count: 0</button>',
+                    init: function (widget, container) {
+                        let count = 0;
+                        const btn = container.querySelector('#counterBtn');
+                        if (btn) {
+                            btn.addEventListener('click', function () {
+                                count++;
+                                btn.textContent = 'Count: ' + count;
+                            });
+                        }
+                    }
+                };
+                // Use WASDController with acceleration
+                const ws = k.inject(el, {
+                    Controller: k.Controllers?.WASDController || Kabel.WASDController,
+                    moveSpeed: 6, // optional, base speed
+                    controls: {
+                        wasd: true,
+                        wasdSmooth: true,
+                        wasdAccelerate: 1,
+                        wasdFriction: 0.9
+                    },
+                    toolbox: {
+                        type: 'category',
+                        contents: [{
+                            name: "Cat",
+                            color: "#cc0c00",
+                            contents: [{
+                                type: 'my_node',
+                                arguments: {}
+                            }]
+                        }]
+                    }
+                });
+
+                // Define custom node type
 
                 // Create nodes
                 const node = new k.NodeSvg(k.Nodes['my_node'], ws);
@@ -81,7 +121,8 @@
                 node1.previousConnection.from = node;
 
                 ws.redraw();
-
+                const myWidget = ws.newWidget('testWidget');
+                if (myWidget) myWidget.show(); // make it visible
                 // Expose for debugging
                 window.ws = ws;
                 window.nodes = [node, node1];

@@ -71,8 +71,16 @@ class Renderer {
         return Object.assign(this._constants, c);
     }
     get constants(): RendererConstants {
-        return this._constants;
+        if (!this.node) return this._constants;
+
+        const { primary, secondary, tertiary, ...restColors } = this.node.colors;
+
+        return {
+            ...this._constants,
+            ...restColors
+        };
     }
+
     set constants(c: Partial<RendererConstants>) {
         this.setConstants(c);
     }
@@ -487,7 +495,7 @@ class Renderer {
         // Topbar
         state.topbar = nodeGroup.path(Path.roundedRect(width, c.TOPBAR_HEIGHT, radius))
             .fill(parseColor(colors.primary))
-            .stroke({ color: parseColor(colors.tertirary), width: 2 } as StrokeData);
+            .stroke({ color: parseColor(colors.tertiary), width: 2 } as StrokeData);
 
         // add the X button
         this.drawNodeXButton();

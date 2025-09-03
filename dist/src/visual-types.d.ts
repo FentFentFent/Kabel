@@ -10,7 +10,7 @@ export type Color = RGBObject | RGBString | RGBTuple | Hex;
 export interface ColorStyle {
     primary: Color;
     secondary: Color;
-    tertirary: Color;
+    tertiary: Color;
     category?: string;
 }
 //# sourceMappingURL=visual-types.d.ts.map

@@ -7,9 +7,14 @@ import WorkspaceCoords from "./workspace-coords";
 import WorkspaceController from '../controllers/base';
 import WASDController from '../controllers/wasd';
 import { RMap } from "./renderer-map";
+import Toolbox from "./toolbox";
+import NodePrototypes from "./prototypes";
+import newHeadlessNode from "./headless-node";
+import Widget from "./widget";
+import WidgetPrototypes from "./widget-prototypes";
 
 
-function resolveController(options: InjectOptions) : typeof WorkspaceController {
+function resolveController(options: InjectOptions): typeof WorkspaceController {
     if (options?.controls) {
         if (options?.controls.wasd) {
             return WASDController;
@@ -50,6 +55,14 @@ class WorkspaceSvg {
      */
     controller: WorkspaceController;
     /**
+     * Toolbox for the workspace.
+     */
+    toolbox?: Toolbox;
+    /**
+     * A list of widgets active in this workspace
+     */
+    _widgetDB: Map<string, Widget>
+    /**
      * Creates a new WorkspaceSvg instance.
      * @param root - The root HTML element containing the workspace.
      * @param wsTop - The top-level wrapper element for the SVG.
@@ -59,16 +72,42 @@ class WorkspaceSvg {
         wsTop.style.width = '100%';
         wsTop.style.height = '100%';
 
-        this._camera = new WorkspaceCoords(0, 0);
-        this._nodeDB = new Map();
         this._root = root;
         this._wsTop = wsTop;
         this.svg = SVG().addTo(this._wsTop).size('100%', '100%');
         this.options = options;
         let RClass: typeof Renderer = RMap.resolve(options.renderer);
         this.renderer = new RClass(this, this.options.rendererOverrides || {});
+        if (this.options.toolbox) {
+            this.toolbox = new Toolbox(this);
+        }
+        this._camera = new WorkspaceCoords(0, 0);
+        this._nodeDB = new Map();
         this.noRedraw = false;
         this.controller = new (options.Controller ?? resolveController(options))(this);
+        this._widgetDB = new Map();
+    }
+    _addWidgetToDB(wdgt: Widget) {
+        this._widgetDB.set(wdgt.id, wdgt);
+    }
+    _delWidgetFromDB(wdgt: Widget) {
+        this._widgetDB.delete(wdgt.id);
+    }
+    newWidget(type: string): void | Widget {
+        const opts = WidgetPrototypes[type];
+        if (!opts) return;
+        if (opts.cls) {
+            const wdgt = new (opts.cls)(this, opts);
+            this._addWidgetToDB(wdgt);
+            return wdgt;
+        }
+        const wdgt = new Widget(this, opts);
+        this._addWidgetToDB(wdgt);
+        return wdgt;
+    }
+    getWidget(id: string): Widget|undefined {
+        if (this._widgetDB.has(id)) return this._widgetDB.get(id);
+        return undefined;
     }
     /**
      * Returns the current width and height of the workspace's svg content size in pixels.
@@ -117,7 +156,7 @@ class WorkspaceSvg {
      * @returns Screen coordinates as a Coordinates instance.
      */
     workspaceToScreen(x: number, y: number): Coordinates {
-        const {x: rx, y: ry} = this.controller.workspaceToScreen(x, y);
+        const { x: rx, y: ry } = this.controller.workspaceToScreen(x, y);
         return new Coordinates(rx, ry);
     }
 
@@ -128,7 +167,7 @@ class WorkspaceSvg {
      * @returns Workspace coordinates as a Coordinates instance.
      */
     screenToWorkspace(x: number, y: number): Coordinates {
-        const {x: rx, y: ry} = this.controller.screenToWorkspace(x, y);
+        const { x: rx, y: ry } = this.controller.screenToWorkspace(x, y);
         return new Coordinates(rx, ry);
     }
 
@@ -151,10 +190,32 @@ class WorkspaceSvg {
         if (this._nodeDB.has(id)) {
             console.warn(`Node with id ${id} already exists, overwriting.`);
         }
+        if (node.workspace !== this) {
+            node.workspace = this;
+        }
         this._nodeDB.set(id, node);
         this.redraw();
     }
 
+    /**
+     * Create a new node of *type*.
+     * @param type - The node's prototype name.
+     */
+    newNode(type: keyof typeof NodePrototypes): NodeSvg | undefined {
+        if (!NodePrototypes[type]) return;
+        const node = newHeadlessNode(type as string);
+        if (!node) return;
+        this.addNode(node);
+        return node;
+    }
+
+    spawnAt(type: keyof typeof NodePrototypes, x: number, y: number): NodeSvg | undefined {
+        const node = this.newNode(type);
+        if (!node) return;
+        node.relativeCoords.set(x, y);
+        this.redraw();
+        return node;
+    }
     /**
      * Removes a node by its ID.
      * @param id - The ID of the node to remove.

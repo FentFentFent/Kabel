@@ -4,7 +4,7 @@ import CategoryColors from "./colors";
 import Connection, { Connectable } from "./connection";
 import Coordinates from "./coordinates";
 import Field, { FieldOptions, FieldVisualInfo, AnyFieldCls, AnyField, DummyField, FieldMap, NumberField, OptConnectField, TextField } from "./field";
-import inject, { InjectMsg, InjectOptions } from "./inject";
+import inject, { InjectMsg, InjectOptions, TblxCategoryStruct, TblxObjStruct, TblxFieldStruct, TblxNodeStruct } from "./inject";
 import { clearMainWorkspace, getMainWorkspace, setMainWorkspace } from "./main-workspace";
 import NodeSvg, { NodeJson, NodeEvents, InputFieldJson } from "./nodesvg";
 import NodePrototypes from "./prototypes";
@@ -13,6 +13,8 @@ import { NodePrototype } from "./node-types";
 import { Color, ColorStyle, Hex, RGBObject, RGBString, RGBTuple } from "./visual-types";
 import { Eventer } from "../util/eventer";
 import Kabel from "./core";
+import { WidgetOptions } from "./widget";
+import { WidgetPrototypeList } from "./widget-prototypes";
 export default Kabel;
-export type { RendererConstants, Renderer, CategoryColors, Connection, Coordinates, Field, DummyField, FieldMap, NumberField, OptConnectField, TextField, inject, InjectMsg, clearMainWorkspace, getMainWorkspace, setMainWorkspace, NodeSvg, NodePrototypes, WorkspaceSvg, AnyFieldCls, AnyField, InjectOptions, Color, ColorStyle, Hex, RGBObject, RGBString, RGBTuple, NodePrototype, FieldOptions, FieldVisualInfo, NodeJson, NodeEvents, InputFieldJson, Eventer, Connectable, DrawState, ConnectorToFrom };
+export type { TblxCategoryStruct, TblxNodeStruct, TblxFieldStruct, TblxObjStruct, RendererConstants, Renderer, CategoryColors, Connection, Coordinates, Field, DummyField, FieldMap, NumberField, OptConnectField, TextField, inject, InjectMsg, clearMainWorkspace, getMainWorkspace, setMainWorkspace, NodeSvg, NodePrototypes, WorkspaceSvg, AnyFieldCls, AnyField, InjectOptions, Color, ColorStyle, Hex, RGBObject, RGBString, RGBTuple, NodePrototype, FieldOptions, FieldVisualInfo, NodeJson, NodeEvents, InputFieldJson, Eventer, Connectable, DrawState, ConnectorToFrom, WidgetOptions, WidgetPrototypeList };
 //# sourceMappingURL=index.d.ts.map

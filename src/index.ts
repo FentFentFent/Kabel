@@ -4,7 +4,7 @@ import CategoryColors from "./colors";
 import Connection, {Connectable} from "./connection";
 import Coordinates from "./coordinates";
 import Field, { FieldOptions, FieldVisualInfo, AnyFieldCls, AnyField, DummyField, FieldMap, NumberField, OptConnectField, TextField } from "./field";
-import inject, { InjectMsg, InjectOptions } from "./inject";
+import inject, { InjectMsg, InjectOptions, TblxCategoryStruct, TblxObjStruct, TblxFieldStruct, TblxNodeStruct } from "./inject";
 import { clearMainWorkspace, getMainWorkspace, setMainWorkspace } from "./main-workspace";
 import NodeSvg, {NodeJson, NodeEvents, InputFieldJson} from "./nodesvg";
 import NodePrototypes from "./prototypes";
@@ -20,11 +20,17 @@ import hasProp from "../util/has-prop";
 import EventEmitter from "../util/emitter";
 
 import Kabel from "./core";
+import { WidgetOptions } from "./widget";
+import { WidgetPrototypeList } from "./widget-prototypes";
 
 
 export default Kabel;
 
 export type {
+    TblxCategoryStruct,
+    TblxNodeStruct,
+    TblxFieldStruct,
+    TblxObjStruct,
     RendererConstants,
     Renderer,
     CategoryColors,
@@ -55,5 +61,7 @@ export type {
     Eventer,
     Connectable,
     DrawState,
-    ConnectorToFrom
+    ConnectorToFrom,
+    WidgetOptions,
+    WidgetPrototypeList
 }

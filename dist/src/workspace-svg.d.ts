@@ -5,6 +5,9 @@ import Renderer from '../renderers/renderer';
 import { InjectOptions } from "./inject";
 import WorkspaceCoords from "./workspace-coords";
 import WorkspaceController from '../controllers/base';
+import Toolbox from "./toolbox";
+import NodePrototypes from "./prototypes";
+import Widget from "./widget";
 /**
  * Represents the visual workspace containing nodes and connections.
  * Handles rendering, panning, and coordinate transformations.
@@ -26,7 +29,18 @@ declare class WorkspaceSvg {
     options: InjectOptions;
     /** Flag to temporarily prevent redraws */
     noRedraw: boolean;
+    /**
+     * A class instance that moves the camera based on user interactions.
+     */
     controller: WorkspaceController;
+    /**
+     * Toolbox for the workspace.
+     */
+    toolbox?: Toolbox;
+    /**
+     * A list of widgets active in this workspace
+     */
+    _widgetDB: Map<string, Widget>;
     /**
      * Creates a new WorkspaceSvg instance.
      * @param root - The root HTML element containing the workspace.
@@ -34,6 +48,10 @@ declare class WorkspaceSvg {
      * @param options - Configuration and renderer override options.
      */
     constructor(root: HTMLElement, wsTop: HTMLElement, options: InjectOptions);
+    _addWidgetToDB(wdgt: Widget): void;
+    _delWidgetFromDB(wdgt: Widget): void;
+    newWidget(type: string): void | Widget;
+    getWidget(id: string): Widget | undefined;
     /**
      * Returns the current width and height of the workspace's svg content size in pixels.
      * Useful for camera positioning.
@@ -85,6 +103,12 @@ declare class WorkspaceSvg {
      * @param nodeId - Optional custom ID to use instead of node.id.
      */
     addNode(node: NodeSvg, nodeId?: string): void;
+    /**
+     * Create a new node of *type*.
+     * @param type - The node's prototype name.
+     */
+    newNode(type: keyof typeof NodePrototypes): NodeSvg | undefined;
+    spawnAt(type: keyof typeof NodePrototypes, x: number, y: number): NodeSvg | undefined;
     /**
      * Removes a node by its ID.
      * @param id - The ID of the node to remove.

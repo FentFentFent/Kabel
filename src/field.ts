@@ -54,9 +54,9 @@ class Field<T = any> {
      * @param json FieldOptions object
      */
     fromJson(json: FieldOptions) {
-        this.name = json.name;
-        this.label = json.label;
-        this.type = json.type;
+        if (json.name!== undefined) this.name = json.name;
+        if (json.label !== undefined) this.label = json.label;
+        if (json.type !== undefined) this.type = json.type;
         if (json.value !== undefined) this.value = json.value;
     }
 
@@ -147,9 +147,9 @@ export class DummyField {
      * @param json FieldOptions object
      */
     fromJson(json: FieldOptions) {
-        this.name = json.name;
-        this.label = json.label;
-        this.type = json.type;
+        if (json.name!== undefined) this.name = json.name;
+        if (json.label !== undefined) this.label = json.label;
+        if (json.type !== undefined) this.type = json.type;
     }
     /** @returns Whether this field is a raw value field (text/number) */
     hasRaw(): boolean {

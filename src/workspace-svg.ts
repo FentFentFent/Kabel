@@ -147,7 +147,7 @@ class WorkspaceSvg {
         this.renderer.refreshNodeTransforms();
     }
 
-    /** Draws all nodes in the workspace. */
+    /** Draws all nodes in the workspace. Very heavy. */
     drawAllNodes() {
         for (let [nodeId, _] of this._nodeDB) {
             this.drawNode(nodeId);

@@ -11,6 +11,7 @@ export default class WASDController extends WorkspaceController {
     friction: number;
     velocity: Vec2;
     constructor(workspace: WorkspaceSvg, moveSpeed?: number);
+    canMove(): boolean;
     update(): void;
 }
 export {};

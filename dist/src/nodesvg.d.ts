@@ -72,18 +72,18 @@ declare class NodeSvg extends EventEmitter<NodeEvents> {
     /** Initialize node from a NodeJson object */
     jsonInit(json: NodeJson): void;
     /** Apply field definitions from a JSON-like array without full NodeJson */
-    applyJsonArguments(args: InputFieldJson[]): void;
+    applyJsonArguments(args: InputFieldJson[]): this;
     appendConnection(name: string): Field;
     appendNumber(name: string): Field;
     appendText(name: string): Field;
     /** Field that can hold a connection or raw value */
     appendOptLink(name: string): Field;
-    setCategoryName(name: string): void;
-    setStyle(style: ColorStyle): void;
-    setColor(primary: Color, secondary: Color, tertiary: Color): void;
-    setLabelText(text: string): string;
+    setCategoryName(name: string): this;
+    setStyle(style: ColorStyle): this;
+    setColor(primary: Color, secondary: Color, tertiary: Color): this;
+    setLabelText(text: string): this;
     /** Add or replace a previous/next connection based on argument */
-    setConnection(prevOrNext: string | number | boolean): Connection | null;
+    setConnection(prevOrNext: string | number | boolean): this;
     /** Copies another NodeSvg into this node */
     fromNode(other: NodeSvg): this | undefined;
 }

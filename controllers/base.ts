@@ -31,7 +31,7 @@ export default class WorkspaceController {
 		this._updateInt = setInterval(() => this.update(), 16);
 	}
     canMove() {
-        return !userState.hasState('typing');
+        return true;
     }
 	private _setupListeners() {
 		window.addEventListener('keydown', e => this.keysDown.add(e.key));

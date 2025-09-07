@@ -9,6 +9,8 @@ export interface ConnectorToFrom {
     from: Connection;
     fromCircle?: SvgPath;
     toCircle?: SvgPath;
+    originConn: Connection;
+    originCircle: SvgPath;
 }
 export interface DrawState {
     id: string;
@@ -18,7 +20,7 @@ export interface DrawState {
     fieldCol?: G | null;
     fieldPosY?: number | null;
     xButton?: G;
-    connectorsAwaitingConnection: ConnectorToFrom[];
+    pendingConnections: ConnectorToFrom[];
 }
 declare class Renderer {
     _constants: RendererConstants;
@@ -28,12 +30,14 @@ declare class Renderer {
     _ws: WorkspaceSvg;
     _svgElements: Element[];
     _drawStates: DrawState[];
+    _cachedLinesQueue: ConnectorToFrom[];
     static get NODE_G_TAG(): string;
     static get ELEMENT_TAG(): string;
     static get CONN_LINE_TAG(): string;
     static get CONNECTOR_TAG(): string;
     static get NAME(): string;
     constructor(workspace: WorkspaceSvg, overrides?: Partial<RendererConstants>);
+    enqueueSetConnect(c: ConnectorToFrom): void;
     setConstants(c?: Partial<RendererConstants>): RendererConstants & Partial<RendererConstants>;
     get constants(): RendererConstants;
     set constants(c: Partial<RendererConstants>);
@@ -47,6 +51,13 @@ declare class Renderer {
     };
     measureTextWidth(text: string, fontSize?: number, fontFamily?: string): number;
     measureRawField(text?: string): {
+        width: number;
+        height: number;
+    };
+    private measureLabel;
+    private measureRaw;
+    private measureCustom;
+    getFieldMeasurementPadding(): {
         width: number;
         height: number;
     };
@@ -77,7 +88,9 @@ declare class Renderer {
     private _fillOtherNodeConnectorCircle;
     refreshNodeTransforms(): void;
     refreshConnectionLines(): void;
+    createNodeDrawstate(nodeGroup: G, id: string): DrawState;
     drawNode(): void;
+    fillAllNodeConnectorBubbles(): void;
     drawLinesForAllNodes(): void;
     clearLines(): void;
     clearScreen(): void;

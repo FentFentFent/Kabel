@@ -1,5 +1,6 @@
 import Connection from "./connection";
 import { G, Rect, Svg, SVG } from '@svgdotjs/svg.js';
+import NodeSvg from "./nodesvg";
 /**
  * Options used to initialize a Field.
  */
@@ -32,6 +33,7 @@ class Field<T = any> {
     label: string;
     name: string;
     type: string;
+    node?: NodeSvg;
     protected value: T | null;
     static register(name: string, cls: Function) {};
     static unregister(name: string) {};
@@ -128,6 +130,7 @@ export class DummyField {
     label: string;
     name: string;
     type: string;
+    node?: NodeSvg;
 
     constructor() {
         this.label = '';

@@ -10,6 +10,7 @@ class RendererConstants {
     PADDING_MEDIUM!: number;
     PADDING_SMALL!: number;
     FIELD_SPACEY!: number;
+    FIELD_SPACEX!: number;
     FIELD_RAW_BASE_WIDTH!: number;
     FIELD_RAW_BASE_HEIGHT!: number;
     INPUT_BOX_PADDING!: number;
@@ -62,6 +63,7 @@ class RendererConstants {
         this.CONNECTION_STROKE_COLOR_CHOICE = 1;
         this.FIELD_RAW_OUTLINE_STROKE = 2;
         this.FIELD_SPACEY = 20;
+        this.FIELD_SPACEX = 20;
         this.FONT_SIZE = 20;
         this.TOPBAR_LABEL_BOLDED = true;
         this.FIELD_MARGIN_X = 16;

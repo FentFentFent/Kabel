@@ -15,15 +15,11 @@ return /******/ (() => { // webpackBootstrap
 /*!*****************************!*\
   !*** ./controllers/base.ts ***!
   \*****************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const user_state_1 = __importDefault(__webpack_require__(/*! ../util/user-state */ "./util/user-state.ts"));
 class WorkspaceController {
     workspace;
     keysDown;
@@ -45,7 +41,7 @@ class WorkspaceController {
         this._updateInt = setInterval(() => this.update(), 16);
     }
     canMove() {
-        return !user_state_1.default.hasState('typing');
+        return true;
     }
     _setupListeners() {
         window.addEventListener('keydown', e => this.keysDown.add(e.key));
@@ -134,6 +130,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const base_1 = __importDefault(__webpack_require__(/*! ./base */ "./controllers/base.ts"));
+const user_state_1 = __importDefault(__webpack_require__(/*! ../util/user-state */ "./util/user-state.ts"));
 class WASDController extends base_1.default {
     moveSpeed;
     doAccelerate;
@@ -147,6 +144,9 @@ class WASDController extends base_1.default {
         this.accelSpeed = workspace.options?.controls?.wasdAccelerate ?? 0.2;
         this.friction = workspace.options?.controls?.wasdFriction ?? 0.85;
         this.velocity = { x: 0, y: 0 };
+    }
+    canMove() {
+        return !user_state_1.default.hasState('typing');
     }
     update() {
         super.update();
@@ -184,6 +184,103 @@ class WASDController extends base_1.default {
     }
 }
 exports["default"] = WASDController;
+
+
+/***/ }),
+
+/***/ "./events/connector.ts":
+/*!*****************************!*\
+  !*** ./events/connector.ts ***!
+  \*****************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const eventer_1 = __importDefault(__webpack_require__(/*! ../util/eventer */ "./util/eventer.ts"));
+const user_state_1 = __importDefault(__webpack_require__(/*! ../util/user-state */ "./util/user-state.ts"));
+const wait_anim_frames_1 = __importDefault(__webpack_require__(/*! ../util/wait-anim-frames */ "./util/wait-anim-frames.ts"));
+const cState = {
+    one: null,
+    two: null
+};
+function initConnector(el, args) {
+    args = args;
+    el.on('click', () => {
+        const isPrev = args.connection.isPrevious;
+        // First click → must NOT be previous
+        if (!cState.one) {
+            if (isPrev) {
+                el.addClass('KabelConnectionBubbleHighlightWrong');
+                (0, wait_anim_frames_1.default)(10, () => {
+                    el.removeClass('KabelConnectionBubbleHighlightWrong');
+                });
+                return;
+            }
+            cState.one = { conn: args.connection, el, args };
+            el.addClass('KabelConnectionBubbleHighlight');
+            user_state_1.default.setState('connecting');
+            return;
+        }
+        // Second click → must be previous
+        if (!cState.two && (args?.node !== cState.one?.args?.node)) {
+            if (!isPrev) {
+                el.addClass('KabelConnectionBubbleHighlightWrong');
+                (0, wait_anim_frames_1.default)(10, () => {
+                    el.removeClass('KabelConnectionBubbleHighlightWrong');
+                });
+                return;
+            }
+            if (cState.one.conn === args.connection)
+                return; // ignore clicking the same again
+            cState.two = { conn: args.connection, el, args };
+            el.addClass('KabelConnectionBubbleHighlight');
+        }
+        // Both are filled → attempt to connect
+        if (cState.one && cState.two) {
+            if (cState.two.args?.node == cState.one.args?.node || cState.two.args?.node === cState.one?.args?.field?.node) {
+                cState.one.el.addClass('KabelConnectionBubbleHighlightWrong');
+                cState.two.el.addClass('KabelConnectionBubbleHighlightWrong');
+                (0, wait_anim_frames_1.default)(10, () => {
+                    if (!cState)
+                        return;
+                    if (!cState.one || !cState.two)
+                        return;
+                    cState.one.el.removeClass('KabelConnectionBubbleHighlightWrong');
+                    cState.two.el.removeClass('KabelConnectionBubbleHighlightWrong');
+                    cState.one = null;
+                    cState.two = null;
+                });
+                user_state_1.default.removeState('connecting');
+                return;
+            }
+            const { conn: connA } = cState.one;
+            const { conn: connB } = cState.two;
+            connA.disconnectTo();
+            connB.disconnectFrom();
+            connA.to = cState.two.args?.node;
+            connB.from = cState.one.args?.node || cState.one.args?.field;
+            (0, wait_anim_frames_1.default)(2, () => {
+                if (cState.one?.args?.node) {
+                    cState.one.args.node.workspace?.redraw?.();
+                }
+                else if (cState.two?.args?.node) {
+                    cState.two.args.node.workspace?.redraw?.();
+                }
+                cState.one = null;
+                cState.two = null;
+                user_state_1.default.removeState('connecting');
+            });
+        }
+    });
+    return () => {
+        el.off('click'); // removes the click listener
+    };
+}
+eventer_1.default.registerEvent('k_connectbubble', initConnector);
 
 
 /***/ }),
@@ -310,6 +407,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 __webpack_require__(/*! ./draggable */ "./events/draggable.ts");
 __webpack_require__(/*! ./input-box */ "./events/input-box.ts");
 __webpack_require__(/*! ./node-x-btn */ "./events/node-x-btn.ts");
+__webpack_require__(/*! ./connector */ "./events/connector.ts");
 
 
 /***/ }),
@@ -8995,6 +9093,7 @@ class RendererConstants {
     PADDING_MEDIUM;
     PADDING_SMALL;
     FIELD_SPACEY;
+    FIELD_SPACEX;
     FIELD_RAW_BASE_WIDTH;
     FIELD_RAW_BASE_HEIGHT;
     INPUT_BOX_PADDING;
@@ -9042,6 +9141,7 @@ class RendererConstants {
         this.CONNECTION_STROKE_COLOR_CHOICE = 1;
         this.FIELD_RAW_OUTLINE_STROKE = 2;
         this.FIELD_SPACEY = 20;
+        this.FIELD_SPACEX = 20;
         this.FONT_SIZE = 20;
         this.TOPBAR_LABEL_BOLDED = true;
         this.FIELD_MARGIN_X = 16;
@@ -9114,7 +9214,7 @@ function drawState(nodeGroup, id) {
         id,
         group: nodeGroup,
         fieldPosY: 0,
-        connectorsAwaitingConnection: []
+        pendingConnections: []
     };
 }
 class Renderer {
@@ -9125,6 +9225,7 @@ class Renderer {
     _ws;
     _svgElements;
     _drawStates;
+    _cachedLinesQueue;
     static get NODE_G_TAG() {
         return 'AtlasNodeSVG';
     }
@@ -9148,6 +9249,10 @@ class Renderer {
         this._nodeDraw = null;
         this._svgElements = [];
         this._drawStates = [];
+        this._cachedLinesQueue = [];
+    }
+    enqueueSetConnect(c) {
+        this.state?.pendingConnections?.push?.(c);
     }
     setConstants(c = {}) {
         return Object.assign(this._constants, c);
@@ -9206,35 +9311,55 @@ class Renderer {
         const height = c.FIELD_RAW_BASE_HEIGHT;
         return { width, height };
     }
-    measureField(field) {
-        let width = 0, height = 0;
+    measureLabel(field) {
         const c = this.constants;
+        const label = field.getLabel?.();
+        if (!label)
+            return { width: 0, height: 0 };
+        const width = this.measureTextWidth(label);
+        const height = c.FONT_SIZE + 4;
+        return { width, height };
+    }
+    measureRaw(field) {
+        if (!field.hasRaw())
+            return { width: 0, height: 0 };
+        const c = this.constants;
+        const raw = this.measureRawField(field.getValue?.() ?? "");
+        return {
+            width: raw.width,
+            height: raw.height
+        };
+    }
+    measureCustom(field) {
+        if (!field.isCustomEditor())
+            return { width: 0, height: 0 };
+        const c = this.constants;
+        const m = field.measureMyself();
+        if (!m)
+            return { width: 0, height: 0 };
+        let width = m.width;
+        let height = m.height;
         if (field.getLabel()) {
-            width += field.getLabel().length * c.FONT_SIZE * 0.6;
+            width += this.measureTextWidth(field.getLabel()) + c.LABEL_SPACING;
             height = Math.max(height, c.FONT_SIZE + 4);
-            // Calculate label stuff.
         }
-        if (field.hasRaw()) {
-            const labelWidth = field.getLabel()
-                ? this.measureTextWidth(field.getLabel())
-                : 0;
-            const raw = this.measureRawField(field.getValue?.() ?? "");
-            width = labelWidth + c.LABEL_SPACING + raw.width;
-            height = Math.max(height, raw.height, c.FONT_SIZE + 4);
-        }
-        if (field.isCustomEditor()) {
-            // Fields with a custom look handle their own measurings.
-            const measurements = field.measureMyself();
-            if (measurements) {
-                width = Math.max(width, measurements.width);
-                height = Math.max(height, measurements.height);
-                if (field.getLabel()) {
-                    width += field.getLabel().length * c.FONT_SIZE * 0.6;
-                    width += c.LABEL_SPACING;
-                    height = Math.max(height, c.FONT_SIZE + 4);
-                    // Calculate label stuff.
-                }
-            }
+        return { width, height };
+    }
+    getFieldMeasurementPadding() {
+        return { width: this.constants.FIELD_SPACEX, height: 0 };
+    }
+    measureField(field) {
+        const parts = [
+            this.getFieldMeasurementPadding(),
+            this.measureLabel(field),
+            this.measureRaw(field),
+            this.measureCustom(field),
+            this.getFieldMeasurementPadding()
+        ];
+        let width = 0, height = 0;
+        for (const { width: w, height: h } of parts) {
+            width += w;
+            height = Math.max(height, h);
         }
         return { width, height };
     }
@@ -9362,7 +9487,7 @@ class Renderer {
         eventer_1.default.addElement(xGroup, 'k_closenode', {
             workspace: this.getWs(),
             node
-        });
+        }).tagElement(xGroup, this.constructor.ELEMENT_TAG);
         // Background
         xGroup.rect(btnSize, btnSize)
             .fill('#ffffff00')
@@ -9469,8 +9594,8 @@ class Renderer {
     }
     _fillOtherNodeConnectorCircle(conn, circle, isPrevious) {
         for (const state of this._drawStates) {
-            for (const connPair of state.connectorsAwaitingConnection) {
-                // Check if this connector is referenced in another node's connector
+            for (const connPair of state.pendingConnections) {
+                // Skip if this connPair is already filled
                 if (isPrevious && connPair.to === conn && !connPair.toCircle) {
                     connPair.toCircle = circle;
                 }
@@ -9484,7 +9609,6 @@ class Renderer {
         const nodeGroups = this.svg.find(`.${this.constructor.NODE_G_TAG}`);
         for (let nodeG of nodeGroups) {
             const node = this.getWs().getNode((0, unescape_html_1.default)(nodeG.attr('data-node-id')));
-            console.log(node);
             if (!node)
                 continue;
             const screenPos = this._ws.workspaceToScreen(node.relativeCoords.x, node.relativeCoords.y);
@@ -9495,6 +9619,9 @@ class Renderer {
     refreshConnectionLines() {
         this.clearLines();
         this.drawLinesForAllNodes();
+    }
+    createNodeDrawstate(nodeGroup, id) {
+        return drawState(nodeGroup, id); // wraps this method so you can define your own drawstates by overriding this method
     }
     drawNode() {
         if (!this.node)
@@ -9513,7 +9640,7 @@ class Renderer {
         const screenPos = this._ws.workspaceToScreen(node.relativeCoords.x, node.relativeCoords.y);
         // apply it to the top-level node group
         nodeGroup.attr({ transform: `translate(${screenPos.x}, ${screenPos.y})` });
-        const state = drawState(nodeGroup, node.id);
+        const state = this.createNodeDrawstate(nodeGroup, node.id);
         this._nodeDraw = state;
         // Measure node
         const measurements = this.measureNodeDimensions();
@@ -9568,11 +9695,18 @@ class Renderer {
         if (node.previousConnection) {
             const c1 = this.drawConnector(nodeGroup, state.bg, cY, 'left', colors.primary);
             if (c1) {
-                state.connectorsAwaitingConnection.push({
+                const c = ({
                     from: node.previousConnection,
                     to: this.resolveConnectable(node.previousConnection.getFrom(), node.previousConnection),
-                    fromCircle: c1
+                    fromCircle: c1,
+                    originConn: node.previousConnection,
+                    originCircle: c1
                 });
+                this.enqueueSetConnect(c);
+                eventer_1.default.addElement(c1, 'k_connectbubble', {
+                    connection: node.previousConnection,
+                    node
+                }).tagElement(c1, this.constructor.ELEMENT_TAG);
                 // fill any waiting connectors from other nodes
                 this._fillOtherNodeConnectorCircle(node.previousConnection, c1, true);
             }
@@ -9581,23 +9715,50 @@ class Renderer {
         if (node.nextConnection) {
             const c2 = this.drawConnector(nodeGroup, state.bg, cY, 'right', colors.primary);
             if (c2) {
-                state.connectorsAwaitingConnection.push({
+                const c = ({
                     from: node.nextConnection,
                     to: this.resolveConnectable(node.nextConnection.getTo(), node.nextConnection),
-                    fromCircle: c2
+                    fromCircle: c2,
+                    originConn: node.nextConnection,
+                    originCircle: c2
                 });
+                this.enqueueSetConnect(c);
+                eventer_1.default.addElement(c2, 'k_connectbubble', {
+                    connection: node.nextConnection,
+                    node
+                }).tagElement(c2, this.constructor.ELEMENT_TAG);
                 // fill any waiting connectors from other nodes
                 this._fillOtherNodeConnectorCircle(node.nextConnection, c2, false);
+            }
+        }
+        node.svgGroup = nodeGroup;
+    }
+    fillAllNodeConnectorBubbles() {
+        for (const state of this._drawStates) {
+            for (const connPair of state.pendingConnections) {
+                const { originConn, originCircle } = connPair;
+                if (!originCircle)
+                    continue;
+                // Fill any missing fromCircle/toCircle if they were not ready when first enqueued
+                if (!connPair.fromCircle) {
+                    connPair.fromCircle = originCircle;
+                    this._fillOtherNodeConnectorCircle(originConn, originCircle, false);
+                }
+                if (!connPair.toCircle) {
+                    connPair.toCircle = originCircle;
+                    this._fillOtherNodeConnectorCircle(originConn, originCircle, true);
+                }
             }
         }
     }
     drawLinesForAllNodes() {
         const c = this.constants;
         const wsSvg = this._ws.svg;
+        this.fillAllNodeConnectorBubbles();
+        // Loop over each node's drawState instead of the global queue
         for (const state of this._drawStates) {
-            if (!state.connectorsAwaitingConnection)
-                continue;
-            for (const { fromCircle, toCircle } of state.connectorsAwaitingConnection) {
+            for (const connPair of state.pendingConnections) {
+                const { fromCircle, toCircle } = connPair;
                 if (!fromCircle || !toCircle)
                     continue;
                 const a = fromCircle.rbox();
@@ -9605,25 +9766,21 @@ class Renderer {
                 const startX = a.cx, startY = a.cy;
                 const endX = b.cx, endY = b.cy;
                 if (c.CONNECTOR_LINE_CURVED) {
-                    // cubic bezier: control points spread horizontally
                     const dx = Math.abs(endX - startX);
                     const cp1x = startX + Math.sign(endX - startX) * Math.max(30, dx * 0.3);
                     const cp2x = endX - Math.sign(endX - startX) * Math.max(30, dx * 0.3);
                     const pathStr = `M ${startX} ${startY} C ${cp1x} ${startY}, ${cp2x} ${endY}, ${endX} ${endY}`;
-                    const line = wsSvg.path(pathStr)
+                    wsSvg.path(pathStr)
                         .stroke({ color: (0, parse_color_1.parseColor)(fromCircle.fill()), width: c.CONNECTOR_LINE_WIDTH })
                         .fill('none')
                         .attr({ class: this.constructor.CONN_LINE_TAG });
-                    this._svgElements.push(line);
                 }
                 else {
-                    // fallback straight line
                     const pathStr = `M ${startX} ${startY} L ${endX} ${endY}`;
-                    const line = wsSvg.path(pathStr)
+                    wsSvg.path(pathStr)
                         .stroke({ color: (0, parse_color_1.parseColor)(fromCircle.fill()), width: c.CONNECTOR_LINE_WIDTH })
                         .fill('none')
                         .attr({ class: this.constructor.CONN_LINE_TAG });
-                    this._svgElements.push(line);
                 }
             }
         }
@@ -9637,9 +9794,93 @@ class Renderer {
         eventer_1.default.destroyByTag(this.constructor.ELEMENT_TAG);
         this._ws.svg.clear();
         this._drawStates = [];
+        this._cachedLinesQueue = [];
     }
 }
 exports["default"] = Renderer;
+
+
+/***/ }),
+
+/***/ "./src/category.ts":
+/*!*************************!*\
+  !*** ./src/category.ts ***!
+  \*************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const parse_color_1 = __webpack_require__(/*! ../util/parse-color */ "./util/parse-color.ts");
+class Category {
+    label;
+    color;
+    contents;
+    _rowDiv;
+    _toolbox;
+    constructor(toolbox, cData) {
+        this.label = cData.name;
+        this.color = cData.color;
+        this.contents = cData.contents;
+        this._toolbox = toolbox;
+        this._makeDiv();
+    }
+    _makeDiv() {
+        const btn = document.createElement("button");
+        btn.textContent = this.label;
+        btn.className = "KabelCategoryRow";
+        btn.style.backgroundColor = (0, parse_color_1.parseColor)(this.color);
+        btn.style.color = (0, parse_color_1.parseColor)('#ffffff');
+        this._rowDiv = btn;
+        btn.addEventListener("click", e => {
+            e.stopPropagation();
+            this._toolbox._flyout.clear();
+            this._toolbox._flyout.fill(this.contents);
+            this._toolbox._flyout.show();
+        });
+        this._toolbox.container.appendChild(btn);
+    }
+    /** Refreshes the UI for this category (label, color, contents) */
+    refresh(cData) {
+        if (cData.name !== undefined) {
+            this.label = cData.name;
+            this._rowDiv.textContent = this.label;
+        }
+        if (cData.color !== undefined) {
+            this.color = cData.color;
+            this._rowDiv.style.backgroundColor = (0, parse_color_1.parseColor)(this.color);
+        }
+        if (cData.contents !== undefined) {
+            this.contents = cData.contents;
+        }
+    }
+    /** Remove category row from toolbox */
+    destroy() {
+        this._rowDiv.remove();
+        this._toolbox = null; // optional: release ref
+    }
+    /** Hide this category from the UI */
+    hide() {
+        this._rowDiv.style.display = "none";
+    }
+    /** Show this category in the UI */
+    show() {
+        this._rowDiv.style.display = "";
+    }
+    /** Enable/disable interaction */
+    setDisabled(disabled) {
+        this._rowDiv.disabled = disabled;
+    }
+    /** Returns a plain object copy of this category */
+    toJSON() {
+        return {
+            name: this.label,
+            color: this.color,
+            contents: this.contents,
+        };
+    }
+}
+exports["default"] = Category;
 
 
 /***/ }),
@@ -9689,11 +9930,16 @@ class Connection {
     }
     disconnectTo() {
         if (this.to instanceof nodesvg_1.default) {
-            this.to.previousConnection?.disconnectFrom();
+            this.to.previousConnection?.disconnectFrom?.();
+        }
+        else {
         }
         this.to = null;
     }
     disconnectFrom() {
+        if (this.from instanceof nodesvg_1.default) {
+            this.from?.nextConnection?.disconnectTo?.();
+        }
         this.from = null;
     }
     isolate() {
@@ -9952,6 +10198,9 @@ const styler_1 = __importStar(__webpack_require__(/*! ../util/styler */ "./util/
 const widget_prototypes_1 = __importDefault(__webpack_require__(/*! ./widget-prototypes */ "./src/widget-prototypes.ts"));
 const widget_1 = __importDefault(__webpack_require__(/*! ./widget */ "./src/widget.ts"));
 const ctx_menu_registry_1 = __webpack_require__(/*! ./ctx-menu-registry */ "./src/ctx-menu-registry.ts");
+const escape_html_1 = __importDefault(__webpack_require__(/*! ../util/escape-html */ "./util/escape-html.ts"));
+const unescape_html_1 = __importDefault(__webpack_require__(/*! ../util/unescape-html */ "./util/unescape-html.ts"));
+const wait_anim_frames_1 = __importDefault(__webpack_require__(/*! ../util/wait-anim-frames */ "./util/wait-anim-frames.ts"));
 field_1.default.register = function (name, cls) {
     field_1.FieldMap[name] = cls;
 };
@@ -9970,13 +10219,16 @@ const Kabel = {
     ContextMenu: ctx_menu_registry_1.ContextMenu,
     Utils: {
         Path,
+        waitFrames: wait_anim_frames_1.default,
         SVG,
         parseColor: parse_color_1.parseColor,
         UID,
         EventEmitter: emitter_1.default,
         hasProp: has_prop_1.default,
         styler: styler_1.default,
-        Styler: styler_1.Styler
+        Styler: styler_1.Styler,
+        escapeHTML: escape_html_1.default,
+        unescapeHTML: unescape_html_1.default,
     },
     Widget: widget_1.default,
     CategoryColors: colors_1.default,
@@ -10113,6 +10365,7 @@ class Field {
     label;
     name;
     type;
+    node;
     value;
     static register(name, cls) { }
     ;
@@ -10208,6 +10461,7 @@ class DummyField {
     label;
     name;
     type;
+    node;
     constructor() {
         this.label = '';
         this.name = '';
@@ -10762,8 +11016,8 @@ class NodeSvg extends emitter_1.default {
             const style = colors_1.default[json.category];
             Object.assign(this.colors, { category: json.category }, style);
         }
-        this.previousConnection = (0, has_prop_1.default)(json, 'previousConnection') ? new connection_1.default(null, this) : null;
-        this.nextConnection = (0, has_prop_1.default)(json, 'nextConnection') ? new connection_1.default(this, null) : null;
+        this.previousConnection = (0, has_prop_1.default)(json, 'previousConnection') ? new connection_1.default(null, this, true) : null;
+        this.nextConnection = (0, has_prop_1.default)(json, 'nextConnection') ? new connection_1.default(this, null, false) : null;
         if (json.labelText)
             this.labelText = json.labelText;
         if (json.arguments)
@@ -10787,26 +11041,31 @@ class NodeSvg extends emitter_1.default {
             }
             const fld = new FieldConstructor();
             fld.fromJson(field); // initialize field
+            fld.node = this;
             console.log(fld);
             this._appendFieldItem(fld);
         }
+        return this;
     }
     appendConnection(name) {
         const fld = new (field_1.FieldMap['connection'])();
         this._appendFieldItem(fld);
         fld.setName(name);
+        fld.node = this;
         return fld;
     }
     appendNumber(name) {
         const fld = new (field_1.FieldMap['field_num'])();
         this._appendFieldItem(fld);
         fld.setName(name);
+        fld.node = this;
         return fld;
     }
     appendText(name) {
         const fld = new (field_1.FieldMap['field_str'])();
         this._appendFieldItem(fld);
         fld.setName(name);
+        fld.node = this;
         return fld;
     }
     /** Field that can hold a connection or raw value */
@@ -10814,30 +11073,39 @@ class NodeSvg extends emitter_1.default {
         const fld = new (field_1.FieldMap['field_both'])();
         this._appendFieldItem(fld);
         fld.setName(name);
+        fld.node = this;
         return fld;
     }
     setCategoryName(name) {
         this.colors.category = name;
+        return this;
     }
     setStyle(style) {
         Object.assign(this.colors, {}, style);
+        return this;
     }
     setColor(primary, secondary, tertiary) {
         this.setStyle({ primary, secondary, tertiary });
+        return this;
     }
     setLabelText(text) {
-        return this.labelText = text;
+        this.labelText = text;
+        return this;
     }
     /** Add or replace a previous/next connection based on argument */
     setConnection(prevOrNext) {
         const stringed = String(prevOrNext).toLowerCase();
         const cast = stringed == '0' ? 0 : (stringed == '1' ? 1 : (stringed == 'true' ? 1 : (stringed == 'false' ? 0 : 3)));
-        if (cast === 0)
-            return this.previousConnection = new connection_1.default(null, this);
-        if (cast === 1)
-            return this.nextConnection = new connection_1.default(this, null);
-        console.warn('Invalid prevOrNext argument for NodeSvg.setConnection');
-        return null;
+        if (cast === 0) {
+            this.previousConnection = new connection_1.default(null, this, true);
+        }
+        else if (cast === 1) {
+            this.nextConnection = new connection_1.default(this, null, false);
+        }
+        else {
+            console.warn('Invalid prevOrNext argument for NodeSvg.setConnection');
+        }
+        return this;
     }
     /** Copies another NodeSvg into this node */
     fromNode(other) {
@@ -10970,7 +11238,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/* Workspace wrapper: horizontal layout */\r\n.KabelWorkspaceWrapper {\r\n    display: flex;\r\n    flex-direction: row;\r\n    width: 100%;\r\n    height: 100%;\r\n    background: #f0f0f0;\r\n    /* light gray background */\r\n    overflow: hidden;\r\n    position: relative;\r\n}\r\n\r\n/* Toolbox panel (left) */\r\n.KabelToolbox {\r\n    width: 12%;\r\n    min-width: 150px;\r\n    height: 100%;\r\n    background: rgba(240, 240, 240, 0.95);\r\n    border-right: 1px solid #ccc;\r\n    box-sizing: border-box;\r\n    display: flex;\r\n    flex-direction: column;\r\n    padding: 8px;\r\n    overflow-y: auto;\r\n}\r\n\r\n/* Context menu container */\r\n.KabelContextMenu {\r\n    position: absolute;\r\n    background: #1e1e2f;\r\n    color: #000000;\r\n    border-radius: 6px;\r\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);\r\n    padding: 4px 0;\r\n    font-family: 'Segoe UI', sans-serif;\r\n    font-size: 14px;\r\n    min-width: 160px;\r\n    z-index: 9999;\r\n    user-select: none;\r\n    overflow: visible;\r\n    height: auto;\r\n    transition: opacity 0.15s ease, transform 0.15s ease;\r\n    opacity: 0;\r\n    transform: scale(0.95);\r\n    display: flex;\r\n    flex-direction: column;\r\n}\r\n\r\n/* Show state */\r\n.KabelContextMenu.show {\r\n    opacity: 1;\r\n    transform: scale(1);\r\n}\r\n\r\n/* Individual option */\r\n.KabelContextOption {\r\n    padding: 8px 16px;\r\n    cursor: pointer;\r\n    transition: background 0.15s ease, color 0.15s ease;\r\n}\r\n\r\n.KabelContextOption:hover {\r\n    background: #b0adb0;\r\n    color: #fff;\r\n}\r\n\r\n/* Optional: active click effect */\r\n.KabelContextOption:active {\r\n    background: #fff;\r\n    color: #000;\r\n}\r\n\r\n/* Scrollbar if too many options */\r\n.KabelContextMenu::-webkit-scrollbar {\r\n    width: 6px;\r\n}\r\n\r\n.KabelContextMenu::-webkit-scrollbar-thumb {\r\n    background: rgba(255, 255, 255, 0.2);\r\n    border-radius: 3px;\r\n}\r\n\r\n/* Category buttons */\r\n.KabelToolbox button {\r\n    background: #fff;\r\n    border: 1px solid #ccc;\r\n    border-radius: 4px;\r\n    margin-bottom: 4px;\r\n    padding: 6px;\r\n    cursor: pointer;\r\n    text-align: left;\r\n    transition: background 0.2s, color 0.2s;\r\n}\r\n\r\n.KabelToolbox button:hover {\r\n    background: #e6e6e6;\r\n    color: #333;\r\n}\r\n\r\n/* Flyout panel (right) */\r\n.KabelFlyout {\r\n    width: 20%;\r\n    height: 100%;\r\n    background: rgba(255, 255, 255, 0.95);\r\n    border-left: 1px solid #ccc;\r\n    box-sizing: border-box;\r\n    overflow-y: auto;\r\n    position: relative;\r\n    /* for absolute positioning of nodes inside */\r\n    display: none;\r\n    /* hidden by default */\r\n    padding: 8px;\r\n}\r\n\r\n/* Flyout nodes */\r\n.KabelFlyoutNode {\r\n    padding: 6px 10px;\r\n    margin-bottom: 4px;\r\n    border-radius: 4px;\r\n    cursor: pointer;\r\n    user-select: none;\r\n    transition: background 0.2s;\r\n}\r\n\r\n.KabelFlyoutNode:hover {\r\n    background: #e0e0e0;\r\n}\r\n\r\n/* SVG workspace area */\r\n.KabelWorkspaceWrapper svg {\r\n    flex: 1;\r\n    width: 100%;\r\n    height: 100%;\r\n    background: #fff;\r\n    /* white canvas background */\r\n    display: block;\r\n}");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/* Workspace wrapper: horizontal layout */\r\n.KabelWorkspaceWrapper {\r\n    display: flex;\r\n    flex-direction: row;\r\n    width: 100%;\r\n    height: 100%;\r\n    background: #f0f0f0;\r\n    /* light gray background */\r\n    overflow: hidden;\r\n    position: relative;\r\n}\r\n\r\n/* Toolbox panel (left) */\r\n.KabelToolbox {\r\n    width: 12%;\r\n    min-width: 150px;\r\n    height: 100%;\r\n    background: rgba(240, 240, 240, 0.95);\r\n    border-right: 1px solid #ccc;\r\n    box-sizing: border-box;\r\n    display: flex;\r\n    flex-direction: column;\r\n    padding: 8px;\r\n    overflow-y: auto;\r\n}\r\n\r\n/* Context menu container */\r\n.KabelContextMenu {\r\n    position: absolute;\r\n    background: #1e1e2f;\r\n    color: #000000;\r\n    border-radius: 6px;\r\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);\r\n    padding: 4px 0;\r\n    font-family: 'Segoe UI', sans-serif;\r\n    font-size: 14px;\r\n    min-width: 160px;\r\n    z-index: 9999;\r\n    user-select: none;\r\n    overflow: visible;\r\n    height: auto;\r\n    transition: opacity 0.15s ease, transform 0.15s ease;\r\n    opacity: 0;\r\n    transform: scale(0.95);\r\n    display: flex;\r\n    flex-direction: column;\r\n}\r\n\r\n/* Show state */\r\n.KabelContextMenu.show {\r\n    opacity: 1;\r\n    transform: scale(1);\r\n}\r\n\r\n/* Individual option */\r\n.KabelContextOption {\r\n    padding: 8px 16px;\r\n    cursor: pointer;\r\n    transition: background 0.15s ease, color 0.15s ease;\r\n}\r\n\r\n.KabelContextOption:hover {\r\n    background: #b0adb0;\r\n    color: #fff;\r\n}\r\n\r\n/* Optional: active click effect */\r\n.KabelContextOption:active {\r\n    background: #fff;\r\n    color: #000;\r\n}\r\n\r\n/* Scrollbar if too many options */\r\n.KabelContextMenu::-webkit-scrollbar {\r\n    width: 6px;\r\n}\r\n\r\n.KabelContextMenu::-webkit-scrollbar-thumb {\r\n    background: rgba(255, 255, 255, 0.2);\r\n    border-radius: 3px;\r\n}\r\n\r\n/* Category buttons */\r\n\r\n.KabelCategoryRow {\r\n    background: #fff;\r\n    border: 1px solid #ccc;\r\n    padding: 4px 8px;\r\n    margin-bottom: 4px;\r\n    border-radius: 4px;\r\n    height: 5%;\r\n    padding: 6px;\r\n    cursor: pointer;\r\n    text-align: left;\r\n    transition: background 0.2s, color 0.2s;\r\n}\r\n.KabelToolbox button:hover {\r\n    background: #e6e6e6;\r\n    color: #333;\r\n}\r\n.KabelConnectionBubbleHighlight {\r\n\tstroke: yellow !important;\r\n\tstroke-width: 6px !important;\r\n\tstroke-linejoin: round;\r\n\tstroke-linecap: round;\r\n\tfilter: drop-shadow(0 0 6px rgba(255, 255, 0, 0.9));\r\n}\r\n.KabelConnectionBubbleHighlightWrong {\r\n\tstroke: rgb(255, 0, 0) !important;\r\n\tstroke-width: 6px !important;\r\n\tstroke-linejoin: round;\r\n\tstroke-linecap: round;\r\n\tfilter: drop-shadow(0 0 6px rgba(255, 0, 0, 0.9));\r\n}\r\n\r\n\r\n\r\n\r\n/* Flyout panel (right) */\r\n.KabelFlyout {\r\n    width: 20%;\r\n    height: 100%;\r\n    background: rgba(255, 255, 255, 0.95);\r\n    border-left: 1px solid #ccc;\r\n    box-sizing: border-box;\r\n    overflow-y: auto;\r\n    position: relative;\r\n    /* for absolute positioning of nodes inside */\r\n    display: none;\r\n    /* hidden by default */\r\n    padding: 8px;\r\n}\r\n\r\n/* Flyout nodes */\r\n.KabelFlyoutNode {\r\n    padding: 6px 10px;\r\n    margin-bottom: 4px;\r\n    border-radius: 4px;\r\n    cursor: pointer;\r\n    user-select: none;\r\n    transition: background 0.2s;\r\n}\r\n\r\n.KabelFlyoutNode:hover {\r\n    background: #e0e0e0;\r\n}\r\n\r\n/* SVG workspace area */\r\n.KabelWorkspaceWrapper svg {\r\n    flex: 1;\r\n    width: 100%;\r\n    height: 100%;\r\n    background: #fff;\r\n    /* white canvas background */\r\n    display: block;\r\n}");
 
 /***/ }),
 
@@ -10987,6 +11255,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const flyout_1 = __importDefault(__webpack_require__(/*! ./flyout */ "./src/flyout.ts"));
+const category_1 = __importDefault(__webpack_require__(/*! ./category */ "./src/category.ts"));
 class Toolbox {
     type;
     workspace;
@@ -10994,22 +11263,23 @@ class Toolbox {
     _flyout;
     _contents;
     container;
+    _categories = [];
     constructor(workspace) {
         this.workspace = workspace;
         this.wsOptions = this.getOptions();
-        this.type = this.wsOptions.toolbox?.type == 'flyout' ? 2 : 1;
+        this.type = this.wsOptions.toolbox?.type == "flyout" ? 2 : 1;
         this._contents = this.wsOptions.toolbox?.contents ?? [];
         // pass toolbox reference to flyout
         this._flyout = new flyout_1.default(this);
-        this.container = document.createElement('div');
-        this.container.className = 'KabelToolbox';
-        this.container.style.position = 'absolute';
-        this.container.style.left = '0';
-        this.container.style.top = '0';
-        this.container.style.width = '20%';
-        this.container.style.height = '100%';
-        this.container.style.background = 'rgba(240,240,240,0.9)';
-        this.container.style.overflowY = 'auto';
+        this.container = document.createElement("div");
+        this.container.className = "KabelToolbox";
+        this.container.style.position = "absolute";
+        this.container.style.left = "0";
+        this.container.style.top = "0";
+        this.container.style.width = "20%";
+        this.container.style.height = "100%";
+        this.container.style.background = "rgba(240,240,240,0.9)";
+        this.container.style.overflowY = "auto";
         workspace._wsTop.appendChild(this.container);
         if (this.type === 1)
             this.initCategoryToolbox();
@@ -11021,26 +11291,15 @@ class Toolbox {
     }
     initCategoryToolbox() {
         const categories = this._contents;
-        categories.forEach(category => {
-            const btn = document.createElement('button');
-            btn.textContent = category.name;
-            btn.style.display = 'block';
-            btn.style.width = '100%';
-            btn.style.padding = '6px';
-            btn.style.marginBottom = '2px';
-            btn.addEventListener('click', e => {
-                e.stopPropagation();
-                this._flyout.clear();
-                this._flyout.fill(category.contents);
-                this._flyout.show();
-            });
-            this.container.appendChild(btn);
+        categories.forEach(cData => {
+            const category = new category_1.default(this, cData);
+            this._categories.push(category);
         });
         // clicking workspace hides flyout
-        this.workspace.svg.on('click', () => this._flyout.hide());
+        this.workspace.svg.on("click", () => this._flyout.hide());
     }
     initFlyoutToolbox() {
-        this.container.style.display = 'none';
+        this.container.style.display = "none";
         const nodes = this._contents;
         this._flyout.fill(nodes);
     }
@@ -12094,6 +12353,33 @@ class UserState {
 exports.UserState = UserState;
 const userState = new UserState();
 exports["default"] = userState;
+
+
+/***/ }),
+
+/***/ "./util/wait-anim-frames.ts":
+/*!**********************************!*\
+  !*** ./util/wait-anim-frames.ts ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+function waitFrames(frames, callback) {
+    let count = 0;
+    function step() {
+        count++;
+        if (count >= frames) {
+            callback();
+        }
+        else {
+            requestAnimationFrame(step);
+        }
+    }
+    requestAnimationFrame(step);
+}
+exports["default"] = waitFrames;
 
 
 /***/ })

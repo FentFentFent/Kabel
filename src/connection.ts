@@ -19,11 +19,16 @@ class Connection {
     }
     disconnectTo() {
         if (this.to instanceof NodeSvg) {
-            this.to.previousConnection?.disconnectFrom();
+            this.to.previousConnection?.disconnectFrom?.();
+        } else {
+            
         }
         this.to = null;
     }
     disconnectFrom() {
+        if (this.from instanceof NodeSvg) {
+            this.from?.nextConnection?.disconnectTo?.();
+        }
         this.from = null;
     }
     isolate() {

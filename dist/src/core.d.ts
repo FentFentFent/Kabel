@@ -23,6 +23,9 @@ import { RMap } from "./renderer-map";
 import { Styler } from "../util/styler";
 import Widget from "./widget";
 import { Showable } from "./context-menu";
+import escapeAttr from "../util/escape-html";
+import unescapeAttr from "../util/unescape-html";
+import waitFrames from "../util/wait-anim-frames";
 declare const Kabel: {
     UIX: {
         events: Eventer;
@@ -44,6 +47,7 @@ declare const Kabel: {
     };
     Utils: {
         Path: typeof Path;
+        waitFrames: typeof waitFrames;
         SVG: typeof SVG;
         parseColor: typeof parseColor;
         UID: typeof UID;
@@ -51,6 +55,8 @@ declare const Kabel: {
         hasProp: typeof hasProp;
         styler: Styler;
         Styler: typeof Styler;
+        escapeHTML: typeof escapeAttr;
+        unescapeHTML: typeof unescapeAttr;
     };
     Widget: typeof Widget;
     CategoryColors: {

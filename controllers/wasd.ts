@@ -1,5 +1,6 @@
 import WorkspaceController from './base';
 import WorkspaceSvg from '../src/workspace-svg';
+import userState from '../util/user-state';
 
 interface Vec2 { x: number; y: number; }
 
@@ -20,7 +21,9 @@ export default class WASDController extends WorkspaceController {
 
 		this.velocity = { x: 0, y: 0 };
 	}
-
+    canMove() {
+        return !userState.hasState('typing');
+    }
 	update() {
 		super.update();
 		if (!this.canMove()) return;

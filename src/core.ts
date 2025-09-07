@@ -30,6 +30,7 @@ import ContextOptsRegistry, {ContextMenu} from "./ctx-menu-registry";
 import { Showable } from "./context-menu";
 import escapeAttr from "../util/escape-html";
 import unescapeAttr from "../util/unescape-html";
+import waitFrames from "../util/wait-anim-frames";
 Field.register = function (name: string, cls: Function) {
     FieldMap[name] = cls as AnyFieldCls;
 }
@@ -50,6 +51,7 @@ const Kabel = {
     ContextMenu,
     Utils: {
         Path,
+        waitFrames,
         SVG,
         parseColor,
         UID,

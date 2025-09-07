@@ -9,6 +9,7 @@ declare class RendererConstants {
     PADDING_MEDIUM: number;
     PADDING_SMALL: number;
     FIELD_SPACEY: number;
+    FIELD_SPACEX: number;
     FIELD_RAW_BASE_WIDTH: number;
     FIELD_RAW_BASE_HEIGHT: number;
     INPUT_BOX_PADDING: number;

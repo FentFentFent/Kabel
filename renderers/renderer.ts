@@ -14,7 +14,9 @@ export interface ConnectorToFrom {
     to: Connection,
     from: Connection,
     fromCircle?: SvgPath,
-    toCircle?: SvgPath
+    toCircle?: SvgPath,
+    originConn: Connection,
+    originCircle: SvgPath
 }
 export interface DrawState {
     id: string;
@@ -24,7 +26,7 @@ export interface DrawState {
     fieldCol?: G | null;
     fieldPosY?: number | null; // starts under topbar, goes down by field height each time one is drawn. This determines position
     xButton?: G;
-    connectorsAwaitingConnection: ConnectorToFrom[]
+    pendingConnections: ConnectorToFrom[]
 }
 
 function drawState(nodeGroup: G, id: string): DrawState {
@@ -32,7 +34,7 @@ function drawState(nodeGroup: G, id: string): DrawState {
         id,
         group: nodeGroup,
         fieldPosY: 0,
-        connectorsAwaitingConnection: []
+        pendingConnections: []
     }
 }
 
@@ -44,6 +46,7 @@ class Renderer {
     _ws: WorkspaceSvg;
     _svgElements: Element[];
     _drawStates: DrawState[];
+    _cachedLinesQueue: ConnectorToFrom[]
     static get NODE_G_TAG() {
         return 'AtlasNodeSVG';
     }
@@ -68,6 +71,10 @@ class Renderer {
         this._nodeDraw = null;
         this._svgElements = [];
         this._drawStates = [];
+        this._cachedLinesQueue = [];
+    }
+    enqueueSetConnect(c: ConnectorToFrom) {
+        this.state?.pendingConnections?.push?.(c);
     }
     setConstants(c: Partial<RendererConstants> = {}) {
         return Object.assign(this._constants, c);
@@ -132,43 +139,67 @@ class Renderer {
         const height = c.FIELD_RAW_BASE_HEIGHT;
         return { width, height };
     }
-    measureField(field: AnyField) {
-        let width = 0, height = 0;
+    private measureLabel(field: AnyField): { width: number, height: number } {
         const c = this.constants;
-        if (field.getLabel()) {
-            width += field.getLabel().length * c.FONT_SIZE * 0.6;
-            height = Math.max(height, c.FONT_SIZE + 4);
-            // Calculate label stuff.
-        }
+        const label = field.getLabel?.();
+        if (!label) return { width: 0, height: 0 };
 
-        if (field.hasRaw()) {
-            const labelWidth = field.getLabel()
-                ? this.measureTextWidth(field.getLabel())
-                : 0;
+        const width = this.measureTextWidth(label);
+        const height = c.FONT_SIZE + 4;
 
-            const raw = this.measureRawField(field.getValue?.() ?? "");
-
-            width = labelWidth + c.LABEL_SPACING + raw.width;
-            height = Math.max(height, raw.height, c.FONT_SIZE + 4);
-        }
-
-
-        if (field.isCustomEditor()) {
-            // Fields with a custom look handle their own measurings.
-            const measurements = field.measureMyself();
-            if (measurements) {
-                width = Math.max(width, measurements.width as number);
-                height = Math.max(height, measurements.height as number);
-                if (field.getLabel()) {
-                    width += field.getLabel().length * c.FONT_SIZE * 0.6;
-                    width += c.LABEL_SPACING;
-                    height = Math.max(height, c.FONT_SIZE + 4);
-                    // Calculate label stuff.
-                }
-            }
-        }
         return { width, height };
     }
+
+    private measureRaw(field: AnyField): { width: number, height: number } {
+        if (!field.hasRaw()) return { width: 0, height: 0 };
+
+        const c = this.constants;
+        const raw = this.measureRawField(field.getValue?.() ?? "");
+        return {
+            width: raw.width,
+            height: raw.height
+        };
+    }
+
+    private measureCustom(field: AnyField): { width: number, height: number } {
+        if (!field.isCustomEditor()) return { width: 0, height: 0 };
+
+        const c = this.constants;
+        const m = field.measureMyself();
+        if (!m) return { width: 0, height: 0 };
+
+        let width = m.width as number;
+        let height = m.height as number;
+
+        if (field.getLabel()) {
+            width += this.measureTextWidth(field.getLabel()) + c.LABEL_SPACING;
+            height = Math.max(height, c.FONT_SIZE + 4);
+        }
+
+        return { width, height };
+    }
+    getFieldMeasurementPadding() {
+        return { width: this.constants.FIELD_SPACEX, height: 0 }
+    }
+    measureField(field: AnyField) {
+
+        const parts = [
+            this.getFieldMeasurementPadding(),
+            this.measureLabel(field),
+            this.measureRaw(field),
+            this.measureCustom(field),
+            this.getFieldMeasurementPadding()
+        ];
+
+        let width = 0, height = 0;
+        for (const { width: w, height: h } of parts) {
+            width += w;
+            height = Math.max(height, h);
+        }
+
+        return { width, height };
+    }
+
     measureNodeDimensions() {
         if (!this.node) return;
 
@@ -313,7 +344,7 @@ class Renderer {
         eventer.addElement(xGroup, 'k_closenode', {
             workspace: this.getWs(),
             node
-        })
+        }).tagElement(xGroup, (this.constructor as typeof Renderer).ELEMENT_TAG);
         // Background
         xGroup.rect(btnSize, btnSize)
             .fill('#ffffff00')
@@ -429,8 +460,8 @@ class Renderer {
     }
     private _fillOtherNodeConnectorCircle(conn: Connection, circle: SvgPath, isPrevious: boolean) {
         for (const state of this._drawStates) {
-            for (const connPair of state.connectorsAwaitingConnection) {
-                // Check if this connector is referenced in another node's connector
+            for (const connPair of state.pendingConnections) {
+                // Skip if this connPair is already filled
                 if (isPrevious && connPair.to === conn && !connPair.toCircle) {
                     connPair.toCircle = circle;
                 }
@@ -440,11 +471,11 @@ class Renderer {
             }
         }
     }
+
     refreshNodeTransforms() {
         const nodeGroups: List<G> = this.svg.find(`.${(this.constructor as typeof Renderer).NODE_G_TAG}`) as List<G>;
         for (let nodeG of nodeGroups) {
             const node: NodeSvg | undefined = this.getWs().getNode(unescapeAttr(nodeG.attr('data-node-id')));
-            console.log(node);
             if (!node) continue;
             const screenPos = this._ws.workspaceToScreen(
                 node.relativeCoords.x,
@@ -457,6 +488,9 @@ class Renderer {
     refreshConnectionLines() {
         this.clearLines();
         this.drawLinesForAllNodes();
+    }
+    createNodeDrawstate(nodeGroup: G, id: string): DrawState {
+        return drawState(nodeGroup, id); // wraps this method so you can define your own drawstates by overriding this method
     }
     drawNode() {
         if (!this.node) return;
@@ -481,7 +515,7 @@ class Renderer {
         // apply it to the top-level node group
         nodeGroup.attr({ transform: `translate(${screenPos.x}, ${screenPos.y})` });
 
-        const state = drawState(nodeGroup, node.id);
+        const state = this.createNodeDrawstate(nodeGroup, node.id);
         this._nodeDraw = state;
 
         // Measure node
@@ -550,12 +584,18 @@ class Renderer {
         if (node.previousConnection) {
             const c1 = this.drawConnector(nodeGroup, state.bg, cY, 'left', colors.primary as string);
             if (c1) {
-                state.connectorsAwaitingConnection.push({
+                const c = ({
                     from: node.previousConnection,
                     to: this.resolveConnectable(node.previousConnection.getFrom(), node.previousConnection) as Connection,
-                    fromCircle: c1 as SvgPath
+                    fromCircle: c1 as SvgPath,
+                    originConn: node.previousConnection,
+                    originCircle: c1
                 });
-
+                this.enqueueSetConnect(c);
+                eventer.addElement(c1, 'k_connectbubble', {
+                    connection: node.previousConnection,
+                    node
+                }).tagElement(c1, (this.constructor as typeof Renderer).ELEMENT_TAG);
                 // fill any waiting connectors from other nodes
                 this._fillOtherNodeConnectorCircle(node.previousConnection, c1 as SvgPath, true);
             }
@@ -565,28 +605,55 @@ class Renderer {
         if (node.nextConnection) {
             const c2 = this.drawConnector(nodeGroup, state.bg, cY, 'right', colors.primary as string);
             if (c2) {
-                state.connectorsAwaitingConnection.push({
+                const c = ({
                     from: node.nextConnection,
                     to: this.resolveConnectable(node.nextConnection.getTo(), node.nextConnection) as Connection,
-                    fromCircle: c2 as SvgPath
+                    fromCircle: c2 as SvgPath,
+                    originConn: node.nextConnection,
+                    originCircle: c2
                 });
-
+                this.enqueueSetConnect(c);
+                eventer.addElement(c2, 'k_connectbubble', {
+                    connection: node.nextConnection,
+                    node
+                }).tagElement(c2, (this.constructor as typeof Renderer).ELEMENT_TAG);
                 // fill any waiting connectors from other nodes
                 this._fillOtherNodeConnectorCircle(node.nextConnection, c2 as SvgPath, false);
             }
         }
 
+        node.svgGroup = nodeGroup;
 
+    }
+    fillAllNodeConnectorBubbles() {
+        for (const state of this._drawStates) {
+            for (const connPair of state.pendingConnections) {
+                const { originConn, originCircle } = connPair;
+                if (!originCircle) continue;
+
+                // Fill any missing fromCircle/toCircle if they were not ready when first enqueued
+                if (!connPair.fromCircle) {
+                    connPair.fromCircle = originCircle;
+                    this._fillOtherNodeConnectorCircle(originConn, originCircle, false);
+                }
+                if (!connPair.toCircle) {
+                    connPair.toCircle = originCircle;
+                    this._fillOtherNodeConnectorCircle(originConn, originCircle, true);
+                }
+            }
+        }
     }
 
     drawLinesForAllNodes() {
         const c = this.constants;
         const wsSvg = this._ws.svg;
 
+        this.fillAllNodeConnectorBubbles();
 
-        for (const state of (this as any)._drawStates) {
-            if (!state.connectorsAwaitingConnection) continue;
-            for (const { fromCircle, toCircle } of state.connectorsAwaitingConnection) {
+        // Loop over each node's drawState instead of the global queue
+        for (const state of this._drawStates) {
+            for (const connPair of state.pendingConnections) {
+                const { fromCircle, toCircle } = connPair;
                 if (!fromCircle || !toCircle) continue;
 
                 const a = fromCircle.rbox();
@@ -595,28 +662,26 @@ class Renderer {
                 const endX = b.cx, endY = b.cy;
 
                 if (c.CONNECTOR_LINE_CURVED) {
-                    // cubic bezier: control points spread horizontally
                     const dx = Math.abs(endX - startX);
                     const cp1x = startX + Math.sign(endX - startX) * Math.max(30, dx * 0.3);
                     const cp2x = endX - Math.sign(endX - startX) * Math.max(30, dx * 0.3);
                     const pathStr = `M ${startX} ${startY} C ${cp1x} ${startY}, ${cp2x} ${endY}, ${endX} ${endY}`;
-                    const line = wsSvg.path(pathStr)
+
+                    wsSvg.path(pathStr)
                         .stroke({ color: parseColor(fromCircle.fill() as Color), width: c.CONNECTOR_LINE_WIDTH })
                         .fill('none')
                         .attr({ class: (this.constructor as typeof Renderer).CONN_LINE_TAG });
-                    (this as any)._svgElements.push(line);
                 } else {
-                    // fallback straight line
                     const pathStr = `M ${startX} ${startY} L ${endX} ${endY}`;
-                    const line = wsSvg.path(pathStr)
+                    wsSvg.path(pathStr)
                         .stroke({ color: parseColor(fromCircle.fill() as Color), width: c.CONNECTOR_LINE_WIDTH })
                         .fill('none')
                         .attr({ class: (this.constructor as typeof Renderer).CONN_LINE_TAG });
-                    (this as any)._svgElements.push(line);
                 }
             }
         }
     }
+
 
     clearLines() {
         for (let line of this.getWs().svg.find(`.${(this.constructor as typeof Renderer).CONN_LINE_TAG}`)) {
@@ -628,6 +693,7 @@ class Renderer {
         eventer.destroyByTag((this.constructor as typeof Renderer).ELEMENT_TAG)
         this._ws.svg.clear();
         this._drawStates = [];
+        this._cachedLinesQueue = [];
     }
 }
 

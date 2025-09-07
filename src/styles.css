@@ -81,21 +81,40 @@
 }
 
 /* Category buttons */
-.KabelToolbox button {
+
+.KabelCategoryRow {
     background: #fff;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 4px 8px;
     margin-bottom: 4px;
+    border-radius: 4px;
+    height: 5%;
     padding: 6px;
     cursor: pointer;
     text-align: left;
     transition: background 0.2s, color 0.2s;
 }
-
 .KabelToolbox button:hover {
     background: #e6e6e6;
     color: #333;
 }
+.KabelConnectionBubbleHighlight {
+	stroke: yellow !important;
+	stroke-width: 6px !important;
+	stroke-linejoin: round;
+	stroke-linecap: round;
+	filter: drop-shadow(0 0 6px rgba(255, 255, 0, 0.9));
+}
+.KabelConnectionBubbleHighlightWrong {
+	stroke: rgb(255, 0, 0) !important;
+	stroke-width: 6px !important;
+	stroke-linejoin: round;
+	stroke-linecap: round;
+	filter: drop-shadow(0 0 6px rgba(255, 0, 0, 0.9));
+}
+
+
+
 
 /* Flyout panel (right) */
 .KabelFlyout {

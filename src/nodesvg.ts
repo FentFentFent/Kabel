@@ -156,8 +156,8 @@ class NodeSvg extends EventEmitter<NodeEvents> {
             Object.assign(this.colors, { category: json.category }, style);
         }
 
-        this.previousConnection = hasProp(json, 'previousConnection') ? new Connection(null, this) : null;
-        this.nextConnection = hasProp(json, 'nextConnection') ? new Connection(this, null) : null;
+        this.previousConnection = hasProp(json, 'previousConnection') ? new Connection(null, this, true) : null;
+        this.nextConnection = hasProp(json, 'nextConnection') ? new Connection(this, null, false) : null;
 
         if (json.labelText) this.labelText = json.labelText;
         if (json.arguments) this.applyJsonArguments(json.arguments);
@@ -184,15 +184,18 @@ class NodeSvg extends EventEmitter<NodeEvents> {
 
             const fld: AnyField = new FieldConstructor();
             fld.fromJson(field); // initialize field
+            fld.node = this;
             console.log(fld);
             this._appendFieldItem(fld);
         }
+        return this;
     }
 
     appendConnection(name: string): Field {
         const fld = new (FieldMap['connection'])();
         this._appendFieldItem(fld);
         fld.setName(name);
+        fld.node = this;
         return fld;
     }
 
@@ -200,6 +203,7 @@ class NodeSvg extends EventEmitter<NodeEvents> {
         const fld = new (FieldMap['field_num'])();
         this._appendFieldItem(fld);
         fld.setName(name);
+        fld.node = this;
         return fld;
     }
 
@@ -207,6 +211,7 @@ class NodeSvg extends EventEmitter<NodeEvents> {
         const fld = new (FieldMap['field_str'])();
         this._appendFieldItem(fld);
         fld.setName(name);
+        fld.node = this;
         return fld;
     }
 
@@ -215,35 +220,43 @@ class NodeSvg extends EventEmitter<NodeEvents> {
         const fld = new (FieldMap['field_both'])();
         this._appendFieldItem(fld);
         fld.setName(name);
+        fld.node = this;
         return fld;
     }
 
     setCategoryName(name: string) {
         this.colors.category = name;
+        return this;
     }
 
-    setStyle(style: ColorStyle): void {
+    setStyle(style: ColorStyle) {
         Object.assign(this.colors, {}, style);
+        return this;
     }
 
-    setColor(primary: Color, secondary: Color, tertiary: Color): void {
+    setColor(primary: Color, secondary: Color, tertiary: Color) {
         this.setStyle({ primary, secondary, tertiary });
+        return this;
     }
 
-    setLabelText(text: string): string {
-        return this.labelText = text;
+    setLabelText(text: string) {
+        this.labelText = text;
+        return this;
     }
 
     /** Add or replace a previous/next connection based on argument */
-    setConnection(prevOrNext: string | number | boolean): Connection | null {
+    setConnection(prevOrNext: string | number | boolean) {
         const stringed = String(prevOrNext).toLowerCase();
         const cast = stringed == '0' ? 0 : (stringed == '1' ? 1 : (stringed == 'true' ? 1 : (stringed == 'false' ? 0 : 3)));
 
-        if (cast === 0) return this.previousConnection = new Connection(null, this);
-        if (cast === 1) return this.nextConnection = new Connection(this, null);
-
-        console.warn('Invalid prevOrNext argument for NodeSvg.setConnection');
-        return null;
+        if (cast === 0) {
+            this.previousConnection = new Connection(null, this, true);
+        } else if (cast === 1) {
+            this.nextConnection = new Connection(this, null, false);
+        } else {
+            console.warn('Invalid prevOrNext argument for NodeSvg.setConnection');
+        }
+        return this;
     }
     /** Copies another NodeSvg into this node */
     fromNode(other: NodeSvg) {

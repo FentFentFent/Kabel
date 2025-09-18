@@ -19,6 +19,7 @@ declare class RendererConstants {
     FIELD_RAW_TEXT_COLOR: Color;
     FIELD_RAW_OUTLINE_COLOR: Color;
     FIELD_RAW_OUTLINE_STROKE: number;
+    FIELD_CONN_COLOR: Color;
     NODE_BG_COLOR: Color;
     NODE_OUTLINE_COLOR: Color;
     CONNECTOR_TRIANGLE: boolean;

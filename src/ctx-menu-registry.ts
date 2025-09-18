@@ -1,3 +1,4 @@
+import CommentModel from "./comment";
 import { ContextMenuOpts, Showable } from "./context-menu";
 import NodeSvg from "./nodesvg";
 import WorkspaceSvg from "./workspace-svg";
@@ -7,7 +8,7 @@ const ContextOptsRegistry: ContextMenuOpts[] = [];
 
 const ContextMenu = {
     registerOption(id: string, option: {
-        click: (target: NodeSvg | WorkspaceSvg | HTMLElement) => void;
+        click: (target: NodeSvg | WorkspaceSvg | HTMLElement | CommentModel) => void;
         onHoverStart?: () => void;
         onHoverEnd?: () => void;
         label: string;
@@ -31,7 +32,7 @@ const ContextMenu = {
 };
 
 ContextMenu.registerOption('k_delete', {
-    showFor: ['node'],
+    showFor: 'node',
     label: 'Delete', // required
     click: (t) => {
         const target = t as NodeSvg;
@@ -51,15 +52,44 @@ ContextMenu.registerOption('k_deleteall', {
         }
     }
 })
+ContextMenu.registerOption('k_addcomment', {
+    showFor: ['ws', 'node'],
+    label: 'Add Comment',
+    click: (t) => {
+        const target = t;
+        if (target instanceof NodeSvg) {
+            target.addComment();
+            target.setCommentText('Comment!');
+        } else if (target instanceof WorkspaceSvg) {
+            const model = target.addComment();
+            const pos = target.screenToWorkspace(target._ctxMenu.widget.coords.x, target._ctxMenu.widget.coords.y);
+            model.relativeCoords.set(pos.x, pos.y);
+            model.setText('Comment!');
+        }
+    }
+})
+ContextMenu.registerOption('k_deletecomment', {
+    showFor: 'comment',
+    label: 'Delete Comment',
+    click: (t) => {
+        const target = t as CommentModel;
+        if (target.isNodeComment() && target._parent instanceof NodeSvg) {
+            target._parent.removeComment();
+        } else {
+            target.getWorkspace().removeComment(target);
+        }
+    }
+})
 ContextMenu.registerOption('k_duplicate', {
-	showFor: 'node',
-	label: 'Duplicate',
-	click: t => {
-		const node = t as NodeSvg;
-		if (!node.workspace) return;
-		node.workspace.cloneNode(node);
-	}
+    showFor: 'node',
+    label: 'Duplicate',
+    click: t => {
+        const node = t as NodeSvg;
+        if (!node.workspace) return;
+        node.workspace.cloneNode(node);
+    }
 });
+
 
 export { ContextMenu }
 export default ContextOptsRegistry;

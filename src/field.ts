@@ -1,6 +1,8 @@
 import Connection from "./connection";
-import { G, Rect, Svg, SVG } from '@svgdotjs/svg.js';
+import { G, Path, Rect, Svg, SVG, Text } from '@svgdotjs/svg.js';
 import NodeSvg from "./nodesvg";
+import { ConnectorToFrom } from "../renderers/renderer";
+import dropdownContainer, { DropdownOptions } from "./dropdown-menu";
 /**
  * Options used to initialize a Field.
  */
@@ -18,12 +20,21 @@ export interface FieldOptions {    /** Name of the field */
 };
 
 export interface FieldVisualInfo {
-    measuredWidth: number; // The width approximated by renderer
-    measuredHeight: number; // The height approximated by renderer
+    measuredWidth: number; // The width approximated by the field itself.
+    measuredHeight: number; // The height approximated by the field itself.
     background: Rect; // The node's background element.
     svg: Svg; // The workspace's SVG.js svg
     nodeGroup: G; // Group for the node
     fieldGroup: G; // A group containing the label & input.
+    xUsed: number; // The amount of x space used up by the label.
+}
+export interface FieldRawBoxData {
+    box: Rect;
+    txt: Text;
+}
+export interface FieldConnectionData {
+    connector: Path;
+    connState: ConnectorToFrom
 }
 /**
  * Base class for all fields.
@@ -34,14 +45,39 @@ class Field<T = any> {
     name: string;
     type: string;
     node?: NodeSvg;
+    editable: boolean;
+    svgGroup?: G;
     protected value: T | null;
-    static register(name: string, cls: Function) {};
-    static unregister(name: string) {};
+    static register(name: string, cls: Function) { };
+    static unregister(name: string) { };
     constructor() {
         this.label = '';
         this.name = '';
         this.type = '';
         this.value = null;
+        this.editable = true;
+    }
+    onDraw(rawBox?: FieldRawBoxData, connectionBubble?: FieldConnectionData) {
+
+    }
+    canEditConnector() {
+        return false;
+    }
+    /**
+     * Set whether or not you can edit this field.
+     * @param val - The value to set to.
+     */
+    setEditable(val: boolean) {
+        this.editable = val;
+        if (this.node) {
+            this.node?.workspace?.renderer?.rerenderNode?.(this.node)
+        }
+    }
+    /**
+     * Ask whether or not we can edit this field.
+     */
+    canEdit() {
+        return this.editable;
     }
     /**
      * Set field name to something else.
@@ -56,10 +92,11 @@ class Field<T = any> {
      * @param json FieldOptions object
      */
     fromJson(json: FieldOptions) {
-        if (json.name!== undefined) this.name = json.name;
+        if (json.name !== undefined) this.name = json.name;
         if (json.label !== undefined) this.label = json.label;
         if (json.type !== undefined) this.type = json.type;
         if (json.value !== undefined) this.value = json.value;
+        if (json.editable) this.setEditable(Boolean(json.editable));
     }
 
     /** @returns The field's name/key */
@@ -98,7 +135,7 @@ class Field<T = any> {
      * Make the input's custom look.
      * @param fieldVisualInfo - The visual info of the field, mutate this if needed.
      */
-    makeInputMain(fieldVisualInfo: FieldVisualInfo) {
+    drawMyself(fieldVisualInfo: FieldVisualInfo) {
         return;
     }
     /** Return width & height of your field's custom editor */
@@ -122,6 +159,14 @@ class Field<T = any> {
     getDisplayValue(): T | null {
         return this.getValue();
     }
+    toJson(deep: boolean): FieldOptions {
+        return {
+            name: this.name,
+            label: this.label,
+            type: this.type,
+            value: this.getValue()
+        };
+    }
 }
 /**
  * Used when you want just a label with no actual value. Any value related methods are no-op.
@@ -131,11 +176,36 @@ export class DummyField {
     name: string;
     type: string;
     node?: NodeSvg;
+    editable: boolean;
+    svgGroup?: G;
 
     constructor() {
         this.label = '';
         this.name = '';
         this.type = '';
+        this.editable = false;
+    }
+    onDraw(rawBox?: FieldRawBoxData, connectionBubble?: FieldConnectionData) {
+
+    }
+    canEditConnector() {
+        return false;
+    }
+    /**
+     * Set whether or not you can edit this field.
+     * @param val - The value to set to.
+     */
+    setEditable(val: boolean) {
+        this.editable = val;
+        if (this.node) {
+            this.node?.workspace?.renderer?.rerenderNode?.(this.node)
+        }
+    }
+    /**
+     * Ask whether or not we can edit this field.
+     */
+    canEdit() {
+        return this.editable;
     }
     /**
      * Set field name to something else.
@@ -150,7 +220,7 @@ export class DummyField {
      * @param json FieldOptions object
      */
     fromJson(json: FieldOptions) {
-        if (json.name!== undefined) this.name = json.name;
+        if (json.name !== undefined) this.name = json.name;
         if (json.label !== undefined) this.label = json.label;
         if (json.type !== undefined) this.type = json.type;
     }
@@ -185,10 +255,10 @@ export class DummyField {
         return false;
     }
     /**
-     * Make the input.
+     * Make the input's custom look.
      * @param fieldVisualInfo - The visual info of the field, mutate this if needed.
      */
-    makeInputMain(fieldVisualInfo: FieldVisualInfo) {
+    drawMyself(fieldVisualInfo: FieldVisualInfo) {
         return;
     }
     /** Return width & height of your field's custom editor */
@@ -210,7 +280,14 @@ export class DummyField {
     getDisplayValue() {
         return this.getValue();
     }
-
+    toJson(deep: boolean): FieldOptions {
+        return {
+            name: this.name,
+            label: this.label,
+            type: this.type,
+            value: this.getValue()
+        };
+    }
 }
 /**
  * Base class for fields that can be connected to other fields.
@@ -222,8 +299,8 @@ export class ConnectableField<T = any> extends Field<T> {
     constructor() {
         super();
         this.connection = new Connection(this, null);
+        this.value = null as T;
     }
-
     hasConnectable(): boolean {
         return true;
     }
@@ -232,9 +309,13 @@ export class ConnectableField<T = any> extends Field<T> {
         return false;
     }
 
-    /** Disconnect this field from any connected field */
+    /** Disconnect this field from any connected Connectable */
     disconnect() {
-        this.connection.disconnectTo();
+        const to = this.connection.to;
+        if (to instanceof NodeSvg && to?.previousConnection?.from) {
+            to.previousConnection.from = null;
+            this.connection.to = null;
+        }
     }
 }
 
@@ -264,12 +345,34 @@ export class TextField extends Field<string> {
  * Optional connectable field.
  * Can store either a number or string depending on fld_type.
  */
-export class OptConnectField extends ConnectableField<number | string> {
+export class OptConnectField extends ConnectableField<number | string | NodeSvg> {
     fldType: "number" | "string";
 
     constructor() {
         super();
         this.fldType = "string";
+    }
+    canEditConnector(): boolean {
+        return true;
+    }
+    canEdit() {
+        if (this.getValue() instanceof NodeSvg) {
+            return false;
+        }
+        return this.editable;
+    }
+    getValue(): string | number | NodeSvg | null {
+        if (this.connection && this.connection.getTo()) {
+            return this.connection.getTo() as NodeSvg;
+        } else {
+            return this.value;
+        }
+    }
+    hasRaw() {
+        return true;
+    }
+    hasConnectable() {
+        return true;
     }
     /**
      * Set field type.
@@ -285,8 +388,8 @@ export class OptConnectField extends ConnectableField<number | string> {
     fromJson(json: FieldOptions) {
         super.fromJson(json);
         this.fldType = json.fld_type || "string";
-        if (this.value != null) {
-            this.setValue(this.value);
+        if (this.value != null && typeof this.value == this.fldType) {
+            this.setValue(this.value as string | number);
         }
     }
 
@@ -304,11 +407,123 @@ export class OptConnectField extends ConnectableField<number | string> {
      */
     getDisplayValue(): string {
         if (this.value == null) return this.fldType === "number" ? "0" : "";
+        if (this.getValue() instanceof NodeSvg) return '[NODE]'; // If theres a connection
         return String(this.value);
     }
+    toJson(deep: boolean): FieldOptions {
+        let val: any = this.getValue();
+        // If it's connected to a node, store it's serialized form.
+        if (val instanceof NodeSvg) val = { node: deep ? val.serialize() : val.id };
+
+        return {
+            ...super.toJson(true),
+            fld_type: this.fldType,
+            value: val
+        };
+    }
 }
-export type AnyField = Field | OptConnectField | NumberField | TextField | DummyField;
-export type AnyFieldCls = typeof Field | typeof OptConnectField | typeof NumberField | typeof TextField | typeof DummyField;
+export type DropdownItem = { text: string, value: string } | string
+export class DropdownField extends Field<string> {
+    options: DropdownItem[] | null;
+    _selected: DropdownItem | null;
+    _isOpen: boolean;
+
+    constructor() {
+        super();
+        this.options = null;
+        this._selected = null;
+        this._isOpen = false;
+    }
+
+    onDraw(rawBox?: FieldRawBoxData) {
+        if (!rawBox || !this.options) return;
+
+        const { box, txt } = rawBox;
+        const toggle = () => this.toggleDropdown(rawBox);
+        box.click(toggle);
+        txt.click(toggle);
+    }
+
+    private toggleDropdown(rawBox: FieldRawBoxData) {
+        if (dropdownContainer.getOwner() === this) {
+            this.closeDropdown();
+        } else {
+            this.openDropdown(rawBox);
+        }
+        rawBox.txt.text(this.getDisplayValue());
+    }
+
+    private openDropdown(rawBox: FieldRawBoxData) {
+        if (!this.options) return;
+
+        const items = this.options.map(option => ({
+            label: typeof option === 'string' ? option : option.text,
+            value: typeof option === 'string' ? option : option.value
+        }));
+
+        dropdownContainer.show(this, {
+            items,
+            width: rawBox.box.bbox().width * 2,
+            onSelect: (value: string) => {
+                if (!this.options) return;
+                const original = this.options.find(
+                    e => e === value || (typeof e !== 'string' && e.value === value)
+                );
+                if (original) {
+                    this._selected = original;
+                    this.setValue(value);
+                    this.closeDropdown();
+                    this?.node?.workspace?.renderer?.rerenderNode?.(this.node);
+                }
+            }
+        } as DropdownOptions);
+    }
+
+    private closeDropdown() {
+        dropdownContainer.hideIfOwner(this);
+    }
+
+    canEdit() {
+        return false;
+    }
+
+    getSelected() {
+        return this._selected;
+    }
+
+    fromJson(options: FieldOptions) {
+        super.fromJson(options);
+        this.options = options.options as DropdownItem[];
+        this._selected = this.options?.[0] ?? null;
+        if (this._selected) this.setValue(
+            typeof this._selected === 'string' ? this._selected : this._selected.value
+        );
+    }
+
+    // Up/down arrows
+    getDisplayValue(): string {
+        const text = typeof this._selected === 'string' ? this._selected : this._selected?.text || '';
+        const arrow = dropdownContainer.getOwner() == this ? '▲' : '▼'; // toggles open/closed
+        return text + '  ' + arrow;
+    }
+
+
+    setOptions(options: DropdownItem[]) {
+        this.options = options;
+        this._selected = this.options?.[0] ?? null;
+        if (this._selected) this.setValue(
+            typeof this._selected === 'string' ? this._selected : this._selected.value
+        );
+    }
+
+    toJson(deep: boolean): FieldOptions {
+        return { ...super.toJson(deep), options: this.options };
+    }
+}
+
+
+export type AnyField = Field | OptConnectField | NumberField | TextField | DummyField | ConnectableField;
+export type AnyFieldCls = typeof Field | typeof OptConnectField | typeof ConnectableField | typeof NumberField | typeof TextField | typeof DummyField;
 export const FieldMap: {
     field_both: typeof OptConnectField;
     field_string: typeof TextField;
@@ -323,7 +538,8 @@ export const FieldMap: {
     'field_num': NumberField,
     'field_dummy': DummyField,
     'field_str': TextField,
-    'connection': ConnectableField
+    'connection': ConnectableField,
+    'dropdown': DropdownField
 }
 
 

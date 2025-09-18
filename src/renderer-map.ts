@@ -1,20 +1,21 @@
-import Renderer from "../renderers/renderer";
+import type RendererType from "../renderers/renderer";
 
-interface RendererMap {
-	[key: string]: typeof Renderer;
+interface RendererMapInterface {
+	[key: string]: typeof RendererType;
 }
 
-const RendererMap: RendererMap = {
-	[Renderer.NAME]: Renderer,
-	'default': Renderer
-};
+// top-level map is fine
+const RendererMap: RendererMapInterface = {};
 
+// merged RMap class
 class RMap {
-	static register(RendererCls: typeof Renderer, optName?: string) {
+	// register a renderer
+	static register(RendererCls: typeof RendererType, optName?: string) {
 		const name = optName ?? RendererCls.NAME;
 		RendererMap[name] = RendererCls;
 	}
 
+	// delete a renderer by name
 	static delete(name: string) {
 		if (name === 'default') return false;
 		if (RendererMap[name]) {
@@ -24,29 +25,34 @@ class RMap {
 		return false;
 	}
 
-	static get(name: string) {
-		return RendererMap[name] ?? RendererMap['default'];
+	// get a renderer by name
+	static get(name: string): typeof RendererType {
+		const Renderer = require("../renderers/renderer").default as typeof RendererType;
+		return RendererMap[name] ?? RendererMap['default'] ?? Renderer;
 	}
 
+	// list all registered renderers
 	static list() {
 		return Object.keys(RendererMap);
 	}
 
-	/**
-	 * Helper to normalize any renderer input into a valid Renderer class
-	 * @param input - Either a string (renderer name), a class, or undefined
-	 * @returns A Renderer constructor
-	 */
-	static resolve(input?: string | typeof Renderer): typeof Renderer {
-		if (!input) return RendererMap['default'] as typeof Renderer;
-		if (typeof input === 'string') {
-            if (!RMap.get(input) ) {
-                return RendererMap['default'] as typeof Renderer;
-            }
-            return RMap.get(input) as typeof Renderer;
-        }
-		return (typeof input == 'function') ? input as typeof Renderer : RendererMap['default'] as typeof Renderer;
+	// resolve any input into a renderer class
+	static resolve(input?: string | typeof RendererType): typeof RendererType {
+		const Renderer = require("../renderers/renderer").default as typeof RendererType;
+
+		if (!input) return RendererMap['default'] ?? Renderer;
+
+		if (typeof input === 'string') return RMap.get(input);
+
+		if (typeof input === 'function') return input as typeof RendererType;
+
+		return RendererMap['default'] ?? Renderer;
 	}
 }
+
+// pre-register default renderers if needed
+const DefaultRenderer = require("../renderers/renderer").default as typeof RendererType;
+RendererMap['atlas'] = DefaultRenderer;
+RendererMap['default'] = DefaultRenderer;
 
 export { RMap, RendererMap };

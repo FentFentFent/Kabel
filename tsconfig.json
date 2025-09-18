@@ -7,7 +7,7 @@
 		// Environment Settings
 		"module": "nodeNext",
 		"target": "ES2022",
-		"types": [],
+		"types": ["node"],
 
 		// Outputs
 		"sourceMap": true,

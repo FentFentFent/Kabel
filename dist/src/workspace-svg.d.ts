@@ -9,6 +9,7 @@ import Toolbox from "./toolbox";
 import NodePrototypes from "./prototypes";
 import Widget from "./widget";
 import ContextMenuHTML from "./context-menu";
+import CommentModel from "./comment";
 /**
  * Represents the visual workspace containing nodes and connections.
  * Handles rendering, panning, and coordinate transformations.
@@ -47,16 +48,51 @@ declare class WorkspaceSvg {
      */
     _ctxMenu: ContextMenuHTML;
     /**
+     * A list of comments for this workspace.
+     */
+    _commentDB: Set<CommentModel>;
+    /**
      * Creates a new WorkspaceSvg instance.
      * @param root - The root HTML element containing the workspace.
      * @param wsTop - The top-level wrapper element for the SVG.
      * @param options - Configuration and renderer override options.
      */
     constructor(root: HTMLElement, wsTop: HTMLElement, options: InjectOptions);
+    /**
+     * Refresh comments.
+     */
+    refreshComments(): void;
+    /**
+     * Get all comments
+     * @returns {CommentModel[]}
+     */
+    getComments(): CommentModel[];
+    /**
+     * Duplicate node data from one to another
+     * @param nodeSvg - The node
+     */
     cloneNode(nodeSvg: NodeSvg): void;
+    /**
+     * Internal: Add widget to DB
+     * @param wdgt - The widget
+     */
     _addWidgetToDB(wdgt: Widget): void;
+    /**
+     * Internal: Delete a widget from DB.
+     * @param wdgt - Widget to delete
+     */
     _delWidgetFromDB(wdgt: Widget): void;
+    /**
+     * Create a new widget of type.
+     * @param type - The prototype
+     * @returns {Widget|void}
+     */
     newWidget(type: string): void | Widget;
+    /**
+     * Get a widget
+     * @param id - Identifier
+     * @returns {Widget|undefined} - A widget
+     */
     getWidget(id: string): Widget | undefined;
     /**
      * Returns the current width and height of the workspace's svg content size in pixels.
@@ -79,7 +115,7 @@ declare class WorkspaceSvg {
      * Used when nodes are dragged or the camera moves.
      */
     refresh(): void;
-    /** Draws all nodes in the workspace. */
+    /** Draws all nodes in the workspace. Very heavy. */
     drawAllNodes(): void;
     /** Redraws the entire workspace unless noRedraw is set. */
     redraw(): void;
@@ -114,7 +150,18 @@ declare class WorkspaceSvg {
      * @param type - The node's prototype name.
      */
     newNode(type: keyof typeof NodePrototypes): NodeSvg | undefined;
+    /**
+     * Spawns a node at x, y of prototype type
+     * @param type - The node prototype name
+     * @param x - X position
+     * @param y - Y position
+     * @returns {Node} - The new node
+     */
     spawnAt(type: keyof typeof NodePrototypes, x: number, y: number): NodeSvg | undefined;
+    /**
+     * Dereference a node from all of its connected neighbors
+     */
+    derefNode(node: NodeSvg): void;
     /**
      * Removes a node by its ID.
      * @param id - The ID of the node to remove.
@@ -137,6 +184,27 @@ declare class WorkspaceSvg {
      * @param dy - Change in Y direction.
      */
     pan(dx: number, dy: number): void;
+    /**
+     * Comment methods
+     */
+    /**
+     * Adds a comment, returns the model.
+     */
+    addComment(): CommentModel;
+    /**
+     * Gets a comment by id
+     * @param id - The comment id.
+     */
+    getComment(id: string): CommentModel | undefined;
+    /**
+     * Remove a comment by its instance or id.
+     * @param commentOrId - The comment instance or its id.
+     */
+    removeComment(commentOrId: CommentModel | string): boolean;
+    /**
+     * Redraw all comments in this workspace.
+     */
+    redrawComments(): void;
 }
 export default WorkspaceSvg;
 //# sourceMappingURL=workspace-svg.d.ts.map

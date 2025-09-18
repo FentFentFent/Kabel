@@ -1,6 +1,7 @@
 import Connection from "./connection";
-import { G, Rect, Svg } from '@svgdotjs/svg.js';
+import { G, Path, Rect, Svg, Text } from '@svgdotjs/svg.js';
 import NodeSvg from "./nodesvg";
+import { ConnectorToFrom } from "../renderers/renderer";
 /**
  * Options used to initialize a Field.
  */
@@ -23,6 +24,15 @@ export interface FieldVisualInfo {
     svg: Svg;
     nodeGroup: G;
     fieldGroup: G;
+    xUsed: number;
+}
+export interface FieldRawBoxData {
+    box: Rect;
+    txt: Text;
+}
+export interface FieldConnectionData {
+    connector: Path;
+    connState: ConnectorToFrom;
 }
 /**
  * Base class for all fields.
@@ -33,10 +43,23 @@ declare class Field<T = any> {
     name: string;
     type: string;
     node?: NodeSvg;
+    editable: boolean;
+    svgGroup?: G;
     protected value: T | null;
     static register(name: string, cls: Function): void;
     static unregister(name: string): void;
     constructor();
+    onDraw(rawBox?: FieldRawBoxData, connectionBubble?: FieldConnectionData): void;
+    canEditConnector(): boolean;
+    /**
+     * Set whether or not you can edit this field.
+     * @param val - The value to set to.
+     */
+    setEditable(val: boolean): void;
+    /**
+     * Ask whether or not we can edit this field.
+     */
+    canEdit(): boolean;
     /**
      * Set field name to something else.
      * @param name string
@@ -68,7 +91,7 @@ declare class Field<T = any> {
      * Make the input's custom look.
      * @param fieldVisualInfo - The visual info of the field, mutate this if needed.
      */
-    makeInputMain(fieldVisualInfo: FieldVisualInfo): void;
+    drawMyself(fieldVisualInfo: FieldVisualInfo): void;
     /** Return width & height of your field's custom editor */
     measureMyself(): {
         width: null;
@@ -83,6 +106,7 @@ declare class Field<T = any> {
     setValue(val: T): void;
     /** @returns The value as it should be displayed (can differ from internal value) */
     getDisplayValue(): T | null;
+    toJson(deep: boolean): FieldOptions;
 }
 /**
  * Used when you want just a label with no actual value. Any value related methods are no-op.
@@ -92,7 +116,20 @@ export declare class DummyField {
     name: string;
     type: string;
     node?: NodeSvg;
+    editable: boolean;
+    svgGroup?: G;
     constructor();
+    onDraw(rawBox?: FieldRawBoxData, connectionBubble?: FieldConnectionData): void;
+    canEditConnector(): boolean;
+    /**
+     * Set whether or not you can edit this field.
+     * @param val - The value to set to.
+     */
+    setEditable(val: boolean): void;
+    /**
+     * Ask whether or not we can edit this field.
+     */
+    canEdit(): boolean;
     /**
      * Set field name to something else.
      * @param name string
@@ -121,10 +158,10 @@ export declare class DummyField {
     /** @returns Whether we have a custom editor/input look */
     isCustomEditor(): boolean;
     /**
-     * Make the input.
+     * Make the input's custom look.
      * @param fieldVisualInfo - The visual info of the field, mutate this if needed.
      */
-    makeInputMain(fieldVisualInfo: FieldVisualInfo): void;
+    drawMyself(fieldVisualInfo: FieldVisualInfo): void;
     /** Return width & height of your field's custom editor */
     measureMyself(): {
         width: number;
@@ -141,6 +178,7 @@ export declare class DummyField {
     setValue(_: any): void;
     /** @returns The value as it should be displayed (can differ from internal value) */
     getDisplayValue(): null;
+    toJson(deep: boolean): FieldOptions;
 }
 /**
  * Base class for fields that can be connected to other fields.
@@ -151,7 +189,7 @@ export declare class ConnectableField<T = any> extends Field<T> {
     constructor();
     hasConnectable(): boolean;
     hasRaw(): boolean;
-    /** Disconnect this field from any connected field */
+    /** Disconnect this field from any connected Connectable */
     disconnect(): void;
 }
 /** Field storing a numeric value */
@@ -168,9 +206,14 @@ export declare class TextField extends Field<string> {
  * Optional connectable field.
  * Can store either a number or string depending on fld_type.
  */
-export declare class OptConnectField extends ConnectableField<number | string> {
+export declare class OptConnectField extends ConnectableField<number | string | NodeSvg> {
     fldType: "number" | "string";
     constructor();
+    canEditConnector(): boolean;
+    canEdit(): boolean;
+    getValue(): string | number | NodeSvg | null;
+    hasRaw(): boolean;
+    hasConnectable(): boolean;
     /**
      * Set field type.
      * @param type "number"|"string"
@@ -190,9 +233,30 @@ export declare class OptConnectField extends ConnectableField<number | string> {
      * @returns Display value for UI purposes (never null)
      */
     getDisplayValue(): string;
+    toJson(deep: boolean): FieldOptions;
 }
-export type AnyField = Field | OptConnectField | NumberField | TextField | DummyField;
-export type AnyFieldCls = typeof Field | typeof OptConnectField | typeof NumberField | typeof TextField | typeof DummyField;
+export type DropdownItem = {
+    text: string;
+    value: string;
+} | string;
+export declare class DropdownField extends Field<string> {
+    options: DropdownItem[] | null;
+    _selected: DropdownItem | null;
+    _isOpen: boolean;
+    constructor();
+    onDraw(rawBox?: FieldRawBoxData): void;
+    private toggleDropdown;
+    private openDropdown;
+    private closeDropdown;
+    canEdit(): boolean;
+    getSelected(): DropdownItem | null;
+    fromJson(options: FieldOptions): void;
+    getDisplayValue(): string;
+    setOptions(options: DropdownItem[]): void;
+    toJson(deep: boolean): FieldOptions;
+}
+export type AnyField = Field | OptConnectField | NumberField | TextField | DummyField | ConnectableField;
+export type AnyFieldCls = typeof Field | typeof OptConnectField | typeof ConnectableField | typeof NumberField | typeof TextField | typeof DummyField;
 export declare const FieldMap: {
     field_both: typeof OptConnectField;
     field_string: typeof TextField;

@@ -21,6 +21,7 @@ class RendererConstants {
     FIELD_RAW_TEXT_COLOR: Color = '#e0e2e8ff';    
     FIELD_RAW_OUTLINE_COLOR: Color = '#1f2027ff'; 
     FIELD_RAW_OUTLINE_STROKE!: number;
+    FIELD_CONN_COLOR: Color = '#0c7cccff'
     NODE_BG_COLOR: Color = '#2c2d3aff';           
     NODE_OUTLINE_COLOR: Color = '#1d1e25ff';
     CONNECTOR_TRIANGLE!: boolean; 
@@ -38,7 +39,7 @@ class RendererConstants {
     TOPBAR_LABEL_MARGIN_X!: number;
     TOPBAR_LABEL_MARGIN_Y!: number;
     TOPBAR_LABEL_BOLDED!: boolean;
-    CONNECTOR_LINE_WIDTH: number = 2;          
+    CONNECTOR_LINE_WIDTH: number = 6;          
     CONNECTOR_LINE_CURVED: boolean = true;     
 
     constructor(overrides: Partial<RendererConstants> = {}) {
@@ -67,7 +68,7 @@ class RendererConstants {
         this.FONT_SIZE = 20;
         this.TOPBAR_LABEL_BOLDED = true;
         this.FIELD_MARGIN_X = 16;
-        this.FIELD_MARGIN_Y = 4;
+        this.FIELD_MARGIN_Y = 16;
         this.TOPBAR_LABEL_MARGIN_X = 12; 
         this.TOPBAR_LABEL_MARGIN_Y = 0;  
 

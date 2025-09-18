@@ -31,6 +31,9 @@ import { Showable } from "./context-menu";
 import escapeAttr from "../util/escape-html";
 import unescapeAttr from "../util/unescape-html";
 import waitFrames from "../util/wait-anim-frames";
+import CommentModel from "./comment";
+import CommentRenderer from '../comment-renderer/renderer';
+import dropdownContainer from "./dropdown-menu";
 Field.register = function (name: string, cls: Function) {
     FieldMap[name] = cls as AnyFieldCls;
 }
@@ -87,7 +90,12 @@ const Kabel = {
         rendererMap: RMap,
         Renderer,
         RendererConstants
-    }
+    },
+    commentRendering: {
+        CommentModel,
+        CommentRenderer
+    },
+    Dropdown: dropdownContainer
 };
 // Export a getter/setter incase someone needs more internal access to main workspace and doesnt like the method interface.
 Object.defineProperty(Kabel, '_mainWorkspace', {

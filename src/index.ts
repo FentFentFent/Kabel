@@ -19,14 +19,18 @@ import * as UID from '../util/uid';
 import hasProp from "../util/has-prop";
 import EventEmitter from "../util/emitter";
 
-import Kabel from "./core";
+import K from './core';
 import { WidgetOptions } from "./widget";
 import { WidgetPrototypeList } from "./widget-prototypes";
+import KabelInterface from "./types";
 
+//@ts-ignore
+const Kabel: KabelInterface = K;
 
 export default Kabel;
 
 export type {
+    KabelInterface,
     TblxCategoryStruct,
     TblxNodeStruct,
     TblxFieldStruct,

@@ -3,13 +3,16 @@ import WorkspaceSvg from '../src/workspace-svg';
 import NodeSvg from '../src/nodesvg';
 import * as Path from '../util/path';
 import { parseColor } from "../util/parse-color";
-import { G, Path as SvgPath, Svg, StrokeData, Element, List } from "@svgdotjs/svg.js";
+import { G, Path as SvgPath, Svg, StrokeData, Element, List, Rect } from "@svgdotjs/svg.js";
 import { Color, ColorStyle, Hex } from "../src/visual-types";
-import Field, { AnyField, DummyField } from "../src/field";
+import Field, { AnyField, ConnectableField, DummyField, FieldRawBoxData, OptConnectField } from "../src/field";
 import eventer from '../util/eventer';
 import Connection, { Connectable } from "../src/connection";
 import escapeAttr from '../util/escape-html';
 import unescapeAttr from '../util/unescape-html';
+import CommentRenderer from "../comment-renderer/renderer";
+import { FieldVisualInfo } from "../src/field";
+
 export interface ConnectorToFrom {
     to: Connection,
     from: Connection,
@@ -44,9 +47,8 @@ class Renderer {
     _nodeGroup: G | null;
     _nodeDraw: DrawState | null;
     _ws: WorkspaceSvg;
-    _svgElements: Element[];
     _drawStates: DrawState[];
-    _cachedLinesQueue: ConnectorToFrom[]
+    _commentDrawer!: CommentRenderer;
     static get NODE_G_TAG() {
         return 'AtlasNodeSVG';
     }
@@ -59,6 +61,9 @@ class Renderer {
     static get CONNECTOR_TAG() {
         return 'AtlasConnectionBubble';
     }
+    static get LINE_X_MARK_TAG() {
+        return 'AtlasLineXMark';
+    }
     static get NAME() {
         return 'atlas'; // default is called atlas.
     }
@@ -69,9 +74,12 @@ class Renderer {
         this._constants = new RendererConstants(overrides);
         this._nodeGroup = null;
         this._nodeDraw = null;
-        this._svgElements = [];
         this._drawStates = [];
-        this._cachedLinesQueue = [];
+        this.initCommentRenderer()
+
+    }
+    initCommentRenderer() {
+        this._commentDrawer = new CommentRenderer(this.getWs());
     }
     enqueueSetConnect(c: ConnectorToFrom) {
         this.state?.pendingConnections?.push?.(c);
@@ -130,6 +138,24 @@ class Renderer {
         txt.remove(); // clean up
         return width;
     }
+    measureTextHeight(text: string, fontSize?: number, fontFamily?: string): number {
+        const c = this.constants;
+
+        // fallback in case SVG is not ready
+        if (!this.svg) return (fontSize ?? c.FONT_SIZE);
+
+        const txt = this.svg.text(text)
+            .font({
+                family: fontFamily ?? c.FONT_FAMILY,
+                size: fontSize ?? c.FONT_SIZE,
+                anchor: 'start'
+            })
+            .opacity(0); // hide it
+
+        const height = txt.bbox().height;
+        txt.remove(); // clean up
+        return height;
+    }
 
 
     measureRawField(text: string = "") {
@@ -145,7 +171,7 @@ class Renderer {
         if (!label) return { width: 0, height: 0 };
 
         const width = this.measureTextWidth(label);
-        const height = c.FONT_SIZE + 4;
+        const height = this.measureTextHeight(label);
 
         return { width, height };
     }
@@ -170,11 +196,6 @@ class Renderer {
 
         let width = m.width as number;
         let height = m.height as number;
-
-        if (field.getLabel()) {
-            width += this.measureTextWidth(field.getLabel()) + c.LABEL_SPACING;
-            height = Math.max(height, c.FONT_SIZE + 4);
-        }
 
         return { width, height };
     }
@@ -268,8 +289,7 @@ class Renderer {
     }
     drawFieldRaw(fieldGroup: G, field: AnyField, startX: number = 0) {
         const c = this.constants;
-        const value = field.getValue?.() ?? "";
-
+        const value = field.getDisplayValue?.() ?? "";
         const { width, height } = this.measureRawField(value);
 
         const rect = fieldGroup.rect(width, height)
@@ -285,6 +305,12 @@ class Renderer {
             })
             .fill(parseColor(c.FIELD_RAW_TEXT_COLOR));
         txt.node.style.userSelect = 'none';
+
+        const rawBox: FieldRawBoxData = {
+            box: rect,
+            txt
+        }
+
         const textBBox = txt.bbox();
         const offsetY = (height - textBBox.height) / 2;
 
@@ -296,9 +322,9 @@ class Renderer {
             text: txt,       // the svg.js Text element you drew
             renderer: this,   // the renderer instance, must have .measureRawField and .constants
             startX   // x-offset where the box should start (after label)
-        }).tagElement(rect, [(this.constructor as typeof Renderer).ELEMENT_TAG])
+        }).tagElement(rect, [(this.constructor as typeof Renderer).ELEMENT_TAG, `node_${this.node!.id}`])
 
-        return { rect, txt };
+        return { rect, txt, rawBox };
     }
 
 
@@ -344,7 +370,7 @@ class Renderer {
         eventer.addElement(xGroup, 'k_closenode', {
             workspace: this.getWs(),
             node
-        }).tagElement(xGroup, (this.constructor as typeof Renderer).ELEMENT_TAG);
+        }).tagElement(xGroup, [(this.constructor as typeof Renderer).ELEMENT_TAG, `node_${node.id}`]);
         // Background
         xGroup.rect(btnSize, btnSize)
             .fill('#ffffff00')
@@ -461,17 +487,31 @@ class Renderer {
     private _fillOtherNodeConnectorCircle(conn: Connection, circle: SvgPath, isPrevious: boolean) {
         for (const state of this._drawStates) {
             for (const connPair of state.pendingConnections) {
-                // Skip if this connPair is already filled
-                if (isPrevious && connPair.to === conn && !connPair.toCircle) {
-                    connPair.toCircle = circle;
-                }
-                if (!isPrevious && connPair.from === conn && !connPair.fromCircle) {
-                    connPair.fromCircle = circle;
+                // Only fill if the connection actually matches
+                if (isPrevious) {
+                    // fill toCircle if this connPair expects 'conn' as its 'to'
+                    if (connPair.to === conn && !connPair.toCircle) {
+                        connPair.toCircle = circle;
+                    }
+                } else {
+                    // fill fromCircle if this connPair expects 'conn' as its 'from'
+                    if (connPair.from === conn && !connPair.fromCircle) {
+                        connPair.fromCircle = circle;
+                    }
                 }
             }
         }
     }
 
+    refreshComments() {
+        return this._commentDrawer?.refreshCommentTransforms?.();
+    }
+    clearComments() {
+        return this._commentDrawer?.clearAllComments?.();
+    }
+    drawComments() {
+        return this._commentDrawer?.drawAllComments?.();
+    }
     refreshNodeTransforms() {
         const nodeGroups: List<G> = this.svg.find(`.${(this.constructor as typeof Renderer).NODE_G_TAG}`) as List<G>;
         for (let nodeG of nodeGroups) {
@@ -484,12 +524,13 @@ class Renderer {
             nodeG.attr({ transform: `translate(${screenPos.x}, ${screenPos.y})` });
         }
         this.refreshConnectionLines();
+        this.refreshComments();
     }
     refreshConnectionLines() {
         this.clearLines();
         this.drawLinesForAllNodes();
     }
-    createNodeDrawstate(nodeGroup: G, id: string): DrawState {
+    createNodeDrawState(nodeGroup: G, id: string): DrawState {
         return drawState(nodeGroup, id); // wraps this method so you can define your own drawstates by overriding this method
     }
     drawNode() {
@@ -515,7 +556,7 @@ class Renderer {
         // apply it to the top-level node group
         nodeGroup.attr({ transform: `translate(${screenPos.x}, ${screenPos.y})` });
 
-        const state = this.createNodeDrawstate(nodeGroup, node.id);
+        const state = this.createNodeDrawState(nodeGroup, node.id);
         this._nodeDraw = state;
 
         // Measure node
@@ -541,7 +582,7 @@ class Renderer {
             dragel: state.topbar, // the handle
             node: node,     // NodeSvg instance
             type: 2
-        }).tagElement(nodeGroup, [(this.constructor as typeof Renderer).ELEMENT_TAG]);
+        }).tagElement(nodeGroup, [(this.constructor as typeof Renderer).ELEMENT_TAG, `node_${node.id}`]);
         // Outer fields group positioned under topbar using transform
         const fieldsGroup = nodeGroup.group();
         fieldsGroup.attr({ transform: `translate(0, ${c.TOPBAR_HEIGHT + c.FIELD_SPACEY})` });
@@ -558,17 +599,69 @@ class Renderer {
 
             const fieldGroup = fieldsGroup.group();
             fieldGroup.attr({ transform: `translate(${alignX}, ${y})` });
-
+            field.svgGroup = fieldGroup;
             state.fieldPosY = y;
 
             // draw label first, get its used width
             const xUsed = this.drawFieldLabel(fieldGroup, field);
+            if (field.isCustomEditor()) {
+                // field fully owns drawing
+                field.drawMyself({
+                    measuredWidth: fm.width,
+                    measuredHeight: fm.height,
+                    xUsed,
+                    fieldGroup,
+                    nodeGroup,
+                    svg: this.svg,
+                    background: state!.bg as unknown as Rect
+                });
+            } else {
+                // fallback: renderer draws raw/connector as before
+                let rawData, cBubbleData = undefined;
+                // if raw, draw right after label
+                if (field.hasRaw()) {
+                    const { rawBox } = this.drawFieldRaw(fieldGroup, field, xUsed);
+                    rawData = rawBox;
+                }
+                // @ts-ignore
+                if (field.hasConnectable() && field!.connection) {
+                    // @ts-ignore
+                    const halfHeight = (fm.height + (field.hasRaw() ? 0 : c.FIELD_MARGIN_Y)) / 2;
+                    const absY = c.TOPBAR_HEIGHT + c.FIELD_SPACEY + y + halfHeight;
 
-            // if raw, draw right after label
-            if (field.hasRaw()) {
-                this.drawFieldRaw(fieldGroup, field, xUsed);
+
+                    const c3 = this.drawConnector(
+                        nodeGroup,
+                        state.bg as SvgPath,
+                        absY,
+                        'right',
+                        parseColor(c.FIELD_CONN_COLOR)
+                    );
+                    if (c3) {
+                        const c = {
+                            // @ts-ignore
+                            from: field!.connection as Connection,
+                            // @ts-ignore (typescript intellisense mad that field.connection isnt on some field types, so we ignore it.)
+                            to: field!.connection.getTo()?.previousConnection as Connection,
+                            fromCircle: c3 as SvgPath,
+                            originCircle: c3 as SvgPath,
+                            // @ts-ignore
+                            originConn: field!.connection as Connection
+                        };
+                        cBubbleData = {
+                            connector: c3,
+                            connState: c
+                        }
+                        this.enqueueSetConnect(c);
+                        eventer.addElement(c3, 'k_connectbubble', {
+                            // @ts-ignore
+                            connection: field!.connection,
+                            field
+                        }).tagElement(c3, [(this.constructor as typeof Renderer).ELEMENT_TAG, `node_${node.id}`]);
+                    }
+                }
+                field.onDraw(rawData, cBubbleData);
             }
-
             y += fm.height + c.FIELD_MARGIN_Y;
         });
 
@@ -595,7 +688,7 @@ class Renderer {
                 eventer.addElement(c1, 'k_connectbubble', {
                     connection: node.previousConnection,
                     node
-                }).tagElement(c1, (this.constructor as typeof Renderer).ELEMENT_TAG);
+                }).tagElement(c1, [(this.constructor as typeof Renderer).ELEMENT_TAG, `node_${node.id}`]);
                 // fill any waiting connectors from other nodes
                 this._fillOtherNodeConnectorCircle(node.previousConnection, c1 as SvgPath, true);
             }
@@ -616,7 +709,7 @@ class Renderer {
                 eventer.addElement(c2, 'k_connectbubble', {
                     connection: node.nextConnection,
                     node
-                }).tagElement(c2, (this.constructor as typeof Renderer).ELEMENT_TAG);
+                }).tagElement(c2, [(this.constructor as typeof Renderer).ELEMENT_TAG, `node_${node.id}`]);
                 // fill any waiting connectors from other nodes
                 this._fillOtherNodeConnectorCircle(node.nextConnection, c2 as SvgPath, false);
             }
@@ -628,64 +721,104 @@ class Renderer {
     fillAllNodeConnectorBubbles() {
         for (const state of this._drawStates) {
             for (const connPair of state.pendingConnections) {
-                const { originConn, originCircle } = connPair;
-                if (!originCircle) continue;
+                const { originConn } = connPair;
+                if (!originConn) continue;
 
-                // Fill any missing fromCircle/toCircle if they were not ready when first enqueued
+                // Only try to fill missing sides with real circles from other pending connections
                 if (!connPair.fromCircle) {
-                    connPair.fromCircle = originCircle;
-                    this._fillOtherNodeConnectorCircle(originConn, originCircle, false);
+                    const match = this._drawStates
+                        .flatMap(s => s.pendingConnections)
+                        .find(p => p.originConn === connPair.from && p.originCircle);
+                    if (match) connPair.fromCircle = match.originCircle;
                 }
+
                 if (!connPair.toCircle) {
-                    connPair.toCircle = originCircle;
-                    this._fillOtherNodeConnectorCircle(originConn, originCircle, true);
+                    const match = this._drawStates
+                        .flatMap(s => s.pendingConnections)
+                        .find(p => p.originConn === connPair.to && p.originCircle);
+                    if (match) connPair.toCircle = match.originCircle;
                 }
             }
         }
     }
+
+
 
     drawLinesForAllNodes() {
         const c = this.constants;
         const wsSvg = this._ws.svg;
 
         this.fillAllNodeConnectorBubbles();
+        const drawnCircles = new Set<SvgPath>(); // store circles we've already drawn lines from/to
 
-        // Loop over each node's drawState instead of the global queue
         for (const state of this._drawStates) {
             for (const connPair of state.pendingConnections) {
                 const { fromCircle, toCircle } = connPair;
+                if (connPair.from !== connPair.originConn) continue;
                 if (!fromCircle || !toCircle) continue;
 
-                const a = fromCircle.rbox();
-                const b = toCircle.rbox();
-                const startX = a.cx, startY = a.cy;
-                const endX = b.cx, endY = b.cy;
+                // skip if either circle was already used
+                if (drawnCircles.has(fromCircle) || drawnCircles.has(toCircle)) continue;
 
+                // mark circles as used
+                drawnCircles.add(fromCircle);
+                drawnCircles.add(toCircle);
+                // Get DOM elements
+                const fromEl = fromCircle.node as SVGPathElement;
+                const toEl = toCircle.node as SVGPathElement;
+
+                // Use getBBox + getScreenCTM for absolute coordinates
+                const fromBBox = fromEl.getBBox();
+                const toBBox = toEl.getBBox();
+
+                const fromCTM = fromEl.getScreenCTM()!;
+                const toCTM = toEl.getScreenCTM()!;
+
+                const startX = fromBBox.x + fromBBox.width / 2;
+                const startY = fromBBox.y + fromBBox.height / 2;
+                const endX = toBBox.x + toBBox.width / 2;
+                const endY = toBBox.y + toBBox.height / 2;
+
+                // Transform to screen coordinates
+                const absStartX = startX * fromCTM.a + startY * fromCTM.c + fromCTM.e;
+                const absStartY = startX * fromCTM.b + startY * fromCTM.d + fromCTM.f;
+                const absEndX = endX * toCTM.a + endY * toCTM.c + toCTM.e;
+                const absEndY = endX * toCTM.b + endY * toCTM.d + toCTM.f;
+
+                // Draw the line
+                let pathStr: string;
                 if (c.CONNECTOR_LINE_CURVED) {
-                    const dx = Math.abs(endX - startX);
-                    const cp1x = startX + Math.sign(endX - startX) * Math.max(30, dx * 0.3);
-                    const cp2x = endX - Math.sign(endX - startX) * Math.max(30, dx * 0.3);
-                    const pathStr = `M ${startX} ${startY} C ${cp1x} ${startY}, ${cp2x} ${endY}, ${endX} ${endY}`;
-
-                    wsSvg.path(pathStr)
-                        .stroke({ color: parseColor(fromCircle.fill() as Color), width: c.CONNECTOR_LINE_WIDTH })
-                        .fill('none')
-                        .attr({ class: (this.constructor as typeof Renderer).CONN_LINE_TAG });
+                    const dx = Math.abs(absEndX - absStartX);
+                    const cp1x = absStartX + Math.sign(absEndX - absStartX) * Math.max(30, dx * 0.3);
+                    const cp2x = absEndX - Math.sign(absEndX - absStartX) * Math.max(30, dx * 0.3);
+                    pathStr = `M ${absStartX} ${absStartY} C ${cp1x} ${absStartY}, ${cp2x} ${absEndY}, ${absEndX} ${absEndY}`;
                 } else {
-                    const pathStr = `M ${startX} ${startY} L ${endX} ${endY}`;
-                    wsSvg.path(pathStr)
-                        .stroke({ color: parseColor(fromCircle.fill() as Color), width: c.CONNECTOR_LINE_WIDTH })
-                        .fill('none')
-                        .attr({ class: (this.constructor as typeof Renderer).CONN_LINE_TAG });
+                    pathStr = `M ${absStartX} ${absStartY} L ${absEndX} ${absEndY}`;
                 }
+
+                const line = wsSvg.path(pathStr)
+                    .stroke({ color: parseColor(fromCircle.fill() as Color), width: c.CONNECTOR_LINE_WIDTH })
+                    .fill('none')
+                    .attr({ class: (this.constructor as typeof Renderer).CONN_LINE_TAG });
+
+                eventer.addElement(line, 'k_connline', {
+                    fromConn: connPair.from,
+                    toConn: connPair.to,
+                    renderer: this
+                }).tagElement(line, [(this.constructor as typeof Renderer).ELEMENT_TAG, (this.constructor as typeof Renderer).LINE_X_MARK_TAG]);
             }
         }
     }
 
 
+
+
     clearLines() {
         for (let line of this.getWs().svg.find(`.${(this.constructor as typeof Renderer).CONN_LINE_TAG}`)) {
             line.remove();
+        }
+        for (let mark of this.getWs().svg.find(`.${(this.constructor as typeof Renderer).LINE_X_MARK_TAG}`)) {
+            mark.remove();
         }
     }
 
@@ -693,8 +826,43 @@ class Renderer {
         eventer.destroyByTag((this.constructor as typeof Renderer).ELEMENT_TAG)
         this._ws.svg.clear();
         this._drawStates = [];
-        this._cachedLinesQueue = [];
     }
+    undoPendingConnsFor(conn: ConnectorToFrom) {
+        for (let state of this._drawStates) {
+            for (let conn0 of state.pendingConnections) {
+                if (conn0.toCircle == conn.originCircle) {
+                    delete conn0.toCircle;
+                }
+                if (conn0.fromCircle == conn.originCircle) {
+                    delete conn0.fromCircle;
+                }
+            }
+        }
+    }
+    rerenderNode(node: NodeSvg) {
+        // wipe old drawstate + events for this node
+        const idx = this._drawStates.findIndex(s => s.id === node.id);
+        if (idx !== -1) {
+            const state = this._drawStates[idx];
+            for (let pendingConn of state!.pendingConnections) {
+                this.undoPendingConnsFor(pendingConn);
+            }
+            state!.group?.remove();
+            eventer.destroyByTag(`node_${node.id}`);
+            this._drawStates.splice(idx, 1);
+        }
+
+        // rebuild node
+        this.startNode(node);
+        this.drawNode();
+        this.storeState();
+
+        // refresh *all* lines once the node is back in place
+        this.refreshConnectionLines();
+
+        return node.svgGroup;
+    }
+
 }
 
 export default Renderer;

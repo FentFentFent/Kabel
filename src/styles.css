@@ -94,25 +94,81 @@
     text-align: left;
     transition: background 0.2s, color 0.2s;
 }
+
 .KabelToolbox button:hover {
     background: #e6e6e6;
     color: #333;
 }
+
 .KabelConnectionBubbleHighlight {
-	stroke: yellow !important;
-	stroke-width: 6px !important;
-	stroke-linejoin: round;
-	stroke-linecap: round;
-	filter: drop-shadow(0 0 6px rgba(255, 255, 0, 0.9));
-}
-.KabelConnectionBubbleHighlightWrong {
-	stroke: rgb(255, 0, 0) !important;
-	stroke-width: 6px !important;
-	stroke-linejoin: round;
-	stroke-linecap: round;
-	filter: drop-shadow(0 0 6px rgba(255, 0, 0, 0.9));
+    stroke: yellow !important;
+    stroke-width: 6px !important;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 6px rgba(255, 255, 0, 0.9));
 }
 
+.KabelConnectionBubbleHighlightWrong {
+    stroke: rgb(255, 0, 0) !important;
+    stroke-width: 6px !important;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 6px rgba(255, 0, 0, 0.9));
+}
+
+/* Container */
+.KabelDropdownMenu {
+    position: absolute;
+    display: none;
+    background: #1e1e1e;
+    color: #f0f0f0;
+    font-family: sans-serif;
+    font-size: 14px;
+    border: 1px solid #333;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    padding: 4px 0;
+    z-index: 9999;
+    user-select: none;
+    animation: fadeIn 0.15s ease-out;
+}
+
+/* Dropdown items */
+.KabelDropdownItem {
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+/* Hover + focus states */
+.KabelDropdownItem:hover,
+.KabelDropdownItem:focus {
+    background: #2d2d2d;
+}
+
+/* Active (clicked) state */
+.KabelDropdownItem:active {
+    background: #3a3a3a;
+}
+
+/* Optional: highlight selected value */
+.KabelDropdownItem.selected {
+    background: #444;
+    font-weight: 600;
+}
+
+/* Smooth open effect */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-3px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 
 

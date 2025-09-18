@@ -1,19 +1,14 @@
-import Renderer from "../renderers/renderer";
-interface RendererMap {
-    [key: string]: typeof Renderer;
+import type RendererType from "../renderers/renderer";
+interface RendererMapInterface {
+    [key: string]: typeof RendererType;
 }
-declare const RendererMap: RendererMap;
+declare const RendererMap: RendererMapInterface;
 declare class RMap {
-    static register(RendererCls: typeof Renderer, optName?: string): void;
+    static register(RendererCls: typeof RendererType, optName?: string): void;
     static delete(name: string): boolean;
-    static get(name: string): typeof Renderer | undefined;
+    static get(name: string): typeof RendererType;
     static list(): string[];
-    /**
-     * Helper to normalize any renderer input into a valid Renderer class
-     * @param input - Either a string (renderer name), a class, or undefined
-     * @returns A Renderer constructor
-     */
-    static resolve(input?: string | typeof Renderer): typeof Renderer;
+    static resolve(input?: string | typeof RendererType): typeof RendererType;
 }
 export { RMap, RendererMap };
 //# sourceMappingURL=renderer-map.d.ts.map

@@ -1,4 +1,4 @@
-import Field from "./field";
+import Field, { ConnectableField } from "./field";
 import NodeSvg from "./nodesvg";
 export type Connectable = NodeSvg | null | Field;
 class Connection {
@@ -18,19 +18,44 @@ class Connection {
         return this.from;
     }
     disconnectTo() {
-        if (this.to instanceof NodeSvg) {
-            this.to.previousConnection?.disconnectFrom?.();
-        } else {
-            
+        if (!this.to) return;
+
+        if (this.to instanceof NodeSvg && this.to.previousConnection) {
+            const prevConn = this.to.previousConnection;
+            const prevFrom = prevConn.from;
+
+            // disconnect NodeSvg chain safely
+            if (prevFrom instanceof NodeSvg && prevFrom.nextConnection?.to) {
+                prevFrom.nextConnection.to = null;
+            }
+
+            // disconnect Field chain safely
+            if (prevFrom instanceof Field && prevFrom.hasConnectable?.()) {
+                (prevFrom as ConnectableField).disconnect();
+            }
         }
+
         this.to = null;
     }
+
     disconnectFrom() {
-        if (this.from instanceof NodeSvg) {
-            this.from?.nextConnection?.disconnectTo?.();
+        if (!this.from) {
+            return;
+        }
+        if (this.from instanceof NodeSvg && this.from.nextConnection) {
+            const next = this.from.nextConnection;
+            if (next.to instanceof NodeSvg && next.to.previousConnection?.from) {
+                next.to.previousConnection.from = null;
+            } else if (next.to instanceof Field && next.to.hasConnectable()) {
+                (next.to as ConnectableField).disconnect();
+            }
+            next.to = null;
+        } else if (this.from instanceof Field && this.from.hasConnectable()) {
+            (this.from as ConnectableField).disconnect();
         }
         this.from = null;
     }
+
     isolate() {
         this.from = null as any;
         this.to = null as any;

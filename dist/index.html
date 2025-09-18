@@ -62,6 +62,25 @@
                                     name: 'Dummy',
                                     type: 'field_dummy',
                                     label: 'Label with no input!'
+                                }, 
+                                {
+                                    name: 'Conn',
+                                    type: 'connection',
+                                    label: 'Label!'
+                                },
+                                {
+                                    name: 'Conn2',
+                                    type: 'field_both',
+                                    label: 'lowk: ',
+                                    value: 'lowk'
+                                }, {
+                                    name: 'Dropdown',
+                                    type: 'dropdown',
+                                    label: 'lowk dropdown?: ',
+                                    options: [
+                                        'Oooo option',
+                                        {text: 'Opt', value: 'opt'}
+                                    ]
                                 }
                             ]
                         });
@@ -88,7 +107,6 @@
                 **/
                 // Use WASDController with acceleration
                 const ws = k.inject(el, {
-                    Controller: k.Controllers?.WASDController || Kabel.WASDController,
                     moveSpeed: 6, // optional, base speed
                     controls: {
                         wasd: true,

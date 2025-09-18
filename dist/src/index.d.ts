@@ -12,9 +12,10 @@ import WorkspaceSvg from "./workspace-svg";
 import { NodePrototype } from "./node-types";
 import { Color, ColorStyle, Hex, RGBObject, RGBString, RGBTuple } from "./visual-types";
 import { Eventer } from "../util/eventer";
-import Kabel from "./core";
 import { WidgetOptions } from "./widget";
 import { WidgetPrototypeList } from "./widget-prototypes";
+import KabelInterface from "./types";
+declare const Kabel: KabelInterface;
 export default Kabel;
-export type { TblxCategoryStruct, TblxNodeStruct, TblxFieldStruct, TblxObjStruct, RendererConstants, Renderer, CategoryColors, Connection, Coordinates, Field, DummyField, FieldMap, NumberField, OptConnectField, TextField, inject, InjectMsg, clearMainWorkspace, getMainWorkspace, setMainWorkspace, NodeSvg, NodePrototypes, WorkspaceSvg, AnyFieldCls, AnyField, InjectOptions, Color, ColorStyle, Hex, RGBObject, RGBString, RGBTuple, NodePrototype, FieldOptions, FieldVisualInfo, NodeJson, NodeEvents, InputFieldJson, Eventer, Connectable, DrawState, ConnectorToFrom, WidgetOptions, WidgetPrototypeList };
+export type { KabelInterface, TblxCategoryStruct, TblxNodeStruct, TblxFieldStruct, TblxObjStruct, RendererConstants, Renderer, CategoryColors, Connection, Coordinates, Field, DummyField, FieldMap, NumberField, OptConnectField, TextField, inject, InjectMsg, clearMainWorkspace, getMainWorkspace, setMainWorkspace, NodeSvg, NodePrototypes, WorkspaceSvg, AnyFieldCls, AnyField, InjectOptions, Color, ColorStyle, Hex, RGBObject, RGBString, RGBTuple, NodePrototype, FieldOptions, FieldVisualInfo, NodeJson, NodeEvents, InputFieldJson, Eventer, Connectable, DrawState, ConnectorToFrom, WidgetOptions, WidgetPrototypeList };
 //# sourceMappingURL=index.d.ts.map

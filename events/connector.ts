@@ -2,7 +2,7 @@ import { Element } from '@svgdotjs/svg.js';
 import Connection, { Connectable } from '../src/connection';
 import eventer, { EventArgs } from '../util/eventer';
 import userState from '../util/user-state';
-import Field from '../src/field';
+import Field, { AnyField } from '../src/field';
 import NodeSvg from '../src/nodesvg';
 import waitFrames from '../util/wait-anim-frames';
 interface ConnectionV {
@@ -26,8 +26,11 @@ function initConnector(el: Element, args?: EventArgs) {
     args = args as {
         connection: Connection,
         node?: NodeSvg,
-        field?: Field
+        field?: AnyField
     };
+    if (args.field && !args.field?.canEditConnector) { // If editing isnt allowed, close the event early.
+        return; 
+    }
     el.on('click', () => {
         const isPrev = args.connection.isPrevious;
 
@@ -87,9 +90,9 @@ function initConnector(el: Element, args?: EventArgs) {
 
             waitFrames(2, () => {
                 if (cState.one?.args?.node) {
-                    cState.one.args.node.workspace?.redraw?.();
+                    cState.one.args.node.workspace?.redraw();
                 } else if (cState.two?.args?.node) {
-                    cState.two.args.node.workspace?.redraw?.();
+                    cState.two.args.node.workspace?.redraw();
                 }
                 cState.one = null;
                 cState.two = null;

@@ -1,14 +1,15 @@
 import WorkspaceController from "../controllers/base";
 import unescapeAttr from "../util/unescape-html";
+import CommentModel from "./comment";
 import Coordinates from "./coordinates";
 import ContextOptsRegistry from "./ctx-menu-registry";
 import NodeSvg from "./nodesvg";
 import Widget from "./widget";
 import WorkspaceSvg from "./workspace-svg";
 
-export type Showable = 'node' | 'ws' | 'html';
+export type Showable = 'node' | 'ws' | 'html' | 'comment';
 export interface ContextMenuOpts {
-    click: (target: NodeSvg | WorkspaceSvg | HTMLElement) => void;
+    click: (target: NodeSvg | WorkspaceSvg | CommentModel | HTMLElement) => void;
     onHoverStart?: () => void;
     onHoverEnd?: () => void;
     showFor?: Showable | Showable[]
@@ -48,7 +49,7 @@ class ContextMenuHTML {
         this.initListeners();
     }
 
-    renderOptions(target: NodeSvg | WorkspaceSvg | HTMLElement | null) {
+    renderOptions(target: NodeSvg | WorkspaceSvg | HTMLElement | CommentModel | null) {
         // Clear any previous options
         this.widget.container.innerHTML = '';
 
@@ -60,7 +61,7 @@ class ContextMenuHTML {
             if (target instanceof NodeSvg && showFor.includes('node')) return true;
             if (target instanceof WorkspaceSvg && showFor.includes('ws')) return true;
             if (target instanceof HTMLElement && !(target instanceof SVGSVGElement) && showFor.includes('html')) return true;
-
+            if (target instanceof CommentModel && showFor.includes('comment')) return true;
             return false;
         });
 
@@ -109,7 +110,7 @@ class ContextMenuHTML {
         return this.controller.mousePos;
     }
 
-    get target(): NodeSvg | WorkspaceSvg | HTMLElement | null {
+    get target(): NodeSvg | WorkspaceSvg | HTMLElement | CommentModel | null {
         let el = document.elementFromPoint(this.mousePos.x, this.mousePos.y) as HTMLElement | null;
 
         if ((el as unknown as SVGSVGElement) === this.workspace.svg.node) return this.workspace;
@@ -120,6 +121,25 @@ class ContextMenuHTML {
                 const nodeId = unescapeAttr(el.getAttribute('data-node-id') as string);
                 const node = this.workspace.getNode(nodeId);
                 if (node) return node;
+            }
+            if (el.tagName.toLowerCase() === 'g' && el.hasAttribute('comment-data')) {
+                const dta = JSON.parse(el.getAttribute('comment-data') as string);
+                if (!dta.id && !dta.isws) {
+                    continue;
+                }
+                if (dta.isws) {
+                    for (let comment of this.workspace._commentDB) {
+                        if (comment.id === dta.id) {
+                            return comment;
+                        }
+                    }
+                } else {
+                    for (let [_, node] of this.workspace._nodeDB) {
+                        if (node.comment && node.comment.id == dta.id) {
+                            return node.comment;
+                        }
+                    }
+                }
             }
             el = el.parentElement;
         }

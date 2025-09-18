@@ -13,6 +13,8 @@ import newHeadlessNode from "./headless-node";
 import Widget from "./widget";
 import WidgetPrototypes from "./widget-prototypes";
 import ContextMenuHTML from "./context-menu";
+import CommentModel from "./comment";
+import Field, { ConnectableField } from "./field";
 
 
 function resolveController(options: InjectOptions): typeof WorkspaceController {
@@ -69,6 +71,10 @@ class WorkspaceSvg {
      */
     _ctxMenu: ContextMenuHTML
     /**
+     * A list of comments for this workspace.
+     */
+    _commentDB: Set<CommentModel>;
+    /**
      * Creates a new WorkspaceSvg instance.
      * @param root - The root HTML element containing the workspace.
      * @param wsTop - The top-level wrapper element for the SVG.
@@ -93,19 +99,50 @@ class WorkspaceSvg {
         this.controller = new (options.Controller ?? resolveController(options))(this);
         this._widgetDB = new Map();
         this._ctxMenu = new ContextMenuHTML(this);
+        this._commentDB = new Set();
     }
+    /**
+     * Refresh comments.
+     */
+    refreshComments() {
+        this.renderer.refreshComments();
+    }
+    /**
+     * Get all comments
+     * @returns {CommentModel[]}
+     */
+    getComments() {
+        return Array.from(this._commentDB);
+    }
+    /**
+     * Duplicate node data from one to another
+     * @param nodeSvg - The node
+     */
     cloneNode(nodeSvg: NodeSvg) {
         const n = new NodeSvg(nodeSvg.prototype, this);
         n.init();
         n.fromNode(nodeSvg);
         this.redraw();
     }
+    /**
+     * Internal: Add widget to DB
+     * @param wdgt - The widget
+     */
     _addWidgetToDB(wdgt: Widget) {
         this._widgetDB.set(wdgt.id, wdgt);
     }
+    /**
+     * Internal: Delete a widget from DB.
+     * @param wdgt - Widget to delete
+     */
     _delWidgetFromDB(wdgt: Widget) {
         this._widgetDB.delete(wdgt.id);
     }
+    /**
+     * Create a new widget of type.
+     * @param type - The prototype
+     * @returns {Widget|void}
+     */
     newWidget(type: string): void | Widget {
         const opts = WidgetPrototypes[type];
         if (!opts) return;
@@ -118,7 +155,12 @@ class WorkspaceSvg {
         this._addWidgetToDB(wdgt);
         return wdgt;
     }
-    getWidget(id: string): Widget|undefined {
+    /**
+     * Get a widget
+     * @param id - Identifier
+     * @returns {Widget|undefined} - A widget
+     */
+    getWidget(id: string): Widget | undefined {
         if (this._widgetDB.has(id)) return this._widgetDB.get(id);
         return undefined;
     }
@@ -160,6 +202,8 @@ class WorkspaceSvg {
         this.renderer.clearScreen();
         this.drawAllNodes();
         this.refresh();
+        this.renderer.clearComments();
+        this.renderer.drawComments();
     }
 
     /**
@@ -221,7 +265,13 @@ class WorkspaceSvg {
         this.addNode(node);
         return node;
     }
-
+    /**
+     * Spawns a node at x, y of prototype type
+     * @param type - The node prototype name
+     * @param x - X position
+     * @param y - Y position
+     * @returns {Node} - The new node
+     */
     spawnAt(type: keyof typeof NodePrototypes, x: number, y: number): NodeSvg | undefined {
         const node = this.newNode(type);
         if (!node) return;
@@ -230,12 +280,38 @@ class WorkspaceSvg {
         return node;
     }
     /**
+     * Dereference a node from all of its connected neighbors
+     */
+    derefNode(node: NodeSvg) {
+        // Disconnect from previous node or field
+        const prev = node.previousConnection?.getFrom?.();
+        if (prev instanceof NodeSvg) {
+            prev.nextConnection?.disconnectTo();
+        } else if (prev instanceof ConnectableField && prev.hasConnectable()) {
+            prev.disconnect();
+        }
+
+        // Disconnect from next node
+        const next = node.nextConnection?.getTo?.();
+        if (next instanceof NodeSvg) {
+            next.previousConnection?.disconnectFrom();
+        }
+
+        // Disconnect all fields
+        for (let field of node.allFields()) {
+            if ((field as ConnectableField).hasConnectable?.()) {
+                (field as ConnectableField).disconnect();
+            }
+        }
+    }
+    /**
      * Removes a node by its ID.
      * @param id - The ID of the node to remove.
      */
     removeNodeById(id: string) {
         const node = this._nodeDB.get(id);
         if (!node) return;
+        this.derefNode(node);
         this._nodeDB.delete(id);
         this.redraw();
     }
@@ -266,6 +342,52 @@ class WorkspaceSvg {
     pan(dx: number, dy: number) {
         this._camera.x += dx;
         this._camera.y += dy;
+    }
+    /**
+     * Comment methods
+     */
+
+    /**
+     * Adds a comment, returns the model.
+     */
+    addComment() {
+        const model = new CommentModel(this);
+        this._commentDB.add(model);
+        this.redrawComments();
+        return model;
+    }
+    /**
+     * Gets a comment by id
+     * @param id - The comment id.
+     */
+    getComment(id: string) {
+        return Array.from(this._commentDB).find(e => e.id === id);
+    }
+    /**
+     * Remove a comment by its instance or id.
+     * @param commentOrId - The comment instance or its id.
+     */
+    removeComment(commentOrId: CommentModel | string) {
+        let comment: CommentModel | undefined;
+
+        if (typeof commentOrId === "string") {
+            comment = this.getComment(commentOrId);
+        } else {
+            comment = commentOrId;
+        }
+
+        if (!comment) return false;
+
+        this._commentDB.delete(comment);
+        this.redrawComments();
+        return true;
+    }
+    /**
+     * Redraw all comments in this workspace.
+     */
+    redrawComments() {
+        this.renderer.clearComments();
+        this.renderer.drawComments();
     }
 }
 

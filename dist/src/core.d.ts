@@ -26,6 +26,8 @@ import { Showable } from "./context-menu";
 import escapeAttr from "../util/escape-html";
 import unescapeAttr from "../util/unescape-html";
 import waitFrames from "../util/wait-anim-frames";
+import CommentModel from "./comment";
+import CommentRenderer from '../comment-renderer/renderer';
 declare const Kabel: {
     UIX: {
         events: Eventer;
@@ -37,7 +39,7 @@ declare const Kabel: {
     };
     ContextMenu: {
         registerOption(id: string, option: {
-            click: (target: NodeSvg | WorkspaceSvg | HTMLElement) => void;
+            click: (target: NodeSvg | WorkspaceSvg | HTMLElement | CommentModel) => void;
             onHoverStart?: () => void;
             onHoverEnd?: () => void;
             label: string;
@@ -95,6 +97,10 @@ declare const Kabel: {
         rendererMap: typeof RMap;
         Renderer: typeof Renderer;
         RendererConstants: typeof RendererConstants;
+    };
+    commentRendering: {
+        CommentModel: typeof CommentModel;
+        CommentRenderer: typeof CommentRenderer;
     };
 };
 export default Kabel;

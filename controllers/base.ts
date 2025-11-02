@@ -30,6 +30,9 @@ export default class WorkspaceController {
 
 		this._updateInt = setInterval(() => this.update(), 16);
 	}
+    getZoom() {
+        return 1;
+    }
     canMove() {
         return true;
     }

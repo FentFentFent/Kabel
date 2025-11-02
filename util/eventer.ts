@@ -4,7 +4,7 @@ export type EventType = string;
 export type EventArgs = Record<string, any>;
 export type EventSetupFn = (el: Element, args?: EventArgs) => (() => void) | void;
 
-interface RegisteredEl {
+export interface RegisteredEl {
     tags: string[],
     el: Element;
     type: EventType;

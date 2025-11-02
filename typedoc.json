@@ -1,0 +1,10 @@
+{
+  "entryPoints": ["src/index.ts", "src"],
+  "out": "_READ_ME_MEDIA_/internal-docs",
+  "exclude": ["**/node_modules/**", "**/dist/**"],
+  "excludePrivate": false,
+  "includeVersion": true,
+  "tsconfig": "tsconfig.json",       // your TS config
+  "plugin": ["typedoc-plugin-markdown"], // optional: markdown output
+  "name": "Kabel Project Docs"
+}

@@ -1,0 +1,175 @@
+[**Kabel Project Docs v1.0.4**](../README.md)
+
+***
+
+[Kabel Project Docs](../globals.md) / RepresenterNode
+
+# Class: RepresenterNode
+
+Defined in: renderers/representer-node.ts:9
+
+## Constructors
+
+### Constructor
+
+> **new RepresenterNode**(`node`, `svgState`, `renderer`): `RepresenterNode`
+
+Defined in: renderers/representer-node.ts:13
+
+#### Parameters
+
+##### node
+
+[`NodeSvg`](NodeSvg.md)
+
+##### svgState
+
+[`DrawState`](../interfaces/DrawState.md)
+
+##### renderer
+
+[`Renderer`](Renderer.md)
+
+#### Returns
+
+`RepresenterNode`
+
+## Properties
+
+### node
+
+> **node**: [`NodeSvg`](NodeSvg.md)
+
+Defined in: renderers/representer-node.ts:10
+
+***
+
+### renderer
+
+> **renderer**: [`Renderer`](Renderer.md)
+
+Defined in: renderers/representer-node.ts:12
+
+***
+
+### state
+
+> **state**: [`DrawState`](../interfaces/DrawState.md)
+
+Defined in: renderers/representer-node.ts:11
+
+## Methods
+
+### applyTransform()
+
+> **applyTransform**(`transform`): `void`
+
+Defined in: renderers/representer-node.ts:35
+
+Apply raw transform string
+
+#### Parameters
+
+##### transform
+
+`string`
+
+#### Returns
+
+`void`
+
+***
+
+### getConstant()
+
+> **getConstant**(`name`): `string` \| `number` \| `boolean` \| [`RGBObject`](../type-aliases/RGBObject.md) \| [`RGBTuple`](../type-aliases/RGBTuple.md)
+
+Defined in: renderers/representer-node.ts:21
+
+#### Parameters
+
+##### name
+
+keyof [`RendererConstants`](RendererConstants.md)
+
+#### Returns
+
+`string` \| `number` \| `boolean` \| [`RGBObject`](../type-aliases/RGBObject.md) \| [`RGBTuple`](../type-aliases/RGBTuple.md)
+
+***
+
+### getRaw()
+
+> **getRaw**(): `G` \| `null` \| `undefined`
+
+Defined in: renderers/representer-node.ts:40
+
+Access the raw SVG group
+
+#### Returns
+
+`G` \| `null` \| `undefined`
+
+***
+
+### highlight()
+
+> **highlight**(`color`): `void`
+
+Defined in: renderers/representer-node.ts:45
+
+Optional: highlight node
+
+#### Parameters
+
+##### color
+
+`string` = `'#ff0'`
+
+#### Returns
+
+`void`
+
+***
+
+### moveTo()
+
+> **moveTo**(`x`, `y`): `void`
+
+Defined in: renderers/representer-node.ts:25
+
+Move node visually without changing its relativeCoords
+
+#### Parameters
+
+##### x
+
+`number`
+
+##### y
+
+`number`
+
+#### Returns
+
+`void`
+
+***
+
+### setScale()
+
+> **setScale**(`scale`): `void`
+
+Defined in: renderers/representer-node.ts:30
+
+Scale node visually
+
+#### Parameters
+
+##### scale
+
+`number`
+
+#### Returns
+
+`void`

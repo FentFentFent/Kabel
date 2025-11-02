@@ -13,6 +13,7 @@ export default class WorkspaceController {
     wheelDelta: number;
     private _updateInt;
     constructor(workspace: WorkspaceSvg);
+    getZoom(): number;
     canMove(): boolean;
     private _setupListeners;
     update(): void;

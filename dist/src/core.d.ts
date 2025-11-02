@@ -1,41 +1,42 @@
-import RendererConstants from "../renderers/constants";
-import Renderer from "../renderers/renderer";
-import Connection from "./connection";
-import Coordinates from "./coordinates";
-import Field, { AnyFieldCls, DummyField, NumberField, OptConnectField, TextField } from "./field";
-import inject, { InjectMsg } from "./inject";
-import { clearMainWorkspace, getMainWorkspace, setMainWorkspace } from "./main-workspace";
-import NodeSvg from "./nodesvg";
-import WorkspaceSvg from "./workspace-svg";
-import { NodePrototype } from "./node-types";
-import { ColorStyle } from "./visual-types";
-import { parseColor } from "../util/parse-color";
-import { Eventer } from "../util/eventer";
+import RendererConstants from '../renderers/constants';
+import Renderer from '../renderers/renderer';
+import Connection from './connection';
+import Coordinates from './coordinates';
+import Field, { AnyFieldCls, DummyField, NumberField, OptConnectField, TextField } from './field';
+import inject, { InjectMsg } from './inject';
+import { clearMainWorkspace, getMainWorkspace, setMainWorkspace } from './main-workspace';
+import NodeSvg from './nodesvg';
+import WorkspaceSvg from './workspace-svg';
+import { NodePrototype } from './node-types';
+import { ColorStyle } from './visual-types';
+import { parseColor } from '../util/parse-color';
+import { Eventer } from '../util/eventer';
 import * as Path from '../util/path';
 import * as SVG from '@svgdotjs/svg.js';
 import * as UID from '../util/uid';
-import hasProp from "../util/has-prop";
-import EventEmitter from "../util/emitter";
+import hasProp from '../util/has-prop';
+import EventEmitter from '../util/emitter';
 import '../events/events';
-import WorkspaceController from "../controllers/base";
-import WASDController from "../controllers/wasd";
-import { RMap } from "./renderer-map";
-import { Styler } from "../util/styler";
-import Widget from "./widget";
-import { Showable } from "./context-menu";
-import escapeAttr from "../util/escape-html";
-import unescapeAttr from "../util/unescape-html";
-import waitFrames from "../util/wait-anim-frames";
-import CommentModel from "./comment";
+import WorkspaceController from '../controllers/base';
+import WASDController from '../controllers/wasd';
+import { RMap } from './renderer-map';
+import { Styler } from '../util/styler';
+import Widget from './widget';
+import { Showable } from './context-menu';
+import escapeAttr from '../util/escape-html';
+import unescapeAttr from '../util/unescape-html';
+import waitFrames from '../util/wait-anim-frames';
+import CommentModel from './comment';
 import CommentRenderer from '../comment-renderer/renderer';
+import Representer from '../renderers/representer';
+import { RepresenterNode } from '../renderers/representer-node';
+/**
+ * Central Kabel object exposing all main modules, utilities, and defaults
+ */
 declare const Kabel: {
     UIX: {
         events: Eventer;
-        /**
-         * State Manager, Makes things possible: E.G (the 'typing' state when you type in a input box..)
-         * Used in controllers so you dont move when typing characters like a w s or d etc.
-         */
-        userState: import("../util/user-state").UserState;
+        /** * State Manager, Makes things possible: E.G (the 'typing' state when you type in a input box..) * Used in controllers so you dont move when typing characters like a w s or d etc. */ userState: import("../util/user-state").UserState;
     };
     ContextMenu: {
         registerOption(id: string, option: {
@@ -97,11 +98,14 @@ declare const Kabel: {
         rendererMap: typeof RMap;
         Renderer: typeof Renderer;
         RendererConstants: typeof RendererConstants;
+        Representer: typeof Representer;
+        RepresenterNode: typeof RepresenterNode;
     };
     commentRendering: {
         CommentModel: typeof CommentModel;
         CommentRenderer: typeof CommentRenderer;
     };
+    Dropdown: import("./dropdown-menu").DropdownContainer;
 };
 export default Kabel;
 //# sourceMappingURL=core.d.ts.map

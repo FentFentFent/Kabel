@@ -37,6 +37,7 @@ declare class RendererConstants {
     TOPBAR_LABEL_BOLDED: boolean;
     CONNECTOR_LINE_WIDTH: number;
     CONNECTOR_LINE_CURVED: boolean;
+    ZOOM_BASE: number;
     constructor(overrides?: Partial<RendererConstants>);
 }
 export default RendererConstants;

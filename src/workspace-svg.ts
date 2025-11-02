@@ -101,6 +101,9 @@ class WorkspaceSvg {
         this._ctxMenu = new ContextMenuHTML(this);
         this._commentDB = new Set();
     }
+    getZoom() {
+        return this.controller.getZoom();
+    }
     /**
      * Refresh comments.
      */
@@ -212,9 +215,12 @@ class WorkspaceSvg {
      * @param y - Y position in workspace coordinates.
      * @returns Screen coordinates as a Coordinates instance.
      */
-    workspaceToScreen(x: number, y: number): Coordinates {
-        const { x: rx, y: ry } = this.controller.workspaceToScreen(x, y);
-        return new Coordinates(rx, ry);
+    workspaceToScreen(workX: number, workY: number) {
+        const zoom = this.getZoom();
+        // _camera represents the top-left of the visible viewport in workspace coords
+        const x = (workX - this._camera.x) * zoom;
+        const y = (workY - this._camera.y) * zoom;
+        return { x, y };
     }
 
     /**
@@ -223,9 +229,11 @@ class WorkspaceSvg {
      * @param y - Y position in screen coordinates.
      * @returns Workspace coordinates as a Coordinates instance.
      */
-    screenToWorkspace(x: number, y: number): Coordinates {
-        const { x: rx, y: ry } = this.controller.screenToWorkspace(x, y);
-        return new Coordinates(rx, ry);
+    screenToWorkspace(screenX: number, screenY: number) {
+        const zoom = this.getZoom();
+        const workX = screenX / zoom + this._camera.x;
+        const workY = screenY / zoom + this._camera.y;
+        return { x: workX, y: workY };
     }
 
     /**
@@ -234,7 +242,7 @@ class WorkspaceSvg {
      * @returns The rendered node.
      */
     drawNode(id: string) {
-        return this.renderer.renderNode(id);
+        return this.renderer.rerenderNode(this._nodeDB.get(id) as NodeSvg);
     }
 
     /**
@@ -251,7 +259,7 @@ class WorkspaceSvg {
             node.workspace = this;
         }
         this._nodeDB.set(id, node);
-        this.redraw();
+        this.drawNode(id);
     }
 
     /**
@@ -276,7 +284,7 @@ class WorkspaceSvg {
         const node = this.newNode(type);
         if (!node) return;
         node.relativeCoords.set(x, y);
-        this.redraw();
+        this.drawNode(node.id);
         return node;
     }
     /**
@@ -388,6 +396,45 @@ class WorkspaceSvg {
     redrawComments() {
         this.renderer.clearComments();
         this.renderer.drawComments();
+    }
+    /**
+     * Deserialize this workspace from json data.
+     * @param json - Serialized workspace
+     */
+    fromJson(json: {nodes: any[], circular: boolean }) {
+        if (json.circular) {
+            for (let node of json.nodes) {
+                NodeSvg.deserialize(node, this);
+            }
+        } else {
+            for (let node of json.nodes) {
+                NodeSvg.fromJson(node, this);
+            }
+        }
+    }
+    /**
+     * Serialize this workspace, optionally using circular references.
+     */
+    toJson(circular: boolean) {
+        const nodes = [];
+        if (circular) {
+            for (let [id, node] of this._nodeDB) {
+                if (node.topLevel) {
+                    nodes.push(node.serialize());
+                }
+            }
+        } else {
+            for (let [id, node] of this._nodeDB) {
+                if (node.topLevel) {
+                    nodes.push(node.toJson());
+                }
+            }
+        }
+
+        return {
+            circular,
+            nodes
+        }
     }
 }
 

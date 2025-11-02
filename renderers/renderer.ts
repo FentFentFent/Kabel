@@ -12,6 +12,7 @@ import escapeAttr from '../util/escape-html';
 import unescapeAttr from '../util/unescape-html';
 import CommentRenderer from "../comment-renderer/renderer";
 import { FieldVisualInfo } from "../src/field";
+import { RepresenterNode } from "./representer-node";
 
 export interface ConnectorToFrom {
     to: Connection,
@@ -49,6 +50,7 @@ class Renderer {
     _ws: WorkspaceSvg;
     _drawStates: DrawState[];
     _commentDrawer!: CommentRenderer;
+	representer!: import('./representer').default;
     static get NODE_G_TAG() {
         return 'AtlasNodeSVG';
     }
@@ -75,8 +77,13 @@ class Renderer {
         this._nodeGroup = null;
         this._nodeDraw = null;
         this._drawStates = [];
-        this.initCommentRenderer()
+        this.initCommentRenderer();
+        this.initRepresenter();
 
+    }
+    initRepresenter() {
+        const Representer = (require('./representer').default);
+        this.representer = new Representer();
     }
     initCommentRenderer() {
         this._commentDrawer = new CommentRenderer(this.getWs());
@@ -156,6 +163,7 @@ class Renderer {
         txt.remove(); // clean up
         return height;
     }
+
 
 
     measureRawField(text: string = "") {
@@ -268,7 +276,9 @@ class Renderer {
     }
     renderNode(nodeIdOrNode: NodeSvg | string) {
         this.startNode(nodeIdOrNode);
+        if (!this.node) return;
         this.drawNode();
+        this.representer.build(this.node as NodeSvg, this, this.state as DrawState);
         this.storeState();
     }
     startNode(nodeIdOrNode: NodeSvg | string) {
@@ -512,20 +522,32 @@ class Renderer {
     drawComments() {
         return this._commentDrawer?.drawAllComments?.();
     }
+    getZoom() {
+        return this._ws.getZoom() ?? 1;
+    }
+
+    applyZoomToNode(nodeG: G, node: NodeSvg) {
+        const zoom = this.getZoom();
+        const { x, y } = this._ws.workspaceToScreen(node.relativeCoords.x, node.relativeCoords.y);
+        nodeG.attr({ transform: `translate(${x}, ${y}) scale(${zoom})` });
+    }
+
     refreshNodeTransforms() {
-        const nodeGroups: List<G> = this.svg.find(`.${(this.constructor as typeof Renderer).NODE_G_TAG}`) as List<G>;
+        const nodeGroups = this.svg.find(`.${(this.constructor as typeof Renderer).NODE_G_TAG}`);
+        const zoom = this.getZoom();
+
         for (let nodeG of nodeGroups) {
-            const node: NodeSvg | undefined = this.getWs().getNode(unescapeAttr(nodeG.attr('data-node-id')));
+            const node = this._ws.getNode(unescapeAttr(nodeG.attr('data-node-id')));
             if (!node) continue;
-            const screenPos = this._ws.workspaceToScreen(
-                node.relativeCoords.x,
-                node.relativeCoords.y
-            );
-            nodeG.attr({ transform: `translate(${screenPos.x}, ${screenPos.y})` });
+            const { x, y } = this._ws.workspaceToScreen(node.relativeCoords.x, node.relativeCoords.y);
+            nodeG.attr({ transform: `translate(${x}, ${y}) scale(${zoom})` });
         }
+
         this.refreshConnectionLines();
         this.refreshComments();
     }
+
+
     refreshConnectionLines() {
         this.clearLines();
         this.drawLinesForAllNodes();
@@ -580,6 +602,7 @@ class Renderer {
         this.drawNodeLabel(nodeGroup);
         eventer.addElement(nodeGroup, 'k_draggable', {
             dragel: state.topbar, // the handle
+            group: nodeGroup,
             node: node,     // NodeSvg instance
             type: 2
         }).tagElement(nodeGroup, [(this.constructor as typeof Renderer).ELEMENT_TAG, `node_${node.id}`]);
@@ -616,7 +639,6 @@ class Renderer {
                     background: state!.bg as unknown as Rect
                 });
             } else {
-                // fallback: renderer draws raw/connector as before
                 let rawData, cBubbleData = undefined;
                 // if raw, draw right after label
                 if (field.hasRaw()) {
@@ -715,7 +737,6 @@ class Renderer {
             }
         }
 
-        node.svgGroup = nodeGroup;
 
     }
     fillAllNodeConnectorBubbles() {
@@ -795,9 +816,10 @@ class Renderer {
                 } else {
                     pathStr = `M ${absStartX} ${absStartY} L ${absEndX} ${absEndY}`;
                 }
-
+                const zoom = this._ws.getZoom();
+                const strokeWidth = c.CONNECTOR_LINE_WIDTH * zoom;
                 const line = wsSvg.path(pathStr)
-                    .stroke({ color: parseColor(fromCircle.fill() as Color), width: c.CONNECTOR_LINE_WIDTH })
+                    .stroke({ color: parseColor(fromCircle.fill() as Color), width: strokeWidth })
                     .fill('none')
                     .attr({ class: (this.constructor as typeof Renderer).CONN_LINE_TAG });
 
@@ -855,12 +877,12 @@ class Renderer {
         // rebuild node
         this.startNode(node);
         this.drawNode();
+        this.representer.build(this.node as NodeSvg, this, this.state as DrawState);
         this.storeState();
 
         // refresh *all* lines once the node is back in place
-        this.refreshConnectionLines();
-
-        return node.svgGroup;
+        this.refreshNodeTransforms();
+        return (node.svg as RepresenterNode).getRaw();
     }
 
 }

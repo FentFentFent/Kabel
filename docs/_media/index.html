@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Kabel Test</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        function initKabel() {
+            function main() {
+                const k = Kabel;
+
+                const el = document.createElement('div');
+                Object.assign(el.style, {
+                    width: '100vw',
+                    height: '100vh',
+                    background: '#f0f0f0'
+                });
+                document.body.appendChild(el);
+                /**
+                 *{
+                        type: 'category',
+                        contents: [{
+                            name: "Cat",
+                            color: "#cc0c00",
+                            contents: [{
+                                type: 'my_node',
+                                arguments: {}
+                            }]
+                        }]
+                    } 
+                 */
+                k.Nodes['my_node'] = {
+                    init() {
+                        this.jsonInit({
+                            previousConnection: true,
+                            nextConnection: true,
+                            labelText: 'TopbarText',
+                            type: 'my_node',
+                            primaryColor: '#cc0c00',
+                            tertiaryColor: '#660500',
+                            arguments: [
+                                {
+                                    name: 'FLD',
+                                    type: 'field_str',
+                                    label: 'LabelText: ',
+                                    value: 'ValueText'
+                                },
+                                {
+                                    name: 'Dummy',
+                                    type: 'field_dummy',
+                                    label: 'Label with no input!'
+                                }, 
+                                {
+                                    name: 'Conn',
+                                    type: 'connection',
+                                    label: 'Label!'
+                                },
+                                {
+                                    name: 'Conn2',
+                                    type: 'field_both',
+                                    label: 'lowk: ',
+                                    value: 'lowk'
+                                }, {
+                                    name: 'Dropdown',
+                                    type: 'dropdown',
+                                    label: 'lowk dropdown?: ',
+                                    options: [
+                                        'Oooo option',
+                                        {text: 'Opt', value: 'opt'}
+                                    ]
+                                }
+                            ]
+                        });
+                    }
+                };
+                /**
+                k.Widgets['testWidget'] = {
+                    name: 'Test Widget',
+                    width: 150,
+                    height: 100,
+                    coords: new k.Coordinates(50, 50),
+                    html: '<button id="counterBtn">Count: 0</button>',
+                    init: function (widget, container) {
+                        let count = 0;
+                        const btn = container.querySelector('#counterBtn');
+                        if (btn) {
+                            btn.addEventListener('click', function () {
+                                count++;
+                                btn.textContent = 'Count: ' + count;
+                            });
+                        }
+                    }
+                };
+                **/
+                // Use WASDController with acceleration
+                const ws = k.inject(el, {
+                    moveSpeed: 6, // optional, base speed
+                    controls: {
+                        wasd: true,
+                        wasdSmooth: true,
+                        wasdAccelerate: 1,
+                        wasdFriction: 0.9
+                    },
+                    toolbox: {
+                        type: 'category',
+                        contents: [{
+                            name: "Cat",
+                            color: "#cc0c00",
+                            contents: [{
+                                type: 'my_node',
+                                arguments: {}
+                            }]
+                        }]
+                    }
+                });
+
+                // Define custom node type
+
+                // Create nodes
+                const node = new k.NodeSvg(k.Nodes['my_node'], ws);
+                node.init();
+
+                const node1 = new k.NodeSvg(k.Nodes['my_node'], ws);
+                node1.init();
+                node1.relativeCoords.set(20, 0);
+
+                node.nextConnection.to = node1;
+                node1.previousConnection.from = node;
+
+                ws.redraw();
+                const myWidget = ws.newWidget('testWidget');
+                if (myWidget) myWidget.show(); // make it visible
+                // Expose for debugging
+                window.ws = ws;
+                window.nodes = [node, node1];
+            }
+
+            if (typeof Kabel !== 'undefined') {
+                main();
+            }
+        }
+    </script>
+
+    <script src="./kabel.js" onload="initKabel()"></script>
+</body>
+
+</html>

@@ -70,7 +70,7 @@ function initDraggable(element: Element, args: Record<string, any>): () => void 
             ws.refresh();
             // Move node visually
             const screenPos = ws.workspaceToScreen(newX, newY);
-            element.attr({ transform: `translate(${screenPos.x}, ${screenPos.y})` });
+            element.attr({ transform: `translate(${screenPos.x}, ${screenPos.y}) scale(${ws.getZoom()})` });
 
             args.node.emit('NODE_DRAG', null);
         } else if (args.type === 1 && args.onmove) {

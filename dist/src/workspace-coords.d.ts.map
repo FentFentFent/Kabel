@@ -1,1 +1,1 @@
-{"version":3,"file":"workspace-coords.d.ts","sourceRoot":"","sources":["../../src/workspace-coords.ts"],"names":[],"mappings":"AAAA,OAAO,WAAW,MAAM,eAAe,CAAC;AAKxC,cAAM,eAAgB,SAAQ,WAAW;gBACzB,CAAC,SAAI,EAAE,CAAC,SAAI;CAG3B;AACD,eAAe,eAAe,CAAC"}
+{"version":3,"file":"workspace-coords.d.ts","sourceRoot":"","sources":["../../src/workspace-coords.ts"],"names":[],"mappings":"AAAA,OAAO,WAAW,MAAM,eAAe,CAAC;AAIxC;;;GAGG;AACH,cAAM,eAAgB,SAAQ,WAAW;gBACzB,CAAC,SAAI,EAAE,CAAC,SAAI;CAG3B;AACD,eAAe,eAAe,CAAC"}

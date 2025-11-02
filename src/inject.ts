@@ -7,87 +7,173 @@ import { FieldOptions } from "./field";
 import { Color } from "./visual-types";
 import styler from '../util/styler';
 // @ts-ignore
-import _kabelStyles from './styles.css'
-const kabelStyles : string = _kabelStyles;
+import _kabelStyles from './styles.css';
 
+const kabelStyles: string = _kabelStyles;
+
+/**
+ * Represents a field in a toolbox node.
+ * Can contain any extra properties as needed by the field type.
+ */
 export interface TblxFieldStruct {
-	value: any;
-	[key: string]: any;
+    /** Field value */
+    value: any;
+
+    /** Additional field-specific properties */
+    [key: string]: any;
 }
 
+/**
+ * Represents a node in a toolbox.
+ */
 export interface TblxNodeStruct {
-	type: keyof typeof NodePrototypes | string;
-	arguments: {
-		[key: string]: TblxFieldStruct;
-	};
+    /** Node type (matches NodePrototypes key or arbitrary string) */
+    type: keyof typeof NodePrototypes | string;
+
+    /** Map of field names to field data */
+    arguments: {
+        [key: string]: TblxFieldStruct;
+    };
 }
 
+/**
+ * Represents a category in the toolbox, which contains multiple nodes.
+ */
 export interface TblxCategoryStruct {
-	name: string;
-	color: Color;
-	contents: TblxNodeStruct[];
+    /** Category name */
+    name: string;
+
+    /** Category color */
+    color: Color;
+
+    /** Nodes contained in this category */
+    contents: TblxNodeStruct[];
 }
 
-// Discriminated union for TlbxObjStruct
+/**
+ * Discriminated union type representing possible toolbox structures.
+ * Can be a flyout (list of nodes) or a categorized toolbox.
+ */
 export type TblxObjStruct =
-	| {
-		type: 'flyout';
-		contents: TblxNodeStruct[];
-	}
-	| {
-		type?: 'category';
-		contents: TblxCategoryStruct[];
-	}
-	| {
-		type?: undefined; // when type is not provided
-		contents: TblxCategoryStruct[];
-	};
+    | {
+        /** Flyout toolbox type */
+        type: 'flyout';
+        contents: TblxNodeStruct[];
+    }
+    | {
+        /** Categorized toolbox type */
+        type?: 'category';
+        contents: TblxCategoryStruct[];
+    }
+    | {
+        /** When type is omitted, defaults to categories */
+        type?: undefined;
+        contents: TblxCategoryStruct[];
+    };
 
-
+/**
+ * Options used when injecting a new workspace.
+ */
 export interface InjectOptions {
-    rendererOverrides?: {[key: string] : any};
+    /** Optional renderer overrides */
+    rendererOverrides?: { [key: string]: any };
+
+    /** Optional custom controller class */
     Controller?: typeof WorkspaceController;
+
+    /** Optional controls configuration */
     controls?: {
+        zoomSpeed?: number;
+        minZoom?: number;
+        maxZoom?: number;
         wasd?: boolean;
         wasdSmooth?: boolean;
         wasdAccelerate?: number;
         wasdFriction?: number;
-    }
+    };
+
+    /** Optional toolbox structure */
     toolbox?: TblxObjStruct;
+
+    /** Optional movement speed of the workspace */
     moveSpeed?: number;
-    renderer?: string|typeof Renderer;
+
+    /** Optional renderer: name string or class */
+    renderer?: string | typeof Renderer;
 }
+
+/**
+ * Utility class for logging injection messages in a structured way.
+ */
 export class InjectMsg {
+    /** Message content */
     msg: string;
+
+    /**
+     * Creates a new InjectMsg instance.
+     * @param msg - Message text
+     */
     constructor(msg: string) {
         this.msg = msg;
     }
+
+    /** Log as error */
     err() {
-        console.error(`Failed to inject workspace: ${this.msg}`)
+        console.error(`Failed to inject workspace: ${this.msg}`);
     }
+
+    /** Log as warning */
     wrn() {
-        console.warn(`Inject warning: ${this.msg}`)
+        console.warn(`Inject warning: ${this.msg}`);
     }
+
+    /** Log as info */
     info() {
-        console.info(`Inject info: ${this.msg}`)
+        console.info(`Inject info: ${this.msg}`);
     }
 }
-export default function inject(element: HTMLElement | string, options: InjectOptions = {}) : undefined | WorkspaceSvg{
+
+/**
+ * Injects a new Kabel workspace into the document.
+ * Appends the workspace container to the given element (or element ID) and
+ * sets it as the main workspace.
+ *
+ * @param element - HTMLElement or string ID to attach the workspace to
+ * @param options - Optional InjectOptions to configure the workspace
+ * @returns The newly created WorkspaceSvg instance, or undefined if injection failed
+ */
+export default function inject(
+    element: HTMLElement | string,
+    options: InjectOptions = {}
+): WorkspaceSvg | undefined {
+    // Apply global Kabel styles
     styler.appendStyles('KabelStyles', kabelStyles);
-    const root = typeof element == 'string' ? document.querySelector(`#${element}`) as HTMLElement : element as HTMLElement;
-    if ((!root) && typeof element == 'string') {
-        (new InjectMsg(`Document does not contain root element (Check element ID).`)).err();
+
+    const root =
+        typeof element === 'string'
+            ? document.querySelector(`#${element}`) as HTMLElement
+            : element as HTMLElement;
+
+    if (!root) {
+        new InjectMsg(`Document does not contain root element (Check element ID).`).err();
         return;
     }
+
     if (!document.contains(root)) {
-        (new InjectMsg(`Document does not contain root element.`)).err();
+        new InjectMsg(`Document does not contain root element.`).err();
         return;
     }
+
+    // Create workspace wrapper element
     const wsTop = document.createElement('div');
     wsTop.className = `KabelWorkspaceWrapper`;
     root.appendChild(wsTop);
+
+    // Initialize workspace
     const ws = new WorkspaceSvg(root, wsTop, options);
-    setMainWorkspace(ws); // Set the main workspace to the newest created.
+
+    // Set as the main workspace globally
+    setMainWorkspace(ws);
 
     return ws;
 }

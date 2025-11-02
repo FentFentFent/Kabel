@@ -1,4 +1,3 @@
-import Coordinates from "./coordinates";
 import NodeSvg from "./nodesvg";
 import { Svg } from '@svgdotjs/svg.js';
 import Renderer from '../renderers/renderer';
@@ -58,6 +57,7 @@ declare class WorkspaceSvg {
      * @param options - Configuration and renderer override options.
      */
     constructor(root: HTMLElement, wsTop: HTMLElement, options: InjectOptions);
+    getZoom(): number;
     /**
      * Refresh comments.
      */
@@ -125,20 +125,26 @@ declare class WorkspaceSvg {
      * @param y - Y position in workspace coordinates.
      * @returns Screen coordinates as a Coordinates instance.
      */
-    workspaceToScreen(x: number, y: number): Coordinates;
+    workspaceToScreen(workX: number, workY: number): {
+        x: number;
+        y: number;
+    };
     /**
      * Converts screen (SVG) coordinates to workspace coordinates.
      * @param x - X position in screen coordinates.
      * @param y - Y position in screen coordinates.
      * @returns Workspace coordinates as a Coordinates instance.
      */
-    screenToWorkspace(x: number, y: number): Coordinates;
+    screenToWorkspace(screenX: number, screenY: number): {
+        x: number;
+        y: number;
+    };
     /**
      * Draws a node by its ID.
      * @param id - The ID of the node to render.
      * @returns The rendered node.
      */
-    drawNode(id: string): void;
+    drawNode(id: string): import("@svgdotjs/svg.js", { with: { "resolution-mode": "import" } }).G | null | undefined;
     /**
      * Adds a node to the workspace.
      * @param node - The node instance to add.
@@ -205,6 +211,32 @@ declare class WorkspaceSvg {
      * Redraw all comments in this workspace.
      */
     redrawComments(): void;
+    /**
+     * Deserialize this workspace from json data.
+     * @param json - Serialized workspace
+     */
+    fromJson(json: {
+        nodes: any[];
+        circular: boolean;
+    }): void;
+    /**
+     * Serialize this workspace, optionally using circular references.
+     */
+    toJson(circular: boolean): {
+        circular: boolean;
+        nodes: (import("./nodesvg").SerializedNode | {
+            [id: string]: Omit<import("./nodesvg").SerializedNode, "previousConnection" | "nextConnection"> & {
+                previousConnection?: {
+                    field?: import("./field").FieldOptions;
+                    node?: string;
+                };
+                nextConnection?: {
+                    field?: import("./field").FieldOptions;
+                    node?: string;
+                };
+            };
+        })[];
+    };
 }
 export default WorkspaceSvg;
 //# sourceMappingURL=workspace-svg.d.ts.map

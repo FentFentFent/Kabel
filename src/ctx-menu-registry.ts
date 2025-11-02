@@ -3,15 +3,28 @@ import { ContextMenuOpts, Showable } from "./context-menu";
 import NodeSvg from "./nodesvg";
 import WorkspaceSvg from "./workspace-svg";
 
-
+/** Registry for all context menu options */
 const ContextOptsRegistry: ContextMenuOpts[] = [];
 
+/**
+ * Global context menu manager
+ */
 const ContextMenu = {
+    /**
+     * Register a new context menu option
+     * @param id - Unique identifier for the option
+     * @param option - Configuration for the context menu item
+     */
     registerOption(id: string, option: {
+        /** Callback when the option is clicked */
         click: (target: NodeSvg | WorkspaceSvg | HTMLElement | CommentModel) => void;
+        /** Callback when hovering starts */
         onHoverStart?: () => void;
+        /** Callback when hovering ends */
         onHoverEnd?: () => void;
+        /** Label text for the menu item */
         label: string;
+        /** Target type(s) the option should appear for */
         showFor: Showable | Showable[];
     }) {
         const opt = {
@@ -25,24 +38,31 @@ const ContextMenu = {
         ContextOptsRegistry.push(opt);
     },
 
+    /**
+     * Unregister an existing context menu option by ID
+     * @param id - ID of the option to remove
+     */
     unregisterOption(id: string) {
         const index = ContextOptsRegistry.findIndex(opt => opt.id === id);
         if (index >= 0) ContextOptsRegistry.splice(index, 1);
     }
 };
 
+// ----- Default options -----
+
 ContextMenu.registerOption('k_delete', {
     showFor: 'node',
-    label: 'Delete', // required
+    label: 'Delete',
     click: (t) => {
         const target = t as NodeSvg;
         if (!target.workspace) return;
         target.workspace.removeNode(target);
     }
 });
+
 ContextMenu.registerOption('k_deleteall', {
     showFor: 'ws',
-    label: 'Delete all', // required
+    label: 'Delete all',
     click: (t) => {
         const target = t as WorkspaceSvg;
         const isSure = window.confirm(`Are you sure you want to delete ${Array.from(target._nodeDB.keys()).length} nodes?`);
@@ -51,7 +71,8 @@ ContextMenu.registerOption('k_deleteall', {
             target.removeNodeById(id);
         }
     }
-})
+});
+
 ContextMenu.registerOption('k_addcomment', {
     showFor: ['ws', 'node'],
     label: 'Add Comment',
@@ -67,7 +88,8 @@ ContextMenu.registerOption('k_addcomment', {
             model.setText('Comment!');
         }
     }
-})
+});
+
 ContextMenu.registerOption('k_deletecomment', {
     showFor: 'comment',
     label: 'Delete Comment',
@@ -79,7 +101,8 @@ ContextMenu.registerOption('k_deletecomment', {
             target.getWorkspace().removeComment(target);
         }
     }
-})
+});
+
 ContextMenu.registerOption('k_duplicate', {
     showFor: 'node',
     label: 'Duplicate',
@@ -90,6 +113,5 @@ ContextMenu.registerOption('k_duplicate', {
     }
 });
 
-
-export { ContextMenu }
+export { ContextMenu };
 export default ContextOptsRegistry;

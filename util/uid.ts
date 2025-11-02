@@ -1,6 +1,8 @@
 // uid.ts
-// Tiny UID toolkit – no deps. Tabs > spaces, obviously.
 
+/**
+ * Strategy used to generate UIDs.
+ */
 export type UIDStrategy = "uuidv4" | "ulid" | "nanoid" | "short";
 
 export interface UIDOptions {
@@ -14,7 +16,13 @@ export interface UIDOptions {
 const cryptoAPI: Crypto | null =
     (typeof globalThis !== "undefined" && (globalThis as any).crypto) || null;
 
-/** Random bytes helper */
+/**
+ * Returns a Uint8Array of random bytes.
+ * Uses Web Crypto if available; falls back to Math.random otherwise (not cryptographically secure).
+ *
+ * @param {number} len - Number of random bytes to generate.
+ * @returns {Uint8Array} Random bytes array.
+ */
 function randBytes(len: number): Uint8Array {
     if (cryptoAPI?.getRandomValues) {
         const buf = new Uint8Array(len);
@@ -27,7 +35,12 @@ function randBytes(len: number): Uint8Array {
     return buf;
 }
 
-/** RFC4122 UUID v4 (uses crypto.randomUUID if available) */
+/**
+ * Generates an RFC4122-compliant UUID v4.
+ * Uses `crypto.randomUUID` if available.
+ *
+ * @returns {string} UUID v4 string.
+ */
 export function uuidv4(): string {
     const g: any = globalThis as any;
     if (g?.crypto?.randomUUID) return g.crypto.randomUUID();
@@ -59,7 +72,12 @@ export function uuidv4(): string {
 /** Crockford Base32 alphabet for ULID */
 const CROCK32 = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"; // no I L O U
 
-/** ULID: time-sortable, 26 chars */
+/**
+ * Generates a 26-character ULID (time-sortable unique ID).
+ *
+ * @param {number} [date] - Optional timestamp in milliseconds. Defaults to `Date.now()`.
+ * @returns {string} ULID string.
+ */
 export function ulid(date?: number): string {
     const time = (typeof date === "number" ? date : Date.now()) >>> 0; // low 32 bits
     const timeHi = Math.floor((typeof date === "number" ? date : Date.now()) / 0x100000000) >>> 0; // high 32
@@ -107,7 +125,13 @@ export function ulid(date?: number): string {
 /** NanoID-style: URL-safe alphabet by default, configurable length/alphabet */
 const DEFAULT_ALPHABET =
     "_-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
+/**
+ * Generates a NanoID-style string.
+ *
+ * @param {number} [size=21] - Length of the generated ID.
+ * @param {string} [alphabet=DEFAULT_ALPHABET] - Alphabet to use.
+ * @returns {string} Generated NanoID string.
+ */
 export function nanoid(size: number = 21, alphabet: string = DEFAULT_ALPHABET): string {
     if (size <= 0) throw new Error("size must be > 0");
     const mask = (1 << Math.ceil(Math.log2(alphabet.length))) - 1;
@@ -121,7 +145,12 @@ export function nanoid(size: number = 21, alphabet: string = DEFAULT_ALPHABET): 
     return id;
 }
 
-/** Short, mostly-unique (not crypto-strong): timestamp base36 + counter + random */
+/**
+ * Generates a short, mostly-unique ID (timestamp + counter + random).
+ * Not cryptographically strong.
+ *
+ * @returns {string} Short UID string.
+ */
 let _ctr = 0;
 export function shortId(): string {
     const ts = Date.now().toString(36);
@@ -134,7 +163,13 @@ export function shortId(): string {
     return `${ts}${c}${r}`;
 }
 
-/** One-call wrapper */
+/**
+ * Generates a UID using the specified strategy.
+ *
+ * @param {UIDStrategy} [strategy="uuidv4"] - The UID strategy to use.
+ * @param {UIDOptions} [opts={}] - Options for the selected strategy.
+ * @returns {string} Generated UID.
+ */
 export function generateUID(strategy: UIDStrategy = "uuidv4", opts: UIDOptions = {}): string {
     switch (strategy) {
         case "uuidv4": return uuidv4();

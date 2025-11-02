@@ -20,6 +20,6 @@
 		"exactOptionalPropertyTypes": true,
 		"skipLibCheck": true
 	},
-	"include": ["src/**/*", "util/uid.ts", "util/user-state.ts"],
+	"include": ["src/**/*", "util", "controllers", "events", ""],
 	"exclude": ["node_modules", "dist"]
 }

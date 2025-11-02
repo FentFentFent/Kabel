@@ -31,6 +31,7 @@ declare class Renderer {
     _ws: WorkspaceSvg;
     _drawStates: DrawState[];
     _commentDrawer: CommentRenderer;
+    representer: import('./representer').default;
     static get NODE_G_TAG(): string;
     static get ELEMENT_TAG(): string;
     static get CONN_LINE_TAG(): string;
@@ -38,6 +39,7 @@ declare class Renderer {
     static get LINE_X_MARK_TAG(): string;
     static get NAME(): string;
     constructor(workspace: WorkspaceSvg, overrides?: Partial<RendererConstants>);
+    initRepresenter(): void;
     initCommentRenderer(): void;
     enqueueSetConnect(c: ConnectorToFrom): void;
     setConstants(c?: Partial<RendererConstants>): RendererConstants & Partial<RendererConstants>;
@@ -93,6 +95,8 @@ declare class Renderer {
     refreshComments(): void;
     clearComments(): void;
     drawComments(): void;
+    getZoom(): number;
+    applyZoomToNode(nodeG: G, node: NodeSvg): void;
     refreshNodeTransforms(): void;
     refreshConnectionLines(): void;
     createNodeDrawState(nodeGroup: G, id: string): DrawState;
@@ -102,7 +106,7 @@ declare class Renderer {
     clearLines(): void;
     clearScreen(): void;
     undoPendingConnsFor(conn: ConnectorToFrom): void;
-    rerenderNode(node: NodeSvg): G | null;
+    rerenderNode(node: NodeSvg): G | null | undefined;
 }
 export default Renderer;
 //# sourceMappingURL=renderer.d.ts.map

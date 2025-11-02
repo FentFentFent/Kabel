@@ -164,16 +164,19 @@ function initInputBox(element: Element, args: Record<string, any>) {
 
         if (ev) {
             const rectBox = rect.node.getBoundingClientRect();
-            const clickX = ev.clientX - rectBox.left - PADDING_X;
+            const zoom = renderer.getWs().getZoom(); // workspace zoom
+            const clickX = (ev.clientX - rectBox.left - PADDING_X) / zoom; // divide by zoom
+
             let cumulativeWidth = 0;
             cursorPos = 0;
             for (let i = 0; i < buffer.length; i++) {
-                const charWidth = measureTextWidth(buffer[i]);
+                const charWidth = measureTextWidth(buffer[i]) / zoom; // scale widths
                 if (cumulativeWidth + charWidth / 2 >= clickX) break;
                 cumulativeWidth += charWidth;
                 cursorPos = i + 1;
             }
         }
+
         anchorPos = cursorPos;
         updateText();
         skipNextClick = true;

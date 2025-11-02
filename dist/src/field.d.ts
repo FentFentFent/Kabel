@@ -2,6 +2,7 @@ import Connection from "./connection";
 import { G, Path, Rect, Svg, Text } from '@svgdotjs/svg.js';
 import NodeSvg from "./nodesvg";
 import { ConnectorToFrom } from "../renderers/renderer";
+import WorkspaceSvg from "./workspace-svg";
 /**
  * Options used to initialize a Field.
  */
@@ -70,7 +71,7 @@ declare class Field<T = any> {
      * Initialize the field from JSON options.
      * @param json FieldOptions object
      */
-    fromJson(json: FieldOptions): void;
+    fromJson(json: FieldOptions, workspace?: WorkspaceSvg): void;
     /** @returns The field's name/key */
     getName(): string;
     /** @returns The human-readable label */
@@ -106,7 +107,9 @@ declare class Field<T = any> {
     setValue(val: T): void;
     /** @returns The value as it should be displayed (can differ from internal value) */
     getDisplayValue(): T | null;
-    toJson(deep: boolean): FieldOptions;
+    toJson(deep: boolean, alreadyProcessed: {
+        [key: string]: any;
+    }): FieldOptions;
 }
 /**
  * Used when you want just a label with no actual value. Any value related methods are no-op.
@@ -178,7 +181,9 @@ export declare class DummyField {
     setValue(_: any): void;
     /** @returns The value as it should be displayed (can differ from internal value) */
     getDisplayValue(): null;
-    toJson(deep: boolean): FieldOptions;
+    toJson(deep: boolean, alreadyProcessed: {
+        [key: string]: any;
+    }): FieldOptions;
 }
 /**
  * Base class for fields that can be connected to other fields.
@@ -191,15 +196,21 @@ export declare class ConnectableField<T = any> extends Field<T> {
     hasRaw(): boolean;
     /** Disconnect this field from any connected Connectable */
     disconnect(): void;
+    fromJson(json: FieldOptions, workspace?: WorkspaceSvg): this;
+    toJson(deep: boolean, alreadyProcessed: {
+        [key: string]: any;
+    }): FieldOptions;
 }
 /** Field storing a numeric value */
 export declare class NumberField extends Field<number> {
     constructor();
+    fromJson(json: FieldOptions): void;
     setValue(val: number): void;
 }
 /** Field storing a string value */
 export declare class TextField extends Field<string> {
     constructor();
+    fromJson(json: FieldOptions): void;
     setValue(val: string): void;
 }
 /**
@@ -223,7 +234,7 @@ export declare class OptConnectField extends ConnectableField<number | string | 
      * Initialize from JSON, respecting fld_type
      * @param json FieldOptions
      */
-    fromJson(json: FieldOptions): void;
+    fromJson(json: FieldOptions, workspace?: WorkspaceSvg): this;
     /**
      * Set the value, converting to number or string depending on fld_type
      * @param val The new value
@@ -233,7 +244,9 @@ export declare class OptConnectField extends ConnectableField<number | string | 
      * @returns Display value for UI purposes (never null)
      */
     getDisplayValue(): string;
-    toJson(deep: boolean): FieldOptions;
+    toJson(deep: boolean, alreadyProcessed: {
+        [key: string]: any;
+    }): FieldOptions;
 }
 export type DropdownItem = {
     text: string;
@@ -250,12 +263,34 @@ export declare class DropdownField extends Field<string> {
     private closeDropdown;
     canEdit(): boolean;
     getSelected(): DropdownItem | null;
-    fromJson(options: FieldOptions): void;
+    fromJson(json: FieldOptions): void;
+    /**
+     * Display value of dropdowns.
+     * @returns - Display value
+     */
     getDisplayValue(): string;
+    /**
+     * Set options on this dropdown
+     * @param options - List of options
+     */
     setOptions(options: DropdownItem[]): void;
-    toJson(deep: boolean): FieldOptions;
+    /**
+     *
+     * @param deep - Whether to recursive it.
+     * @param alreadyProcessed - Map of already serialized nodes.
+     * @returns - Json of this field.
+     */
+    toJson(deep: boolean, alreadyProcessed: {
+        [key: string]: any;
+    }): FieldOptions;
 }
+/**
+ * Any field instance type
+ */
 export type AnyField = Field | OptConnectField | NumberField | TextField | DummyField | ConnectableField;
+/**
+ * Any field class type
+ */
 export type AnyFieldCls = typeof Field | typeof OptConnectField | typeof ConnectableField | typeof NumberField | typeof TextField | typeof DummyField;
 export declare const FieldMap: {
     field_both: typeof OptConnectField;

@@ -3,13 +3,41 @@ import Coordinates from "./coordinates";
 import { generateUID } from "../util/uid";
 
 export interface WidgetOptions {
+    /**
+     * Widget class to instantiate for the widget, by default it uses Kabel's
+     */
     cls?: typeof Widget;
+    /**
+     * Coordinates to spawn the widget at.
+     */
     coords?: Coordinates;      // where to position the widget
+    /**
+     * Width of the widget
+     */
     width?: number;            // optional width
+    /**
+     * Height of the widget.
+     */
     height?: number;           // optional height
+    /**
+     * Class to give the widget's html container.
+     */
     className?: string;        // optional CSS class
+    /**
+     * Widget inner HTML default content.
+     */
     html?: string;             // inner HTML
+    /**
+     * Widget name
+     */
     name: string;
+    /**
+     * Sets up a new widget of this type
+     * @param this - This context of the function points to widget.
+     * @param widget - The widget this function is called on.
+     * @param html - The html container of the widget.
+     * @returns - Void.
+     */
     init?: (this: WidgetOptions, widget: Widget, html: HTMLElement) => void;
 }
 class Widget {

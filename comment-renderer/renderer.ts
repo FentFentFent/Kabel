@@ -106,10 +106,12 @@ class CommentRenderer {
         }
 
         const screenPos = this.workspace.workspaceToScreen(workspaceX, workspaceY);
-        g.move(screenPos.x, screenPos.y);
+        const zoom = this.workspace.getZoom();
+        g.attr({ transform: `translate(${screenPos.x}, ${screenPos.y}) scale(${zoom})` });
+
 
         if (comment._parent instanceof NodeSvg && comment._parent.svgGroup) {
-            this._drawLineToNode(comment, screenPos, bbox, padding);
+            this._drawLineToNode(comment, padding);
         }
     }
 
@@ -136,7 +138,9 @@ class CommentRenderer {
             const screenPos = this.workspace.workspaceToScreen(workspaceX, workspaceY);
 
             // Move comment group
-            comment.svgGroup.move(screenPos.x, screenPos.y);
+            const zoom = this.workspace.getZoom();
+            comment.svgGroup.attr({ transform: `translate(${screenPos.x}, ${screenPos.y}) scale(${zoom})` });
+
 
 
             // Remove line if it exists
@@ -148,33 +152,50 @@ class CommentRenderer {
             // Only redraw line if parent is a NodeSvg
             if (comment._parent instanceof NodeSvg) {
                 const bbox = textEl ? (textEl as Element).bbox() : { width: 0, height: 0 };
-                this._drawLineToNode(comment, screenPos, bbox, 4);
+                this._drawLineToNode(comment, 4);
             }
 
         }
     }
 
-    private _drawLineToNode(comment: NodeSvg['getComment'] extends () => infer C ? C : never,
-        screenPos: { x: number, y: number }, bbox: { width: number, height: number }, padding: number) {
-        if (!comment) return;
-        if (!(comment._parent instanceof NodeSvg)) return;
+
+    private _drawLineToNode(comment: CommentModel, padding: number) {
+        if (!comment || !(comment._parent instanceof NodeSvg) || !comment.svgGroup) return;
         const svg = this.getSvg();
-        const nodeScreenPos = this.workspace.workspaceToScreen(
-            comment._parent.relativeCoords.x,
-            comment._parent.relativeCoords.y
-        );
+        const ws = this.workspace;
+
+        // Remove old line
+        if (comment.svgLine) comment.svgLine.remove();
+
+        // --- Node top-center in screen coordinates ---
+        const nodeWSPos = comment._parent.relativeCoords;
         const nodeBBox = comment._parent.svgGroup!.bbox();
+        const nodeTopCenter = ws.workspaceToScreen(
+            nodeWSPos.x + nodeBBox.width / 2,
+            nodeWSPos.y
+        );
 
-        const nodeCenterX = nodeScreenPos.x + nodeBBox.width / 2;
-        const nodeCenterY = nodeScreenPos.y;
+        // --- Comment top-center in screen coordinates ---
+        const parentWSPos = comment._parent.relativeCoords; // parent position
+        const commentRelPos = comment.relativeCoords;       // comment relative to parent
+        const commentAbsX = parentWSPos.x + commentRelPos.x;
+        const commentAbsY = parentWSPos.y + commentRelPos.y;
+        const commentBBox = comment.svgGroup!.bbox();
+        const commentTopCenter = ws.workspaceToScreen(
+            commentAbsX + (commentBBox.width + padding * 2) / 2,
+            commentAbsY
+        );
 
-        const commentCenterX = screenPos.x + (bbox.width + padding * 2) / 2;
-        const commentTopY = screenPos.y;
-
-        comment.svgLine = svg.line(nodeCenterX, nodeCenterY, commentCenterX, commentTopY)
+        // Draw line
+        comment.svgLine = svg.line(
+            nodeTopCenter.x, nodeTopCenter.y,
+            commentTopCenter.x, commentTopCenter.y
+        )
             .stroke({ color: '#888', width: 1, dasharray: '3,2' })
-            .addClass(CommentRenderer.COMMENT_LINE_TAG);
+            .addClass(CommentRenderer.COMMENT_LINE_TAG)
+            .back();
     }
+
 
     clearAllComments() {
         const svg = this.getSvg();

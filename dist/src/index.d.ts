@@ -1,3 +1,10 @@
+/**
+ * Kabel Core Export Module
+ * ------------------------
+ * This file aggregates all core Kabel modules, types, utilities, and components,
+ * and exports them under a single namespace. This allows consumers to import
+ * everything from 'kabel' without deep paths.
+ */
 import RendererConstants from "../renderers/constants";
 import Renderer, { DrawState, ConnectorToFrom } from "../renderers/renderer";
 import CategoryColors from "./colors";
@@ -17,5 +24,42 @@ import { WidgetPrototypeList } from "./widget-prototypes";
 import KabelInterface from "./types";
 declare const Kabel: KabelInterface;
 export default Kabel;
-export type { KabelInterface, TblxCategoryStruct, TblxNodeStruct, TblxFieldStruct, TblxObjStruct, RendererConstants, Renderer, CategoryColors, Connection, Coordinates, Field, DummyField, FieldMap, NumberField, OptConnectField, TextField, inject, InjectMsg, clearMainWorkspace, getMainWorkspace, setMainWorkspace, NodeSvg, NodePrototypes, WorkspaceSvg, AnyFieldCls, AnyField, InjectOptions, Color, ColorStyle, Hex, RGBObject, RGBString, RGBTuple, NodePrototype, FieldOptions, FieldVisualInfo, NodeJson, NodeEvents, InputFieldJson, Eventer, Connectable, DrawState, ConnectorToFrom, WidgetOptions, WidgetPrototypeList };
+/**
+ * Core exported types and utilities for Kabel.
+ */
+export type { 
+/** Main Kabel interface */
+KabelInterface, 
+/** Toolbox category structure */
+TblxCategoryStruct, 
+/** Toolbox node structure */
+TblxNodeStruct, 
+/** Toolbox field structure */
+TblxFieldStruct, 
+/** Toolbox contents union type */
+TblxObjStruct, 
+/** Renderer constants */
+RendererConstants, 
+/** Renderer class */
+Renderer, 
+/** Category color definitions */
+CategoryColors, 
+/** Node connection */
+Connection, 
+/** 2D coordinates helper */
+Coordinates, 
+/** Base Field classes and helpers */
+Field, DummyField, FieldMap, NumberField, OptConnectField, TextField, 
+/** Workspace injection helpers */
+inject, InjectMsg, clearMainWorkspace, getMainWorkspace, setMainWorkspace, 
+/** Node system */
+NodeSvg, NodePrototypes, WorkspaceSvg, AnyFieldCls, AnyField, InjectOptions, 
+/** Node visual types */
+Color, ColorStyle, Hex, RGBObject, RGBString, RGBTuple, NodePrototype, FieldOptions, FieldVisualInfo, 
+/** Node JSON / serialization types */
+NodeJson, NodeEvents, InputFieldJson, 
+/** Eventing */
+Eventer, Connectable, DrawState, ConnectorToFrom, 
+/** Widget system */
+WidgetOptions, WidgetPrototypeList };
 //# sourceMappingURL=index.d.ts.map

@@ -58,6 +58,8 @@ Then inject Kabel into that container:
 
 ```js
 const ws = Kabel.inject(el, {
+    theme: 'Dark',
+    renderer: 'atlas', // Or `Apollo`
 	moveSpeed: 6,
 	controls: {
 		wasd: true,
@@ -124,7 +126,9 @@ toolbox: {
 		color: '#cc0c00',
 		contents: [{
 			type: 'my_node',
-			arguments: {}
+			arguments: {
+                //FIELD_NAME: FIELD_VALUE
+            }
 		}]
 	}]
 }

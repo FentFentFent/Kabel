@@ -13,6 +13,7 @@
 		"sourceMap": true,
 		"declaration": true,
 		"declarationMap": true,
+		"emitDeclarationOnly": false, // ensure JS + types are emitted
 
 		// Type Safety
 		"strict": true,

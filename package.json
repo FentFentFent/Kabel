@@ -1,7 +1,10 @@
 {
     "name": "@kabel-project/kabel",
-    "version": "1.0.9",
-    "main": "dist/kabel.js",
+    "version": "1.0.10",
+	"main": "dist/kabel.js",         
+	"module": "dist/kabel.js",       
+	"types": "dist/src/index.d.ts",      
+	"files": ["dist"],               
     "scripts": {
         "test": "node test-server.js",
         "build": "npx webpack",
@@ -15,9 +18,6 @@
         "programming",
         "node",
         "graph"
-    ],
-    "files": [
-        "dist"
     ],
     "repository": "https://github.com/FentFentFent/Kabel",
     "author": "fentiefentfent",

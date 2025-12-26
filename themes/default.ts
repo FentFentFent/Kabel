@@ -15,7 +15,6 @@ const KabelWSTheme: WSTheme = {
 			overflowY: 'auto',
 		},
 		toolboxFlyoutBG: {
-			display: 'none',
 			background: 'rgba(240,240,240,0.9)', // reuse same neutral bg
 			overflowY: 'auto',
 			padding: '4px', // like nodes padding

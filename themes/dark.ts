@@ -16,7 +16,6 @@ const KabelDarkTheme: WSTheme = {
 			outline: 'none',
 		},
 		toolboxFlyoutBG: {
-			display: 'block',
 			background: '#1e1e1e',
 			color: '#e0e0e0',
 			overflowY: 'auto',

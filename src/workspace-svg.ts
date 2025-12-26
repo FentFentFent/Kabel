@@ -351,13 +351,13 @@ class WorkspaceSvg extends Workspace {
             this.svg.add(this._backgroundRect);
 
             // now you can safely move it to the back
-            this._backgroundRect.back();
         } catch (e) {
             console.error(e);
         }
         if (this.options.grid) {
             this.grid = new Grid(this, this.svg, this.options.grid);
         }
+        this._backgroundRect?.back();
     }
     /**
      * Updates the transform of the background grid

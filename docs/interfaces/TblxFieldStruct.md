@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: TblxFieldStruct
 
-Defined in: [src/inject.ts:18](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/inject.ts#L18)
+Defined in: [src/inject.ts:19](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/inject.ts#L19)
 
 Represents a field in a toolbox node.
 Can contain any extra properties as needed by the field type.
@@ -23,6 +23,6 @@ Additional field-specific properties
 
 > **value**: `any`
 
-Defined in: [src/inject.ts:20](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/inject.ts#L20)
+Defined in: [src/inject.ts:21](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/inject.ts#L21)
 
 Field value

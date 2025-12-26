@@ -1,65 +1,38 @@
 /**
  * Kabel Core Export Module
  * ------------------------
- * This file aggregates all core Kabel modules, types, utilities, and components,
- * and exports them under a single namespace. This allows consumers to import
- * everything from 'kabel' without deep paths.
+ * Aggregates all core Kabel modules, types, utilities, and components,
+ * and exports them under a single namespace.
  */
 import RendererConstants from "../renderers/constants";
 import Renderer, { DrawState, ConnectorToFrom } from "../renderers/renderer";
 import CategoryColors from "./colors";
 import Connection, { Connectable } from "./connection";
 import Coordinates from "./coordinates";
-import Field, { FieldOptions, FieldVisualInfo, AnyFieldCls, AnyField, DummyField, FieldMap, NumberField, OptConnectField, TextField } from "./field";
-import inject, { InjectMsg, InjectOptions, TblxCategoryStruct, TblxObjStruct, TblxFieldStruct, TblxNodeStruct } from "./inject";
+import Field, { FieldOptions, FieldVisualInfo, AnyFieldCls, AnyField, DummyField, FieldMap, NumberField, OptConnectField, TextField, ConnectableField, FieldRawBoxData, FieldConnectionData } from "./field";
+import inject, { InjectMsg, InjectOptions, TblxCategoryStruct, TblxObjStruct, TblxFieldStruct, TblxNodeStruct, GridOptions } from "./inject";
 import { clearMainWorkspace, getMainWorkspace, setMainWorkspace } from "./main-workspace";
-import NodeSvg, { NodeJson, NodeEvents, InputFieldJson } from "./nodesvg";
+import NodeSvg, { NodeJson, NodeEvents, InputFieldJson, SerializedNode } from "./nodesvg";
 import NodePrototypes from "./prototypes";
 import WorkspaceSvg from "./workspace-svg";
+import WorkspaceCoords from "./workspace-coords";
 import { NodePrototype } from "./node-types";
 import { Color, ColorStyle, Hex, RGBObject, RGBString, RGBTuple } from "./visual-types";
-import { Eventer } from "../util/eventer";
+import { Eventer, EventSetupFn, EventArgs, RegisteredEl } from "../util/eventer";
 import { WidgetOptions } from "./widget";
 import { WidgetPrototypeList } from "./widget-prototypes";
-import KabelInterface from "./types";
+import Showable, { KabelInterface, KabelCommentRendering, KabelNodeRendering, KabelUIX, KabelUtils } from "./types";
 declare const Kabel: KabelInterface;
 export default Kabel;
-/**
- * Core exported types and utilities for Kabel.
- */
-export type { 
-/** Main Kabel interface */
-KabelInterface, 
-/** Toolbox category structure */
-TblxCategoryStruct, 
-/** Toolbox node structure */
-TblxNodeStruct, 
-/** Toolbox field structure */
-TblxFieldStruct, 
-/** Toolbox contents union type */
-TblxObjStruct, 
-/** Renderer constants */
-RendererConstants, 
-/** Renderer class */
-Renderer, 
-/** Category color definitions */
-CategoryColors, 
-/** Node connection */
-Connection, 
-/** 2D coordinates helper */
-Coordinates, 
-/** Base Field classes and helpers */
-Field, DummyField, FieldMap, NumberField, OptConnectField, TextField, 
-/** Workspace injection helpers */
-inject, InjectMsg, clearMainWorkspace, getMainWorkspace, setMainWorkspace, 
-/** Node system */
-NodeSvg, NodePrototypes, WorkspaceSvg, AnyFieldCls, AnyField, InjectOptions, 
-/** Node visual types */
-Color, ColorStyle, Hex, RGBObject, RGBString, RGBTuple, NodePrototype, FieldOptions, FieldVisualInfo, 
-/** Node JSON / serialization types */
-NodeJson, NodeEvents, InputFieldJson, 
-/** Eventing */
-Eventer, Connectable, DrawState, ConnectorToFrom, 
-/** Widget system */
-WidgetOptions, WidgetPrototypeList };
+export { KabelInterface, TblxCategoryStruct, TblxNodeStruct, TblxFieldStruct, TblxObjStruct, RendererConstants, Renderer, CategoryColors, Connection, Coordinates, Field, DummyField, FieldMap, NumberField, OptConnectField, TextField, FieldOptions, FieldVisualInfo, AnyFieldCls, AnyField, ConnectableField, FieldRawBoxData, FieldConnectionData, inject, InjectMsg, InjectOptions, clearMainWorkspace, getMainWorkspace, setMainWorkspace, NodeSvg, NodePrototypes, WorkspaceSvg, WorkspaceCoords, NodePrototype, Color, ColorStyle, Hex, RGBObject, RGBString, RGBTuple, NodeJson, NodeEvents, InputFieldJson, SerializedNode, Eventer, EventSetupFn, EventArgs, Connectable, DrawState, ConnectorToFrom, WidgetOptions, WidgetPrototypeList, KabelCommentRendering, KabelNodeRendering, KabelUIX, KabelUtils, Showable, RegisteredEl, GridOptions };
+export { default as CommentModel } from './comment';
+export { default as Toolbox } from './toolbox';
+export { default as ContextMenuHTML } from './context-menu';
+export { default as Widget } from './widget';
+export { DropdownContainer } from './dropdown-menu';
+export { RepresenterNode } from '../renderers/representer-node';
+export { default as CommentRenderer } from '../comment-renderer/renderer';
+export { default as Representer } from '../renderers/representer';
+export { default as WorkspaceController } from '../controllers/base';
+export { default as WASDController } from '../controllers/wasd';
 //# sourceMappingURL=index.d.ts.map

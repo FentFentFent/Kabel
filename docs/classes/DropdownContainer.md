@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: DropdownContainer
 
-Defined in: [src/dropdown-menu.ts:42](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/dropdown-menu.ts#L42)
+Defined in: [src/dropdown-menu.ts:42](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/dropdown-menu.ts#L42)
 
 Dropdown container for NodeSvg or Field elements.
 Supports singleton behavior (only one dropdown visible at a time).
@@ -17,7 +17,7 @@ Supports singleton behavior (only one dropdown visible at a time).
 
 > **new DropdownContainer**(): `DropdownContainer`
 
-Defined in: [src/dropdown-menu.ts:53](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/dropdown-menu.ts#L53)
+Defined in: [src/dropdown-menu.ts:53](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/dropdown-menu.ts#L53)
 
 Creates the dropdown container and attaches it to the DOM.
 
@@ -31,7 +31,7 @@ Creates the dropdown container and attaches it to the DOM.
 
 > `private` **constraint**: `object`
 
-Defined in: [src/dropdown-menu.ts:47](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/dropdown-menu.ts#L47)
+Defined in: [src/dropdown-menu.ts:47](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/dropdown-menu.ts#L47)
 
 #### height
 
@@ -51,11 +51,19 @@ Defined in: [src/dropdown-menu.ts:47](https://github.com/FentFentFent/Kabel/blob
 
 ***
 
+### currentRemoveListener
+
+> `private` **currentRemoveListener**: () => `void` \| `null` = `null`
+
+Defined in: [src/dropdown-menu.ts:49](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/dropdown-menu.ts#L49)
+
+***
+
 ### offset
 
 > `private` **offset**: `object`
 
-Defined in: [src/dropdown-menu.ts:48](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/dropdown-menu.ts#L48)
+Defined in: [src/dropdown-menu.ts:48](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/dropdown-menu.ts#L48)
 
 #### dx
 
@@ -71,7 +79,7 @@ Defined in: [src/dropdown-menu.ts:48](https://github.com/FentFentFent/Kabel/blob
 
 > `private` **options**: `DropdownOptions` \| `null` = `null`
 
-Defined in: [src/dropdown-menu.ts:46](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/dropdown-menu.ts#L46)
+Defined in: [src/dropdown-menu.ts:46](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/dropdown-menu.ts#L46)
 
 ***
 
@@ -79,7 +87,7 @@ Defined in: [src/dropdown-menu.ts:46](https://github.com/FentFentFent/Kabel/blob
 
 > `private` **owner**: `AllowedOwner` \| `null` = `null`
 
-Defined in: [src/dropdown-menu.ts:44](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/dropdown-menu.ts#L44)
+Defined in: [src/dropdown-menu.ts:44](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/dropdown-menu.ts#L44)
 
 ***
 
@@ -87,7 +95,7 @@ Defined in: [src/dropdown-menu.ts:44](https://github.com/FentFentFent/Kabel/blob
 
 > `private` **rootEl**: `HTMLDivElement`
 
-Defined in: [src/dropdown-menu.ts:45](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/dropdown-menu.ts#L45)
+Defined in: [src/dropdown-menu.ts:45](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/dropdown-menu.ts#L45)
 
 ***
 
@@ -95,7 +103,7 @@ Defined in: [src/dropdown-menu.ts:45](https://github.com/FentFentFent/Kabel/blob
 
 > `private` `static` **current**: `DropdownContainer` \| `null` = `null`
 
-Defined in: [src/dropdown-menu.ts:43](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/dropdown-menu.ts#L43)
+Defined in: [src/dropdown-menu.ts:43](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/dropdown-menu.ts#L43)
 
 ## Methods
 
@@ -103,7 +111,7 @@ Defined in: [src/dropdown-menu.ts:43](https://github.com/FentFentFent/Kabel/blob
 
 > **appendChild**(`element`): `Element`
 
-Defined in: [src/dropdown-menu.ts:98](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/dropdown-menu.ts#L98)
+Defined in: [src/dropdown-menu.ts:98](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/dropdown-menu.ts#L98)
 
 Append an element as a child to the dropdown.
 
@@ -127,7 +135,7 @@ The appended element
 
 > **getOwner**(): `AllowedOwner` \| `null`
 
-Defined in: [src/dropdown-menu.ts:174](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/dropdown-menu.ts#L174)
+Defined in: [src/dropdown-menu.ts:202](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/dropdown-menu.ts#L202)
 
 #### Returns
 
@@ -141,7 +149,7 @@ The current owner of the dropdown, or null if none
 
 > **hide**(): `void`
 
-Defined in: [src/dropdown-menu.ts:149](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/dropdown-menu.ts#L149)
+Defined in: [src/dropdown-menu.ts:175](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/dropdown-menu.ts#L175)
 
 Hide this dropdown.
 
@@ -155,7 +163,7 @@ Hide this dropdown.
 
 > **hideIfOwner**(`owner`): `void`
 
-Defined in: [src/dropdown-menu.ts:162](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/dropdown-menu.ts#L162)
+Defined in: [src/dropdown-menu.ts:190](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/dropdown-menu.ts#L190)
 
 Hide this dropdown if the given owner currently owns it.
 
@@ -177,7 +185,7 @@ The owner to check
 
 > **isVisible**(): `boolean`
 
-Defined in: [src/dropdown-menu.ts:169](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/dropdown-menu.ts#L169)
+Defined in: [src/dropdown-menu.ts:197](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/dropdown-menu.ts#L197)
 
 #### Returns
 
@@ -191,7 +199,7 @@ True if the dropdown is currently visible
 
 > **move**(`dx`, `dy`): `void`
 
-Defined in: [src/dropdown-menu.ts:69](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/dropdown-menu.ts#L69)
+Defined in: [src/dropdown-menu.ts:69](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/dropdown-menu.ts#L69)
 
 Move the dropdown by an offset.
 
@@ -219,7 +227,7 @@ vertical offset
 
 > **setContent**(`html`): `void`
 
-Defined in: [src/dropdown-menu.ts:89](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/dropdown-menu.ts#L89)
+Defined in: [src/dropdown-menu.ts:89](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/dropdown-menu.ts#L89)
 
 Set inner HTML content of the dropdown.
 
@@ -241,7 +249,7 @@ HTML string
 
 > **show**(`owner`, `options`): `void`
 
-Defined in: [src/dropdown-menu.ts:108](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/dropdown-menu.ts#L108)
+Defined in: [src/dropdown-menu.ts:108](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/dropdown-menu.ts#L108)
 
 Show the dropdown for a given owner.
 
@@ -269,7 +277,7 @@ Dropdown configuration options
 
 > `private` **updatePosition**(): `void`
 
-Defined in: [src/dropdown-menu.ts:78](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/dropdown-menu.ts#L78)
+Defined in: [src/dropdown-menu.ts:78](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/dropdown-menu.ts#L78)
 
 Update the dropdown position based on constraint and offset.
 
@@ -283,7 +291,7 @@ Update the dropdown position based on constraint and offset.
 
 > `static` **getCurrent**(): `DropdownContainer` \| `null`
 
-Defined in: [src/dropdown-menu.ts:179](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/dropdown-menu.ts#L179)
+Defined in: [src/dropdown-menu.ts:207](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/dropdown-menu.ts#L207)
 
 #### Returns
 

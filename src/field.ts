@@ -508,6 +508,7 @@ export class DropdownField extends Field<string> {
                     this._selected = original;
                     this.setValue(value);
                     this.closeDropdown();
+                    this?.node?.workspace?.emitChange?.();
                     this?.node?.workspace?.renderer?.rerenderNode?.(this.node);
                 }
             }

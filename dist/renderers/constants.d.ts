@@ -38,6 +38,13 @@ declare class RendererConstants {
     CONNECTOR_LINE_WIDTH: number;
     CONNECTOR_LINE_CURVED: boolean;
     ZOOM_BASE: number;
+    SHAPES: {
+        [key: string]: {
+            PathMain: string;
+            Width: number;
+            Height: number;
+        };
+    };
     constructor(overrides?: Partial<RendererConstants>);
 }
 export default RendererConstants;

@@ -1,4 +1,4 @@
-import Kabel from './core'; // your current module
+import Kabel from './core';
 import { DropdownContainer } from './dropdown-menu';
 import WorkspaceSvg from './workspace-svg';
 
@@ -11,11 +11,17 @@ export interface KabelUIX {
      * Event system for SVG.js elements, allowing reusable functionality and event handling.
      */
     events: typeof Kabel.UIX.events;
-
+    /** handles loading fonts from Google fonts and possibly other CDNs in the future. */
+    FontManager: typeof Kabel.UIX.FontManager;
     /**
      * Stores the current state of the user.
      */
     userState: typeof Kabel.UIX.userState;
+
+    /**
+     * window listener system.
+     */
+    windowListeners: typeof Kabel.UIX.windowListeners;
 }
 
 /**
@@ -62,6 +68,9 @@ export interface KabelUtils {
 export interface KabelNodeRendering {
     /** Map of registered node renderers. */
     rendererMap: typeof Kabel.nodeRendering.rendererMap;
+    
+    Apollo: typeof Kabel.nodeRendering.Apollo;
+    Atlas: typeof Kabel.nodeRendering.Atlas;
 
     /** Node renderer class. */
     Renderer: typeof Kabel.nodeRendering.Renderer;
@@ -88,11 +97,17 @@ export interface KabelCommentRendering {
     /** Comment renderer class. */
     CommentRenderer: typeof Kabel.commentRendering.CommentRenderer;
 }
-
+/** The current environment */
+export interface KabelEnv {
+    isBrowser: boolean;
+    isNode: boolean;
+    isWebWorker: boolean;
+}
 /**
  * The main Kabel interface exposing core functionality, utilities, renderers, and UI components.
  */
 export interface KabelInterface {
+    env: KabelEnv
     /** UI experience utilities section */
     UIX: KabelUIX;
 
@@ -134,7 +149,8 @@ export interface KabelInterface {
 
     /** Function to create a new workspace in kabel */
     inject: typeof Kabel.inject;
-
+    /** Function to create a new workspace in kabel (headless) */
+    injectHeadless: typeof Kabel.injectHeadless;
     /** Message type for injections. */
     InjectMsg: typeof Kabel.InjectMsg;
 
@@ -167,7 +183,15 @@ export interface KabelInterface {
 
     /** Node rendering container, contains Renderer and RendererConstants classes */
     nodeRendering: KabelNodeRendering;
-
+    /**
+     * A bunch of atlas renderer related classes.
+     */
+    atlas: typeof Kabel.atlas;
+    /**
+     * A bunch of apollo renderer related classes
+     */
+    apollo: typeof Kabel.apollo;
+    
     /** Comment rendering container, contains CommentModel and CommentRenderer classes. */
     commentRendering: KabelCommentRendering;
 

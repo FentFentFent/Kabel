@@ -2,6 +2,13 @@ import { Element } from '@svgdotjs/svg.js';
 export type EventType = string;
 export type EventArgs = Record<string, any>;
 export type EventSetupFn = (el: Element, args?: EventArgs) => (() => void) | void;
+export interface RegisteredEl {
+    tags: string[];
+    el: Element;
+    type: EventType;
+    args?: EventArgs | undefined;
+    destroyFn?: (() => void) | undefined;
+}
 /**
  * Used by the Kabel renderer to tag svg.js elements as interactable with the kabel system.
  */

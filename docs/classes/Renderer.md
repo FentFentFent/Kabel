@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: Renderer
 
-Defined in: [renderers/renderer.ts:45](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L45)
+Defined in: [renderers/renderer.ts:43](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L43)
 
 ## Constructors
 
@@ -14,7 +14,9 @@ Defined in: [renderers/renderer.ts:45](https://github.com/FentFentFent/Kabel/blo
 
 > **new Renderer**(`workspace`, `overrides`): `Renderer`
 
-Defined in: [renderers/renderer.ts:73](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L73)
+Defined in: [renderers/renderer.ts:128](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L128)
+
+Constructor for the Renderer class.
 
 #### Parameters
 
@@ -22,9 +24,13 @@ Defined in: [renderers/renderer.ts:73](https://github.com/FentFentFent/Kabel/blo
 
 [`WorkspaceSvg`](WorkspaceSvg.md)
 
+The workspace associated with the renderer.
+
 ##### overrides
 
 `Partial`\<[`RendererConstants`](RendererConstants.md)\> = `{}`
+
+Optional constant overrides for the renderer.
 
 #### Returns
 
@@ -36,7 +42,9 @@ Defined in: [renderers/renderer.ts:73](https://github.com/FentFentFent/Kabel/blo
 
 > **\_commentDrawer**: [`CommentRenderer`](CommentRenderer.md)
 
-Defined in: [renderers/renderer.ts:52](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L52)
+Defined in: [renderers/renderer.ts:71](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L71)
+
+Comment renderer instance used for rendering comments.
 
 ***
 
@@ -44,7 +52,9 @@ Defined in: [renderers/renderer.ts:52](https://github.com/FentFentFent/Kabel/blo
 
 > **\_constants**: [`RendererConstants`](RendererConstants.md)
 
-Defined in: [renderers/renderer.ts:46](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L46)
+Defined in: [renderers/renderer.ts:47](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L47)
+
+Set of constants the renderer uses for drawing nodes.
 
 ***
 
@@ -52,7 +62,9 @@ Defined in: [renderers/renderer.ts:46](https://github.com/FentFentFent/Kabel/blo
 
 > **\_currentNode**: [`NodeSvg`](NodeSvg.md) \| `null`
 
-Defined in: [renderers/renderer.ts:47](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L47)
+Defined in: [renderers/renderer.ts:51](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L51)
+
+The current node being rendered.
 
 ***
 
@@ -60,7 +72,9 @@ Defined in: [renderers/renderer.ts:47](https://github.com/FentFentFent/Kabel/blo
 
 > **\_drawStates**: [`DrawState`](../interfaces/DrawState.md)[]
 
-Defined in: [renderers/renderer.ts:51](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L51)
+Defined in: [renderers/renderer.ts:67](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L67)
+
+Array of stored draw states for rendered nodes.
 
 ***
 
@@ -68,7 +82,9 @@ Defined in: [renderers/renderer.ts:51](https://github.com/FentFentFent/Kabel/blo
 
 > **\_nodeDraw**: [`DrawState`](../interfaces/DrawState.md) \| `null`
 
-Defined in: [renderers/renderer.ts:49](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L49)
+Defined in: [renderers/renderer.ts:59](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L59)
+
+The current drawing state for the node.
 
 ***
 
@@ -76,7 +92,9 @@ Defined in: [renderers/renderer.ts:49](https://github.com/FentFentFent/Kabel/blo
 
 > **\_nodeGroup**: `G` \| `null`
 
-Defined in: [renderers/renderer.ts:48](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L48)
+Defined in: [renderers/renderer.ts:55](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L55)
+
+The SVG group element for the current node.
 
 ***
 
@@ -84,7 +102,19 @@ Defined in: [renderers/renderer.ts:48](https://github.com/FentFentFent/Kabel/blo
 
 > **\_ws**: [`WorkspaceSvg`](WorkspaceSvg.md)
 
-Defined in: [renderers/renderer.ts:50](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L50)
+Defined in: [renderers/renderer.ts:63](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L63)
+
+The workspace this renderer is associated with.
+
+***
+
+### constantOverrides
+
+> **constantOverrides**: `Partial`\<[`RendererConstants`](RendererConstants.md)\>
+
+Defined in: [renderers/renderer.ts:79](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L79)
+
+Constant overrides provided during renderer instantiation.
 
 ***
 
@@ -92,7 +122,9 @@ Defined in: [renderers/renderer.ts:50](https://github.com/FentFentFent/Kabel/blo
 
 > **representer**: [`Representer`](Representer.md)
 
-Defined in: [renderers/renderer.ts:53](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L53)
+Defined in: [renderers/renderer.ts:75](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L75)
+
+Representer instance used for building node representations.
 
 ## Accessors
 
@@ -102,7 +134,9 @@ Defined in: [renderers/renderer.ts:53](https://github.com/FentFentFent/Kabel/blo
 
 > **get** **constants**(): [`RendererConstants`](RendererConstants.md)
 
-Defined in: [renderers/renderer.ts:97](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L97)
+Defined in: [renderers/renderer.ts:182](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L182)
+
+Gets the renderer constants, merging with node style if applicable.
 
 ##### Returns
 
@@ -112,7 +146,9 @@ Defined in: [renderers/renderer.ts:97](https://github.com/FentFentFent/Kabel/blo
 
 > **set** **constants**(`c`): `void`
 
-Defined in: [renderers/renderer.ts:108](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L108)
+Defined in: [renderers/renderer.ts:195](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L195)
+
+Sets the renderer constants.
 
 ##### Parameters
 
@@ -132,7 +168,9 @@ Defined in: [renderers/renderer.ts:108](https://github.com/FentFentFent/Kabel/bl
 
 > **get** **node**(): [`NodeSvg`](NodeSvg.md) \| `null`
 
-Defined in: [renderers/renderer.ts:111](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L111)
+Defined in: [renderers/renderer.ts:201](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L201)
+
+Gets the current node being rendered.
 
 ##### Returns
 
@@ -146,7 +184,9 @@ Defined in: [renderers/renderer.ts:111](https://github.com/FentFentFent/Kabel/bl
 
 > **get** **state**(): [`DrawState`](../interfaces/DrawState.md) \| `null` \| `undefined`
 
-Defined in: [renderers/renderer.ts:117](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L117)
+Defined in: [renderers/renderer.ts:213](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L213)
+
+Gets the current drawing state.
 
 ##### Returns
 
@@ -160,11 +200,29 @@ Defined in: [renderers/renderer.ts:117](https://github.com/FentFentFent/Kabel/bl
 
 > **get** **svg**(): `Svg`
 
-Defined in: [renderers/renderer.ts:114](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L114)
+Defined in: [renderers/renderer.ts:207](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L207)
+
+Gets the SVG.js instance from the workspace.
 
 ##### Returns
 
 `Svg`
+
+***
+
+### BACKGROUND\_PATTERN
+
+#### Get Signature
+
+> **get** `static` **BACKGROUND\_PATTERN**(): `string`
+
+Defined in: [renderers/renderer.ts:113](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L113)
+
+Tag used for background pattern elements in the SVG. This is constant, do not modify it in subclasses.
+
+##### Returns
+
+`string`
 
 ***
 
@@ -174,7 +232,9 @@ Defined in: [renderers/renderer.ts:114](https://github.com/FentFentFent/Kabel/bl
 
 > **get** `static` **CONN\_LINE\_TAG**(): `string`
 
-Defined in: [renderers/renderer.ts:60](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L60)
+Defined in: [renderers/renderer.ts:95](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L95)
+
+Tag used for connection line elements in the SVG.
 
 ##### Returns
 
@@ -188,7 +248,9 @@ Defined in: [renderers/renderer.ts:60](https://github.com/FentFentFent/Kabel/blo
 
 > **get** `static` **CONNECTOR\_TAG**(): `string`
 
-Defined in: [renderers/renderer.ts:63](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L63)
+Defined in: [renderers/renderer.ts:101](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L101)
+
+Tag used for connector elements in the SVG.
 
 ##### Returns
 
@@ -202,7 +264,9 @@ Defined in: [renderers/renderer.ts:63](https://github.com/FentFentFent/Kabel/blo
 
 > **get** `static` **ELEMENT\_TAG**(): `string`
 
-Defined in: [renderers/renderer.ts:57](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L57)
+Defined in: [renderers/renderer.ts:89](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L89)
+
+Tag used for renderer elements in the SVG.
 
 ##### Returns
 
@@ -216,7 +280,9 @@ Defined in: [renderers/renderer.ts:57](https://github.com/FentFentFent/Kabel/blo
 
 > **get** `static` **LINE\_X\_MARK\_TAG**(): `string`
 
-Defined in: [renderers/renderer.ts:66](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L66)
+Defined in: [renderers/renderer.ts:107](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L107)
+
+Tag used for line X mark elements in the SVG.
 
 ##### Returns
 
@@ -230,7 +296,9 @@ Defined in: [renderers/renderer.ts:66](https://github.com/FentFentFent/Kabel/blo
 
 > **get** `static` **NAME**(): `string`
 
-Defined in: [renderers/renderer.ts:69](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L69)
+Defined in: [renderers/renderer.ts:120](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L120)
+
+Name of the renderer.
 
 ##### Returns
 
@@ -244,7 +312,9 @@ Defined in: [renderers/renderer.ts:69](https://github.com/FentFentFent/Kabel/blo
 
 > **get** `static` **NODE\_G\_TAG**(): `string`
 
-Defined in: [renderers/renderer.ts:54](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L54)
+Defined in: [renderers/renderer.ts:83](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L83)
+
+Tag used for node group elements in the SVG.
 
 ##### Returns
 
@@ -254,9 +324,11 @@ Defined in: [renderers/renderer.ts:54](https://github.com/FentFentFent/Kabel/blo
 
 ### \_fillOtherNodeConnectorCircle()
 
-> `private` **\_fillOtherNodeConnectorCircle**(`conn`, `circle`, `isPrevious`): `void`
+> **\_fillOtherNodeConnectorCircle**(`conn`, `circle`, `isPrevious`): `void`
 
-Defined in: [renderers/renderer.ts:497](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L497)
+Defined in: [renderers/renderer.ts:1122](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L1122)
+
+Fills in the connector circle for other nodes based on the given connection.
 
 #### Parameters
 
@@ -264,13 +336,19 @@ Defined in: [renderers/renderer.ts:497](https://github.com/FentFentFent/Kabel/bl
 
 [`Connection`](Connection.md)
 
+The connection to match.
+
 ##### circle
 
 `Path`
 
+The SVG path of the connector circle.
+
 ##### isPrevious
 
 `boolean`
+
+Whether the connection is a previous connection.
 
 #### Returns
 
@@ -282,7 +360,9 @@ Defined in: [renderers/renderer.ts:497](https://github.com/FentFentFent/Kabel/bl
 
 > **applyZoomToNode**(`nodeG`, `node`): `void`
 
-Defined in: [renderers/renderer.ts:529](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L529)
+Defined in: [renderers/renderer.ts:1019](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L1019)
+
+Applies the current zoom level to the specified node group.
 
 #### Parameters
 
@@ -290,9 +370,13 @@ Defined in: [renderers/renderer.ts:529](https://github.com/FentFentFent/Kabel/bl
 
 `G`
 
+The SVG group element of the node.
+
 ##### node
 
 [`NodeSvg`](NodeSvg.md)
+
+The node to apply zoom to.
 
 #### Returns
 
@@ -304,11 +388,15 @@ Defined in: [renderers/renderer.ts:529](https://github.com/FentFentFent/Kabel/bl
 
 > **clearComments**(): `void`
 
-Defined in: [renderers/renderer.ts:519](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L519)
+Defined in: [renderers/renderer.ts:997](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L997)
+
+Clears all comments from the workspace.
 
 #### Returns
 
 `void`
+
+Void.
 
 ***
 
@@ -316,7 +404,9 @@ Defined in: [renderers/renderer.ts:519](https://github.com/FentFentFent/Kabel/bl
 
 > **clearLines**(): `void`
 
-Defined in: [renderers/renderer.ts:838](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L838)
+Defined in: [renderers/renderer.ts:1214](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L1214)
+
+Clear connection lines and their X marks.
 
 #### Returns
 
@@ -328,7 +418,9 @@ Defined in: [renderers/renderer.ts:838](https://github.com/FentFentFent/Kabel/bl
 
 > **clearScreen**(): `void`
 
-Defined in: [renderers/renderer.ts:847](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L847)
+Defined in: [renderers/renderer.ts:1225](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L1225)
+
+Clear the entire screen.
 
 #### Returns
 
@@ -336,25 +428,71 @@ Defined in: [renderers/renderer.ts:847](https://github.com/FentFentFent/Kabel/bl
 
 ***
 
-### createNodeDrawState()
+### createFieldGroup()
 
-> **createNodeDrawState**(`nodeGroup`, `id`): [`DrawState`](../interfaces/DrawState.md)
+> **createFieldGroup**(`state`): `void`
 
-Defined in: [renderers/renderer.ts:555](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L555)
+Defined in: [renderers/renderer.ts:812](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L812)
+
+Create the field group for the node
 
 #### Parameters
 
-##### nodeGroup
+##### state
 
-`G`
-
-##### id
-
-`string`
+[`DrawState`](../interfaces/DrawState.md)
 
 #### Returns
 
-[`DrawState`](../interfaces/DrawState.md)
+`void`
+
+***
+
+### createNodeGroup()
+
+> **createNodeGroup**(`node`): `G`
+
+Defined in: [renderers/renderer.ts:756](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L756)
+
+Creates the SVG group for the given node.
+
+#### Parameters
+
+##### node
+
+[`NodeSvg`](NodeSvg.md)
+
+The node to create the group for.
+
+#### Returns
+
+`G`
+
+The created SVG group element.
+
+***
+
+### drawAllFieldsForNode()
+
+> **drawAllFieldsForNode**(`nodeMeasurements`): `number` \| `undefined`
+
+Defined in: [renderers/renderer.ts:903](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L903)
+
+Draw all fields on a node
+
+#### Parameters
+
+##### nodeMeasurements
+
+The node's measurements
+
+`NodeMeasurements` | `null`
+
+#### Returns
+
+`number` \| `undefined`
+
+The final Y position.
 
 ***
 
@@ -362,11 +500,15 @@ Defined in: [renderers/renderer.ts:555](https://github.com/FentFentFent/Kabel/bl
 
 > **drawComments**(): `void`
 
-Defined in: [renderers/renderer.ts:522](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L522)
+Defined in: [renderers/renderer.ts:1004](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L1004)
+
+Draws all comments in the workspace.
 
 #### Returns
 
 `void`
+
+Void.
 
 ***
 
@@ -374,7 +516,9 @@ Defined in: [renderers/renderer.ts:522](https://github.com/FentFentFent/Kabel/bl
 
 > **drawConnector**(`nodeGroup`, `nodeBg`, `y`, `side`, `color`): `void` \| `Path` \| `null` \| `undefined`
 
-Defined in: [renderers/renderer.ts:413](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L413)
+Defined in: [renderers/renderer.ts:656](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L656)
+
+Draws a connector on the specified side of the node.
 
 #### Parameters
 
@@ -382,15 +526,23 @@ Defined in: [renderers/renderer.ts:413](https://github.com/FentFentFent/Kabel/bl
 
 `G`
 
+The SVG group element for the node.
+
 ##### nodeBg
 
 `Path`
+
+The background SVG path of the node.
 
 ##### y
 
 `number`
 
+The Y position for the connector.
+
 ##### side
+
+The side to draw the connector on ('left' or 'right').
 
 `"left"` | `"right"`
 
@@ -398,9 +550,53 @@ Defined in: [renderers/renderer.ts:413](https://github.com/FentFentFent/Kabel/bl
 
 `string`
 
+The color of the connector.
+
 #### Returns
 
 `void` \| `Path` \| `null` \| `undefined`
+
+The SVG path of the connector or null if not drawn.
+
+***
+
+### drawFieldForNode()
+
+> **drawFieldForNode**(`field`, `measurements`, `idx`, `y`): `void`
+
+Defined in: [renderers/renderer.ts:826](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L826)
+
+Draw a field on a node.
+
+#### Parameters
+
+##### field
+
+[`AnyField`](../type-aliases/AnyField.md)
+
+The field to draw
+
+##### measurements
+
+`NodeMeasurements`
+
+The node's measurements
+
+##### idx
+
+`number`
+
+Index of the field in the fieldColumn list
+
+##### y
+
+`number`
+
+the y position of the field
+
+#### Returns
+
+`void`
 
 ***
 
@@ -408,7 +604,9 @@ Defined in: [renderers/renderer.ts:413](https://github.com/FentFentFent/Kabel/bl
 
 > **drawFieldLabel**(`fieldGroup`, `field`, `startX`): `number`
 
-Defined in: [renderers/renderer.ts:342](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L342)
+Defined in: [renderers/renderer.ts:574](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L574)
+
+Draws the label of a field.
 
 #### Parameters
 
@@ -416,17 +614,25 @@ Defined in: [renderers/renderer.ts:342](https://github.com/FentFentFent/Kabel/bl
 
 `G`
 
+The SVG group element for the field.
+
 ##### field
 
 [`AnyField`](../type-aliases/AnyField.md)
+
+The field to draw the label for.
 
 ##### startX
 
 `number` = `0`
 
+The starting X position for the label.
+
 #### Returns
 
 `number`
+
+The width used by the label including spacing.
 
 ***
 
@@ -434,7 +640,9 @@ Defined in: [renderers/renderer.ts:342](https://github.com/FentFentFent/Kabel/bl
 
 > **drawFieldRaw**(`fieldGroup`, `field`, `startX`): `object`
 
-Defined in: [renderers/renderer.ts:300](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L300)
+Defined in: [renderers/renderer.ts:527](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L527)
+
+Draws a raw input field.
 
 #### Parameters
 
@@ -442,17 +650,25 @@ Defined in: [renderers/renderer.ts:300](https://github.com/FentFentFent/Kabel/bl
 
 `G`
 
+The SVG group element for the field.
+
 ##### field
 
 [`AnyField`](../type-aliases/AnyField.md)
+
+The field to draw.
 
 ##### startX
 
 `number` = `0`
 
+The starting X position for the field.
+
 #### Returns
 
 `object`
+
+The rectangle and text elements of the raw field.
 
 ##### rawBox
 
@@ -472,7 +688,9 @@ Defined in: [renderers/renderer.ts:300](https://github.com/FentFentFent/Kabel/bl
 
 > **drawLinesForAllNodes**(): `void`
 
-Defined in: [renderers/renderer.ts:768](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L768)
+Defined in: [renderers/renderer.ts:1144](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L1144)
+
+Draw the connection lines between node's connector bubbles.
 
 #### Returns
 
@@ -484,7 +702,39 @@ Defined in: [renderers/renderer.ts:768](https://github.com/FentFentFent/Kabel/bl
 
 > **drawNode**(): `void`
 
-Defined in: [renderers/renderer.ts:558](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L558)
+Defined in: [renderers/renderer.ts:731](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L731)
+
+Draws the current node.
+
+#### Returns
+
+`void`
+
+Void.
+
+***
+
+### drawNodeBase()
+
+> **drawNodeBase**(`state`, `measurements`): `void`
+
+Defined in: [renderers/renderer.ts:770](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L770)
+
+Draws the base and shadow of the node.
+
+#### Parameters
+
+##### state
+
+[`DrawState`](../interfaces/DrawState.md)
+
+The current drawing state.
+
+##### measurements
+
+The measurements of the node.
+
+`NodeMeasurements` | `null`
 
 #### Returns
 
@@ -496,13 +746,53 @@ Defined in: [renderers/renderer.ts:558](https://github.com/FentFentFent/Kabel/bl
 
 > **drawNodeLabel**(`nodeGroup`): `void`
 
-Defined in: [renderers/renderer.ts:456](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L456)
+Defined in: [renderers/renderer.ts:703](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L703)
+
+Draws the label on the node's top bar.
 
 #### Parameters
 
 ##### nodeGroup
 
 `G`
+
+The SVG group element for the node.
+
+#### Returns
+
+`void`
+
+Void.
+
+***
+
+### drawNodeTopbar()
+
+> **drawNodeTopbar**(`state`, `colors`, `measurements`): `void`
+
+Defined in: [renderers/renderer.ts:789](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L789)
+
+Draw the node's topbar
+
+#### Parameters
+
+##### state
+
+[`DrawState`](../interfaces/DrawState.md)
+
+The draw state
+
+##### colors
+
+[`ColorStyle`](../interfaces/ColorStyle.md)
+
+The colors of the node.
+
+##### measurements
+
+The measurement data of the node.
+
+`NodeMeasurements` | `null`
 
 #### Returns
 
@@ -514,29 +804,87 @@ Defined in: [renderers/renderer.ts:456](https://github.com/FentFentFent/Kabel/bl
 
 > **drawNodeXButton**(): `void`
 
-Defined in: [renderers/renderer.ts:365](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L365)
+Defined in: [renderers/renderer.ts:600](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L600)
+
+Draws the X button on the node's top bar.
 
 #### Returns
 
 `void`
+
+Void.
 
 ***
 
-### enqueueSetConnect()
+### drawPreviousNextConnections()
 
-> **enqueueSetConnect**(`c`): `void`
+> **drawPreviousNextConnections**(`state`, `node`, `nodeGroup`, `measurements`): `void`
 
-Defined in: [renderers/renderer.ts:91](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L91)
+Defined in: [renderers/renderer.ts:932](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L932)
+
+Draw the previous and next connections of a node.
 
 #### Parameters
 
-##### c
+##### state
 
-[`ConnectorToFrom`](../interfaces/ConnectorToFrom.md)
+[`DrawState`](../interfaces/DrawState.md)
+
+The draw-state
+
+##### node
+
+[`NodeSvg`](NodeSvg.md)
+
+The node-svg
+
+##### nodeGroup
+
+`G`
+
+the node's group
+
+##### measurements
+
+the node's measurements
+
+\{ `height`: `number`; `width`: `number`; \} | `null`
 
 #### Returns
 
 `void`
+
+Void
+
+***
+
+### drawState()
+
+> **drawState**(`nodeGroup`, `id`): [`DrawState`](../interfaces/DrawState.md)
+
+Defined in: [renderers/renderer.ts:505](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L505)
+
+Build a draw state for the given node group and ID.
+
+#### Parameters
+
+##### nodeGroup
+
+`G`
+
+The SVG group element for the node.
+
+##### id
+
+`string`
+
+The ID of the node.
+
+#### Returns
+
+[`DrawState`](../interfaces/DrawState.md)
+
+- The constructed DrawState object.
 
 ***
 
@@ -544,7 +892,9 @@ Defined in: [renderers/renderer.ts:91](https://github.com/FentFentFent/Kabel/blo
 
 > **fillAllNodeConnectorBubbles**(): `void`
 
-Defined in: [renderers/renderer.ts:742](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L742)
+Defined in: [renderers/renderer.ts:1069](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L1069)
+
+Fill every node's connector bubble data with the corresponding bubble its connected to on a sibling node.
 
 #### Returns
 
@@ -556,11 +906,15 @@ Defined in: [renderers/renderer.ts:742](https://github.com/FentFentFent/Kabel/bl
 
 > **getFieldMeasurementPadding**(): `object`
 
-Defined in: [renderers/renderer.ts:210](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L210)
+Defined in: [renderers/renderer.ts:349](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L349)
+
+Gets the padding to apply when measuring a field.
 
 #### Returns
 
 `object`
+
+The width and height padding for the field.
 
 ##### height
 
@@ -576,11 +930,15 @@ Defined in: [renderers/renderer.ts:210](https://github.com/FentFentFent/Kabel/bl
 
 > **getNodeBaseMeasurements**(): `object`
 
-Defined in: [renderers/renderer.ts:123](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L123)
+Defined in: [renderers/renderer.ts:229](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L229)
+
+Gets the base measurements for a node.
 
 #### Returns
 
 `object`
+
+The base width and height of the node.
 
 ##### height
 
@@ -592,15 +950,35 @@ Defined in: [renderers/renderer.ts:123](https://github.com/FentFentFent/Kabel/bl
 
 ***
 
+### getNodeColors()
+
+> **getNodeColors**(): [`ColorStyle`](../interfaces/ColorStyle.md)
+
+Defined in: [renderers/renderer.ts:1055](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L1055)
+
+Gets the colors for the current node.
+
+#### Returns
+
+[`ColorStyle`](../interfaces/ColorStyle.md)
+
+The color style of the node.
+
+***
+
 ### getWs()
 
 > **getWs**(): [`WorkspaceSvg`](WorkspaceSvg.md)
 
-Defined in: [renderers/renderer.ts:120](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L120)
+Defined in: [renderers/renderer.ts:220](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L220)
+
+Gets the workspace associated with the renderer.
 
 #### Returns
 
 [`WorkspaceSvg`](WorkspaceSvg.md)
+
+The workspace instance.
 
 ***
 
@@ -608,11 +986,29 @@ Defined in: [renderers/renderer.ts:120](https://github.com/FentFentFent/Kabel/bl
 
 > **getZoom**(): `number`
 
-Defined in: [renderers/renderer.ts:525](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L525)
+Defined in: [renderers/renderer.ts:1011](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L1011)
+
+Gets the current zoom level of the workspace.
 
 #### Returns
 
 `number`
+
+The zoom level.
+
+***
+
+### init()
+
+> **init**(): `void`
+
+Defined in: [renderers/renderer.ts:140](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L140)
+
+Initializes the renderer by setting up the comment renderer, representer, and constants.
+
+#### Returns
+
+`void`
 
 ***
 
@@ -620,7 +1016,23 @@ Defined in: [renderers/renderer.ts:525](https://github.com/FentFentFent/Kabel/bl
 
 > **initCommentRenderer**(): `void`
 
-Defined in: [renderers/renderer.ts:88](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L88)
+Defined in: [renderers/renderer.ts:161](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L161)
+
+Initializes the comment renderer for the workspace.
+
+#### Returns
+
+`void`
+
+***
+
+### initConstants()
+
+> **initConstants**(): `void`
+
+Defined in: [renderers/renderer.ts:148](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L148)
+
+Initializes the renderer constants with any provided overrides.
 
 #### Returns
 
@@ -632,7 +1044,9 @@ Defined in: [renderers/renderer.ts:88](https://github.com/FentFentFent/Kabel/blo
 
 > **initRepresenter**(): `void`
 
-Defined in: [renderers/renderer.ts:84](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L84)
+Defined in: [renderers/renderer.ts:154](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L154)
+
+Initializes the representer for the renderer.
 
 #### Returns
 
@@ -640,11 +1054,71 @@ Defined in: [renderers/renderer.ts:84](https://github.com/FentFentFent/Kabel/blo
 
 ***
 
+### makeNodeDraggable()
+
+> **makeNodeDraggable**(`nodeGroup`, `dragHandle`, `node`): `void`
+
+Defined in: [renderers/renderer.ts:803](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L803)
+
+Make a node draggable.
+
+#### Parameters
+
+##### nodeGroup
+
+`G`
+
+The node group to make draggable
+
+##### dragHandle
+
+`Path`
+
+The drag handle
+
+##### node
+
+[`NodeSvg`](NodeSvg.md)
+
+The nodesvg
+
+#### Returns
+
+`void`
+
+***
+
+### measureBaseAndLabel()
+
+> `private` **measureBaseAndLabel**(): `object`
+
+Defined in: [renderers/renderer.ts:445](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L445)
+
+Measures the base dimensions of the current node including label.
+
+#### Returns
+
+`object`
+
+The width and height of the node base and label.
+
+##### height
+
+> **height**: `number`
+
+##### width
+
+> **width**: `number`
+
+***
+
 ### measureCustom()
 
-> `private` **measureCustom**(`field`): `object`
+> **measureCustom**(`field`): `object`
 
-Defined in: [renderers/renderer.ts:198](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L198)
+Defined in: [renderers/renderer.ts:333](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L333)
+
+Measures the custom editor of a field.
 
 #### Parameters
 
@@ -652,9 +1126,13 @@ Defined in: [renderers/renderer.ts:198](https://github.com/FentFentFent/Kabel/bl
 
 [`AnyField`](../type-aliases/AnyField.md)
 
+The field to measure the custom editor for.
+
 #### Returns
 
 `object`
+
+The width and height of the custom editor.
 
 ##### height
 
@@ -670,7 +1148,9 @@ Defined in: [renderers/renderer.ts:198](https://github.com/FentFentFent/Kabel/bl
 
 > **measureField**(`field`): `object`
 
-Defined in: [renderers/renderer.ts:213](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L213)
+Defined in: [renderers/renderer.ts:357](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L357)
+
+Measures the overall dimensions of a field.
 
 #### Parameters
 
@@ -678,9 +1158,61 @@ Defined in: [renderers/renderer.ts:213](https://github.com/FentFentFent/Kabel/bl
 
 [`AnyField`](../type-aliases/AnyField.md)
 
+The field to measure.
+
 #### Returns
 
 `object`
+
+The width and height of the field.
+
+##### height
+
+> **height**: `number`
+
+##### width
+
+> **width**: `number`
+
+***
+
+### measureFields()
+
+> **measureFields**(`startY`, `startWidth`, `startHeight`): `object`
+
+Defined in: [renderers/renderer.ts:405](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L405)
+
+Measures all fields of the current node.
+
+#### Parameters
+
+##### startY
+
+`number`
+
+The starting Y position for the fields.
+
+##### startWidth
+
+`number`
+
+The starting width of the node.
+
+##### startHeight
+
+`number`
+
+The starting height of the node.
+
+#### Returns
+
+`object`
+
+The width, height, and field dimensions.
+
+##### fields
+
+> **fields**: `object`[]
 
 ##### height
 
@@ -694,9 +1226,11 @@ Defined in: [renderers/renderer.ts:213](https://github.com/FentFentFent/Kabel/bl
 
 ### measureLabel()
 
-> `private` **measureLabel**(`field`): `object`
+> **measureLabel**(`field`): `object`
 
-Defined in: [renderers/renderer.ts:176](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L176)
+Defined in: [renderers/renderer.ts:303](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L303)
+
+Measures the label of a field.
 
 #### Parameters
 
@@ -704,9 +1238,13 @@ Defined in: [renderers/renderer.ts:176](https://github.com/FentFentFent/Kabel/bl
 
 [`AnyField`](../type-aliases/AnyField.md)
 
+The field to measure the label for.
+
 #### Returns
 
 `object`
+
+The width and height of the label.
 
 ##### height
 
@@ -720,21 +1258,27 @@ Defined in: [renderers/renderer.ts:176](https://github.com/FentFentFent/Kabel/bl
 
 ### measureNodeDimensions()
 
-> **measureNodeDimensions**(): \{ `fields`: `object`[]; `height`: `number`; `width`: `number`; \} \| `undefined`
+> **measureNodeDimensions**(): `void` \| `NodeMeasurements` \| `null`
 
-Defined in: [renderers/renderer.ts:232](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L232)
+Defined in: [renderers/renderer.ts:379](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L379)
+
+Measures the overall dimensions of the current node.
 
 #### Returns
 
-\{ `fields`: `object`[]; `height`: `number`; `width`: `number`; \} \| `undefined`
+`void` \| `NodeMeasurements` \| `null`
+
+The measurements of the node including width, height, and field dimensions.
 
 ***
 
 ### measureRaw()
 
-> `private` **measureRaw**(`field`): `object`
+> **measureRaw**(`field`): `object`
 
-Defined in: [renderers/renderer.ts:187](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L187)
+Defined in: [renderers/renderer.ts:318](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L318)
+
+Measures the raw input of a field.
 
 #### Parameters
 
@@ -742,9 +1286,13 @@ Defined in: [renderers/renderer.ts:187](https://github.com/FentFentFent/Kabel/bl
 
 [`AnyField`](../type-aliases/AnyField.md)
 
+The field to measure the raw input for.
+
 #### Returns
 
 `object`
+
+The width and height of the raw input.
 
 ##### height
 
@@ -760,7 +1308,9 @@ Defined in: [renderers/renderer.ts:187](https://github.com/FentFentFent/Kabel/bl
 
 > **measureRawField**(`text`): `object`
 
-Defined in: [renderers/renderer.ts:169](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L169)
+Defined in: [renderers/renderer.ts:291](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L291)
+
+Measures the dimensions of a raw input field.
 
 #### Parameters
 
@@ -768,9 +1318,13 @@ Defined in: [renderers/renderer.ts:169](https://github.com/FentFentFent/Kabel/bl
 
 `string` = `""`
 
+The text content of the raw field.
+
 #### Returns
 
 `object`
+
+The width and height of the raw field.
 
 ##### height
 
@@ -786,7 +1340,9 @@ Defined in: [renderers/renderer.ts:169](https://github.com/FentFentFent/Kabel/bl
 
 > **measureTextHeight**(`text`, `fontSize?`, `fontFamily?`): `number`
 
-Defined in: [renderers/renderer.ts:148](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L148)
+Defined in: [renderers/renderer.ts:268](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L268)
+
+Measures the height of the given text.
 
 #### Parameters
 
@@ -794,17 +1350,25 @@ Defined in: [renderers/renderer.ts:148](https://github.com/FentFentFent/Kabel/bl
 
 `string`
 
+The text to measure.
+
 ##### fontSize?
 
 `number`
+
+The font size to use.
 
 ##### fontFamily?
 
 `string`
 
+The font family to use.
+
 #### Returns
 
 `number`
+
+The height of the text.
 
 ***
 
@@ -812,7 +1376,9 @@ Defined in: [renderers/renderer.ts:148](https://github.com/FentFentFent/Kabel/bl
 
 > **measureTextWidth**(`text`, `fontSize?`, `fontFamily?`): `number`
 
-Defined in: [renderers/renderer.ts:130](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L130)
+Defined in: [renderers/renderer.ts:243](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L243)
+
+Measures the width of the given text.
 
 #### Parameters
 
@@ -820,17 +1386,25 @@ Defined in: [renderers/renderer.ts:130](https://github.com/FentFentFent/Kabel/bl
 
 `string`
 
+The text to measure.
+
 ##### fontSize?
 
 `number`
+
+The font size to use.
 
 ##### fontFamily?
 
 `string`
 
+The font family to use.
+
 #### Returns
 
 `number`
+
+The width of the text.
 
 ***
 
@@ -838,11 +1412,15 @@ Defined in: [renderers/renderer.ts:130](https://github.com/FentFentFent/Kabel/bl
 
 > **refreshComments**(): `void`
 
-Defined in: [renderers/renderer.ts:516](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L516)
+Defined in: [renderers/renderer.ts:990](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L990)
+
+Refreshes the comment transforms.
 
 #### Returns
 
 `void`
+
+Void.
 
 ***
 
@@ -850,11 +1428,15 @@ Defined in: [renderers/renderer.ts:516](https://github.com/FentFentFent/Kabel/bl
 
 > **refreshConnectionLines**(): `void`
 
-Defined in: [renderers/renderer.ts:551](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L551)
+Defined in: [renderers/renderer.ts:1047](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L1047)
+
+Refreshes all connection lines in the workspace.
 
 #### Returns
 
 `void`
+
+Void.
 
 ***
 
@@ -862,11 +1444,15 @@ Defined in: [renderers/renderer.ts:551](https://github.com/FentFentFent/Kabel/bl
 
 > **refreshNodeTransforms**(): `void`
 
-Defined in: [renderers/renderer.ts:535](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L535)
+Defined in: [renderers/renderer.ts:1028](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L1028)
+
+Refreshes the transforms of all nodes in the workspace.
 
 #### Returns
 
 `void`
+
+Void.
 
 ***
 
@@ -874,11 +1460,15 @@ Defined in: [renderers/renderer.ts:535](https://github.com/FentFentFent/Kabel/bl
 
 > **renderNode**(`nodeIdOrNode`): `void`
 
-Defined in: [renderers/renderer.ts:277](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L277)
+Defined in: [renderers/renderer.ts:474](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L474)
+
+Renders the specified node by drawing it and building its representation.
 
 #### Parameters
 
 ##### nodeIdOrNode
+
+The node or node ID to render.
 
 `string` | [`NodeSvg`](NodeSvg.md)
 
@@ -886,13 +1476,18 @@ Defined in: [renderers/renderer.ts:277](https://github.com/FentFentFent/Kabel/bl
 
 `void`
 
+Void.
+
 ***
 
 ### rerenderNode()
 
 > **rerenderNode**(`node`): `G` \| `null` \| `undefined`
 
-Defined in: [renderers/renderer.ts:864](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L864)
+Defined in: [renderers/renderer.ts:1262](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L1262)
+
+Called whenever a node must be visually rendered or rerendered.
+Implementations must be idempotent.
 
 #### Parameters
 
@@ -900,9 +1495,13 @@ Defined in: [renderers/renderer.ts:864](https://github.com/FentFentFent/Kabel/bl
 
 [`NodeSvg`](NodeSvg.md)
 
+The node to render/rerender
+
 #### Returns
 
 `G` \| `null` \| `undefined`
+
+SVG group of the node.
 
 ***
 
@@ -910,7 +1509,9 @@ Defined in: [renderers/renderer.ts:864](https://github.com/FentFentFent/Kabel/bl
 
 > **resolveConnectable**(`connectable`, `fromConn`): [`Connection`](Connection.md) \| `null` \| `undefined`
 
-Defined in: [renderers/renderer.ts:479](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L479)
+Defined in: [renderers/renderer.ts:1098](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L1098)
+
+Resolves the connectable to the appropriate connection based on the originating connection.
 
 #### Parameters
 
@@ -918,9 +1519,13 @@ Defined in: [renderers/renderer.ts:479](https://github.com/FentFentFent/Kabel/bl
 
 [`Connectable`](../type-aliases/Connectable.md)
 
+The connectable entity (NodeSvg or Field).
+
 ##### fromConn
 
 [`Connection`](Connection.md)
+
+The originating connection.
 
 #### Returns
 
@@ -928,11 +1533,35 @@ Defined in: [renderers/renderer.ts:479](https://github.com/FentFentFent/Kabel/bl
 
 ***
 
+### setConnect()
+
+> **setConnect**(`c`): `void`
+
+Defined in: [renderers/renderer.ts:168](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L168)
+
+Sets the connection to be processed.
+
+#### Parameters
+
+##### c
+
+[`ConnectorToFrom`](../interfaces/ConnectorToFrom.md)
+
+The connection to set.
+
+#### Returns
+
+`void`
+
+***
+
 ### setConstants()
 
 > **setConstants**(`c`): [`RendererConstants`](RendererConstants.md) & `Partial`\<[`RendererConstants`](RendererConstants.md)\>
 
-Defined in: [renderers/renderer.ts:94](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L94)
+Defined in: [renderers/renderer.ts:176](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L176)
+
+Sets the renderer constants.
 
 #### Parameters
 
@@ -940,9 +1569,13 @@ Defined in: [renderers/renderer.ts:94](https://github.com/FentFentFent/Kabel/blo
 
 `Partial`\<[`RendererConstants`](RendererConstants.md)\> = `{}`
 
+Partial constants to override.
+
 #### Returns
 
 [`RendererConstants`](RendererConstants.md) & `Partial`\<[`RendererConstants`](RendererConstants.md)\>
+
+The updated constants.
 
 ***
 
@@ -950,11 +1583,15 @@ Defined in: [renderers/renderer.ts:94](https://github.com/FentFentFent/Kabel/blo
 
 > **startNode**(`nodeIdOrNode`): `void`
 
-Defined in: [renderers/renderer.ts:284](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L284)
+Defined in: [renderers/renderer.ts:485](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L485)
+
+Starts rendering the specified node.
 
 #### Parameters
 
 ##### nodeIdOrNode
+
+The node or node ID to start rendering.
 
 `string` | [`NodeSvg`](NodeSvg.md)
 
@@ -968,7 +1605,9 @@ Defined in: [renderers/renderer.ts:284](https://github.com/FentFentFent/Kabel/bl
 
 > **storeState**(): `void`
 
-Defined in: [renderers/renderer.ts:297](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L297)
+Defined in: [renderers/renderer.ts:516](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L516)
+
+Stores the current draw state.
 
 #### Returns
 
@@ -980,13 +1619,17 @@ Defined in: [renderers/renderer.ts:297](https://github.com/FentFentFent/Kabel/bl
 
 > **undoPendingConnsFor**(`conn`): `void`
 
-Defined in: [renderers/renderer.ts:852](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L852)
+Defined in: [renderers/renderer.ts:1244](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L1244)
+
+Remove pending connections for a specific connection
 
 #### Parameters
 
 ##### conn
 
 [`ConnectorToFrom`](../interfaces/ConnectorToFrom.md)
+
+The connection
 
 #### Returns
 

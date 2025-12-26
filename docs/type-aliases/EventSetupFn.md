@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **EventSetupFn** = (`el`, `args?`) => () => `void` \| `void`
 
-Defined in: [util/eventer.ts:5](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/util/eventer.ts#L5)
+Defined in: [util/eventer.ts:5](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/util/eventer.ts#L5)
 
 ## Parameters
 

@@ -1,13 +1,14 @@
 import WorkspaceController from "../controllers/base";
 import Renderer from "../renderers/renderer";
 import { clearMainWorkspace, getMainWorkspace, setMainWorkspace } from "./main-workspace";
-import WorkspaceSvg from "./workspace-svg";
+import WorkspaceSvg, { WSTheme } from "./workspace-svg";
 import NodePrototypes from "./prototypes"; // Object
 import { FieldOptions } from "./field";
-import { Color } from "./visual-types";
+import { Color, Hex } from "./visual-types";
 import styler from '../util/styler';
 // @ts-ignore
 import _kabelStyles from './styles.css';
+import env from "../util/env";
 
 const kabelStyles: string = _kabelStyles;
 
@@ -70,17 +71,42 @@ export type TblxObjStruct =
         type?: undefined;
         contents: TblxCategoryStruct[];
     };
-
+export interface GridOptions {
+    /**
+     * The grid's type.
+     * 'celled' - The grid is celled.
+     * 'dotted' - The grid is dotted.
+     */
+	type: 'celled' | 'dotted';
+    /**
+     * Spacing, optional. Default is 40.
+     */
+	spacing?: number;
+    /**
+     * Dot size for 'dotted' grid type.
+     */
+	dotSize?: number;
+    /**
+     * stroke width for 'celled' grid type.
+     */
+	strokeWidth?: number;
+    /**
+     * Option color for any grid type. Color is #bebebeff by default.
+     */
+    color?: Hex
+}
 /**
  * Options used when injecting a new workspace.
  */
 export interface InjectOptions {
     /** Optional renderer overrides */
     rendererOverrides?: { [key: string]: any };
-
+    /** Theme for the workspace */
+    theme?: string|WSTheme;
     /** Optional custom controller class */
     Controller?: typeof WorkspaceController;
-
+    /** Init the workspace's undo state for you, or not. */
+    initUndoRedo?: boolean;
     /** Optional controls configuration */
     controls?: {
         zoomSpeed?: number;
@@ -100,6 +126,10 @@ export interface InjectOptions {
 
     /** Optional renderer: name string or class */
     renderer?: string | typeof Renderer;
+    /**
+     * Optional grid settings.
+     */
+    grid?: GridOptions;
 }
 
 /**
@@ -146,6 +176,10 @@ export default function inject(
     element: HTMLElement | string,
     options: InjectOptions = {}
 ): WorkspaceSvg | undefined {
+    if (!env.isBrowser) {
+        new InjectMsg(`Cannot inject workspace-svg in non-browser environment (use Kabel.injectHeadless).`).err();
+        return;
+    }
     // Apply global Kabel styles
     styler.appendStyles('KabelStyles', kabelStyles);
 

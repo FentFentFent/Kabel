@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: ConnectorToFrom
 
-Defined in: [renderers/renderer.ts:17](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L17)
+Defined in: [renderers/renderer.ts:18](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L18)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [renderers/renderer.ts:17](https://github.com/FentFentFent/Kabel/blo
 
 > **from**: [`Connection`](../classes/Connection.md)
 
-Defined in: [renderers/renderer.ts:19](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L19)
+Defined in: [renderers/renderer.ts:20](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L20)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [renderers/renderer.ts:19](https://github.com/FentFentFent/Kabel/blo
 
 > `optional` **fromCircle**: `Path`
 
-Defined in: [renderers/renderer.ts:20](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L20)
+Defined in: [renderers/renderer.ts:21](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L21)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [renderers/renderer.ts:20](https://github.com/FentFentFent/Kabel/blo
 
 > **originCircle**: `Path`
 
-Defined in: [renderers/renderer.ts:23](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L23)
+Defined in: [renderers/renderer.ts:24](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L24)
 
 ***
 
@@ -38,7 +38,7 @@ Defined in: [renderers/renderer.ts:23](https://github.com/FentFentFent/Kabel/blo
 
 > **originConn**: [`Connection`](../classes/Connection.md)
 
-Defined in: [renderers/renderer.ts:22](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L22)
+Defined in: [renderers/renderer.ts:23](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L23)
 
 ***
 
@@ -46,7 +46,7 @@ Defined in: [renderers/renderer.ts:22](https://github.com/FentFentFent/Kabel/blo
 
 > **to**: [`Connection`](../classes/Connection.md)
 
-Defined in: [renderers/renderer.ts:18](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L18)
+Defined in: [renderers/renderer.ts:19](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L19)
 
 ***
 
@@ -54,4 +54,4 @@ Defined in: [renderers/renderer.ts:18](https://github.com/FentFentFent/Kabel/blo
 
 > `optional` **toCircle**: `Path`
 
-Defined in: [renderers/renderer.ts:21](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L21)
+Defined in: [renderers/renderer.ts:22](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L22)

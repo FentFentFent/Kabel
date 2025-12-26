@@ -43,6 +43,13 @@ class RendererConstants {
     CONNECTOR_LINE_CURVED: boolean = true;
     ZOOM_BASE: number = 1; // default scale factor for workspace
 
+    SHAPES: {
+        [key: string]: {
+            PathMain: string;
+            Width: number;
+            Height: number;
+        }
+    } = {}
     constructor(overrides: Partial<RendererConstants> = {}) {
         this.CONNECTOR_TRI_SIZE = 8;
         this.CONNECTOR_RADIUS = 10;

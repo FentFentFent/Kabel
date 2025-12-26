@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: DrawState
 
-Defined in: [renderers/renderer.ts:25](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L25)
+Defined in: [renderers/renderer.ts:26](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L26)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [renderers/renderer.ts:25](https://github.com/FentFentFent/Kabel/blo
 
 > `optional` **bg**: `Path` \| `null`
 
-Defined in: [renderers/renderer.ts:28](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L28)
+Defined in: [renderers/renderer.ts:30](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L30)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [renderers/renderer.ts:28](https://github.com/FentFentFent/Kabel/blo
 
 > `optional` **fieldCol**: `G` \| `null`
 
-Defined in: [renderers/renderer.ts:30](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L30)
+Defined in: [renderers/renderer.ts:32](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L32)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [renderers/renderer.ts:30](https://github.com/FentFentFent/Kabel/blo
 
 > `optional` **fieldPosY**: `number` \| `null`
 
-Defined in: [renderers/renderer.ts:31](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L31)
+Defined in: [renderers/renderer.ts:33](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L33)
 
 ***
 
@@ -38,7 +38,7 @@ Defined in: [renderers/renderer.ts:31](https://github.com/FentFentFent/Kabel/blo
 
 > `optional` **group**: `G` \| `null`
 
-Defined in: [renderers/renderer.ts:29](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L29)
+Defined in: [renderers/renderer.ts:31](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L31)
 
 ***
 
@@ -46,7 +46,7 @@ Defined in: [renderers/renderer.ts:29](https://github.com/FentFentFent/Kabel/blo
 
 > **id**: `string`
 
-Defined in: [renderers/renderer.ts:26](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L26)
+Defined in: [renderers/renderer.ts:27](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L27)
 
 ***
 
@@ -54,7 +54,15 @@ Defined in: [renderers/renderer.ts:26](https://github.com/FentFentFent/Kabel/blo
 
 > **pendingConnections**: [`ConnectorToFrom`](ConnectorToFrom.md)[]
 
-Defined in: [renderers/renderer.ts:33](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L33)
+Defined in: [renderers/renderer.ts:35](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L35)
+
+***
+
+### shadow?
+
+> `optional` **shadow**: `Path`
+
+Defined in: [renderers/renderer.ts:28](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L28)
 
 ***
 
@@ -62,7 +70,7 @@ Defined in: [renderers/renderer.ts:33](https://github.com/FentFentFent/Kabel/blo
 
 > `optional` **topbar**: `Path` \| `null`
 
-Defined in: [renderers/renderer.ts:27](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L27)
+Defined in: [renderers/renderer.ts:29](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L29)
 
 ***
 
@@ -70,4 +78,4 @@ Defined in: [renderers/renderer.ts:27](https://github.com/FentFentFent/Kabel/blo
 
 > `optional` **xButton**: `G`
 
-Defined in: [renderers/renderer.ts:32](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/renderer.ts#L32)
+Defined in: [renderers/renderer.ts:34](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/renderer.ts#L34)

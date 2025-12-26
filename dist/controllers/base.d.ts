@@ -11,8 +11,17 @@ export default class WorkspaceController {
     lastMousePos: Vec2;
     isDragging: boolean;
     wheelDelta: number;
-    private _updateInt;
+    movedListeners: (() => void)[];
+    _lastMoveFire: number;
+    _moveThrottleMs: number;
+    _queuedMove: boolean;
+    _moveTimeout: any;
+    _updateInt: any;
     constructor(workspace: WorkspaceSvg);
+    addMoveListener(cb: () => void): void;
+    removeMoveListener(cb: () => void): void;
+    fireDidMove(): void;
+    _throttledFireDidMove(): void;
     getZoom(): number;
     canMove(): boolean;
     private _setupListeners;

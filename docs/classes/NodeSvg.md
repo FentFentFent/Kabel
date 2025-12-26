@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: NodeSvg
 
-Defined in: [src/nodesvg.ts:149](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L149)
+Defined in: [src/nodesvg.ts:149](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L149)
 
 Represents a node in the workspace.
 Handles connections, fields, colors, serialization, and events.
@@ -21,7 +21,7 @@ Handles connections, fields, colors, serialization, and events.
 
 > **new NodeSvg**(`prototype`, `workspace?`, `svgGroup?`): `NodeSvg`
 
-Defined in: [src/nodesvg.ts:185](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L185)
+Defined in: [src/nodesvg.ts:185](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L185)
 
 Creates a NodeSvg instance.
 
@@ -59,7 +59,7 @@ Optional SVG group to attach node visuals.
 
 > **\_fieldColumn**: `Set`\<[`AnyField`](../type-aliases/AnyField.md)\>
 
-Defined in: [src/nodesvg.ts:163](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L163)
+Defined in: [src/nodesvg.ts:163](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L163)
 
 Set of fields attached to this node
 
@@ -69,7 +69,7 @@ Set of fields attached to this node
 
 > **colors**: `NodeStyle`
 
-Defined in: [src/nodesvg.ts:159](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L159)
+Defined in: [src/nodesvg.ts:159](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L159)
 
 Node color style object
 
@@ -79,7 +79,7 @@ Node color style object
 
 > **comment**: [`CommentModel`](CommentModel.md) \| `null`
 
-Defined in: [src/nodesvg.ts:173](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L173)
+Defined in: [src/nodesvg.ts:173](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L173)
 
 Optional comment attached to this node
 
@@ -89,7 +89,7 @@ Optional comment attached to this node
 
 > **id**: `string`
 
-Defined in: [src/nodesvg.ts:167](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L167)
+Defined in: [src/nodesvg.ts:167](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L167)
 
 Unique node ID
 
@@ -99,7 +99,7 @@ Unique node ID
 
 > **labelText**: `string`
 
-Defined in: [src/nodesvg.ts:161](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L161)
+Defined in: [src/nodesvg.ts:161](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L161)
 
 Displayed label text for this node
 
@@ -109,7 +109,7 @@ Displayed label text for this node
 
 > **nextConnection**: [`Connection`](Connection.md) \| `null`
 
-Defined in: [src/nodesvg.ts:153](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L153)
+Defined in: [src/nodesvg.ts:153](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L153)
 
 The next connection for this node (null if none)
 
@@ -119,7 +119,7 @@ The next connection for this node (null if none)
 
 > **previousConnection**: [`Connection`](Connection.md) \| `null`
 
-Defined in: [src/nodesvg.ts:151](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L151)
+Defined in: [src/nodesvg.ts:151](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L151)
 
 The previous connection for this node (null if none)
 
@@ -129,7 +129,7 @@ The previous connection for this node (null if none)
 
 > **prototype**: [`NodePrototype`](../interfaces/NodePrototype.md) \| `null`
 
-Defined in: [src/nodesvg.ts:157](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L157)
+Defined in: [src/nodesvg.ts:157](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L157)
 
 Prototype object providing behavior for this node
 
@@ -139,7 +139,7 @@ Prototype object providing behavior for this node
 
 > **relativeCoords**: [`Coordinates`](Coordinates.md)
 
-Defined in: [src/nodesvg.ts:165](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L165)
+Defined in: [src/nodesvg.ts:165](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L165)
 
 Node coordinates relative to workspace
 
@@ -149,7 +149,7 @@ Node coordinates relative to workspace
 
 > `optional` **svg**: `object` \| [`RepresenterNode`](RepresenterNode.md) \| `null` = `null`
 
-Defined in: [src/nodesvg.ts:169](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L169)
+Defined in: [src/nodesvg.ts:169](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L169)
 
 SVG representation of this node
 
@@ -159,7 +159,7 @@ SVG representation of this node
 
 > **type**: `string` \| `null`
 
-Defined in: [src/nodesvg.ts:155](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L155)
+Defined in: [src/nodesvg.ts:155](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L155)
 
 Node type string, usually derived from prototype
 
@@ -169,7 +169,7 @@ Node type string, usually derived from prototype
 
 > **workspace**: [`WorkspaceSvg`](WorkspaceSvg.md) \| `null` = `null`
 
-Defined in: [src/nodesvg.ts:171](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L171)
+Defined in: [src/nodesvg.ts:171](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L171)
 
 Workspace this node belongs to
 
@@ -179,7 +179,7 @@ Workspace this node belongs to
 
 > `static` **INITING**: keyof [`NodeEvents`](../interfaces/NodeEvents.md) = `"INITING"`
 
-Defined in: [src/nodesvg.ts:178](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L178)
+Defined in: [src/nodesvg.ts:178](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L178)
 
 Event key: "INITING"
 
@@ -189,7 +189,7 @@ Event key: "INITING"
 
 > `static` **REMOVING**: keyof [`NodeEvents`](../interfaces/NodeEvents.md) = `"REMOVING"`
 
-Defined in: [src/nodesvg.ts:175](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L175)
+Defined in: [src/nodesvg.ts:175](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L175)
 
 Event key: "REMOVING"
 
@@ -201,7 +201,7 @@ Event key: "REMOVING"
 
 > **get** **svgGroup**(): `G` \| `null` \| `undefined`
 
-Defined in: [src/nodesvg.ts:218](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L218)
+Defined in: [src/nodesvg.ts:218](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L218)
 
 Returns the raw SVG group element if present
 
@@ -217,7 +217,7 @@ Returns the raw SVG group element if present
 
 > **get** **topLevel**(): `boolean`
 
-Defined in: [src/nodesvg.ts:214](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L214)
+Defined in: [src/nodesvg.ts:214](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L214)
 
 Returns true if this node has no previous connection (i.e., top-level node)
 
@@ -231,7 +231,7 @@ Returns true if this node has no previous connection (i.e., top-level node)
 
 > **\_appendFieldItem**(`field`): `void`
 
-Defined in: [src/nodesvg.ts:314](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L314)
+Defined in: [src/nodesvg.ts:323](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L323)
 
 Internal helper: attach a field to this node
 
@@ -251,7 +251,7 @@ Internal helper: attach a field to this node
 
 > **\_serializeConnection**(`c`, `alreadyProcessed`): `object`
 
-Defined in: [src/nodesvg.ts:481](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L481)
+Defined in: [src/nodesvg.ts:490](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L490)
 
 Serializes a Connection object, handling fields and nested nodes
 
@@ -281,7 +281,7 @@ Serializes a Connection object, handling fields and nested nodes
 
 > **addComment**(): `void`
 
-Defined in: [src/nodesvg.ts:230](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L230)
+Defined in: [src/nodesvg.ts:230](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L230)
 
 Adds a new comment to this node if none exists
 
@@ -295,7 +295,7 @@ Adds a new comment to this node if none exists
 
 > **allFields**(): [`AnyField`](../type-aliases/AnyField.md)[]
 
-Defined in: [src/nodesvg.ts:250](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L250)
+Defined in: [src/nodesvg.ts:250](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L250)
 
 Returns an array of all fields attached to this node
 
@@ -309,7 +309,7 @@ Returns an array of all fields attached to this node
 
 > **appendConnection**(`name`): [`Field`](Field.md)
 
-Defined in: [src/nodesvg.ts:365](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L365)
+Defined in: [src/nodesvg.ts:374](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L374)
 
 Appends a connection field to this node
 
@@ -329,7 +329,7 @@ Appends a connection field to this node
 
 > **appendNumber**(`name`): [`Field`](Field.md)
 
-Defined in: [src/nodesvg.ts:373](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L373)
+Defined in: [src/nodesvg.ts:382](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L382)
 
 Appends a numeric input field to this node
 
@@ -349,7 +349,7 @@ Appends a numeric input field to this node
 
 > **appendOptLink**(`name`): [`Field`](Field.md)
 
-Defined in: [src/nodesvg.ts:390](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L390)
+Defined in: [src/nodesvg.ts:399](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L399)
 
 Appends a field that can hold a connection or raw value
 
@@ -369,7 +369,7 @@ Appends a field that can hold a connection or raw value
 
 > **appendText**(`name`): [`Field`](Field.md)
 
-Defined in: [src/nodesvg.ts:381](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L381)
+Defined in: [src/nodesvg.ts:390](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L390)
 
 Appends a text input field to this node
 
@@ -389,7 +389,7 @@ Appends a text input field to this node
 
 > **applyJsonArguments**(`args`): `NodeSvg`
 
-Defined in: [src/nodesvg.ts:344](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L344)
+Defined in: [src/nodesvg.ts:353](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L353)
 
 Apply field definitions from a JSON-like array without full NodeJson
 
@@ -409,7 +409,7 @@ Apply field definitions from a JSON-like array without full NodeJson
 
 > **emit**\<`K`\>(`event`, `payload`): `boolean`
 
-Defined in: [util/emitter.ts:18](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/util/emitter.ts#L18)
+Defined in: [util/emitter.ts:18](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/util/emitter.ts#L18)
 
 #### Type Parameters
 
@@ -441,7 +441,7 @@ Defined in: [util/emitter.ts:18](https://github.com/FentFentFent/Kabel/blob/c687
 
 > **fromNode**(`other`): `NodeSvg` \| `undefined`
 
-Defined in: [src/nodesvg.ts:435](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L435)
+Defined in: [src/nodesvg.ts:444](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L444)
 
 Copies another NodeSvg into this node
 
@@ -461,7 +461,7 @@ Copies another NodeSvg into this node
 
 > **getCategoryName**(): `string` \| `null`
 
-Defined in: [src/nodesvg.ts:304](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L304)
+Defined in: [src/nodesvg.ts:313](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L313)
 
 Returns the category name or null if none
 
@@ -475,7 +475,7 @@ Returns the category name or null if none
 
 > **getComment**(): [`CommentModel`](CommentModel.md) \| `null`
 
-Defined in: [src/nodesvg.ts:226](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L226)
+Defined in: [src/nodesvg.ts:226](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L226)
 
 Returns the CommentModel instance for this node, if any
 
@@ -489,7 +489,7 @@ Returns the CommentModel instance for this node, if any
 
 > **getCommentText**(): `string` \| `undefined`
 
-Defined in: [src/nodesvg.ts:222](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L222)
+Defined in: [src/nodesvg.ts:222](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L222)
 
 Returns the text of the node's comment, if any
 
@@ -503,7 +503,7 @@ Returns the text of the node's comment, if any
 
 > **getField**(`name`): [`AnyField`](../type-aliases/AnyField.md) \| `null` \| `undefined`
 
-Defined in: [src/nodesvg.ts:260](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L260)
+Defined in: [src/nodesvg.ts:260](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L260)
 
 Alias for getFieldByName
 
@@ -523,7 +523,7 @@ Alias for getFieldByName
 
 > **getFieldByName**(`name`): [`AnyField`](../type-aliases/AnyField.md) \| `null` \| `undefined`
 
-Defined in: [src/nodesvg.ts:254](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L254)
+Defined in: [src/nodesvg.ts:254](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L254)
 
 Retrieves a field by name from this node
 
@@ -543,7 +543,7 @@ Retrieves a field by name from this node
 
 > **getFieldDisplayValue**(`name`): `any`
 
-Defined in: [src/nodesvg.ts:272](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L272)
+Defined in: [src/nodesvg.ts:272](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L272)
 
 Retrieves the display value of a field by name
 
@@ -563,7 +563,7 @@ Retrieves the display value of a field by name
 
 > **getFieldValue**(`name`): `any`
 
-Defined in: [src/nodesvg.ts:264](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L264)
+Defined in: [src/nodesvg.ts:264](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L264)
 
 Retrieves the current value of a field by name
 
@@ -583,7 +583,7 @@ Retrieves the current value of a field by name
 
 > **getStyle**(): `NodeStyle`
 
-Defined in: [src/nodesvg.ts:309](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L309)
+Defined in: [src/nodesvg.ts:318](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L318)
 
 Returns the node's current ColorStyle
 
@@ -597,7 +597,7 @@ Returns the node's current ColorStyle
 
 > **hasCategoryStyle**(): `boolean`
 
-Defined in: [src/nodesvg.ts:299](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L299)
+Defined in: [src/nodesvg.ts:308](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L308)
 
 Returns whether this node has a category style applied
 
@@ -611,7 +611,7 @@ Returns whether this node has a category style applied
 
 > **init**(): `void`
 
-Defined in: [src/nodesvg.ts:282](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L282)
+Defined in: [src/nodesvg.ts:291](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L291)
 
 Initiates the node, calling prototype methods.
 
@@ -625,7 +625,7 @@ Initiates the node, calling prototype methods.
 
 > **jsonInit**(`json`): `void`
 
-Defined in: [src/nodesvg.ts:320](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L320)
+Defined in: [src/nodesvg.ts:329](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L329)
 
 Initialize node from a NodeJson object
 
@@ -645,7 +645,7 @@ Initialize node from a NodeJson object
 
 > **off**\<`K`\>(`event`, `handler`): `NodeSvg`
 
-Defined in: [util/emitter.ts:12](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/util/emitter.ts#L12)
+Defined in: [util/emitter.ts:12](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/util/emitter.ts#L12)
 
 #### Type Parameters
 
@@ -677,7 +677,7 @@ Defined in: [util/emitter.ts:12](https://github.com/FentFentFent/Kabel/blob/c687
 
 > **on**\<`K`\>(`event`, `handler`): `NodeSvg`
 
-Defined in: [util/emitter.ts:6](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/util/emitter.ts#L6)
+Defined in: [util/emitter.ts:6](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/util/emitter.ts#L6)
 
 #### Type Parameters
 
@@ -709,7 +709,7 @@ Defined in: [util/emitter.ts:6](https://github.com/FentFentFent/Kabel/blob/c6879
 
 > **once**\<`K`\>(`event`, `handler`): `NodeSvg`
 
-Defined in: [util/emitter.ts:24](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/util/emitter.ts#L24)
+Defined in: [util/emitter.ts:24](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/util/emitter.ts#L24)
 
 #### Type Parameters
 
@@ -741,7 +741,7 @@ Defined in: [util/emitter.ts:24](https://github.com/FentFentFent/Kabel/blob/c687
 
 > **removeComment**(): `void`
 
-Defined in: [src/nodesvg.ts:245](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L245)
+Defined in: [src/nodesvg.ts:245](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L245)
 
 Removes the comment from the node and triggers workspace redraw
 
@@ -755,7 +755,7 @@ Removes the comment from the node and triggers workspace redraw
 
 > **serialize**(`alreadyProcessed`): [`SerializedNode`](../interfaces/SerializedNode.md)
 
-Defined in: [src/nodesvg.ts:520](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L520)
+Defined in: [src/nodesvg.ts:529](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L529)
 
 Serialize a node, this includes circular references. use toJson to avoid those.
 
@@ -775,7 +775,7 @@ Internal.
 
 > **setCategoryName**(`name`): `NodeSvg`
 
-Defined in: [src/nodesvg.ts:398](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L398)
+Defined in: [src/nodesvg.ts:407](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L407)
 
 Sets the category name for the node
 
@@ -795,7 +795,7 @@ Sets the category name for the node
 
 > **setColor**(`primary`, `secondary`, `tertiary`): `NodeSvg`
 
-Defined in: [src/nodesvg.ts:410](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L410)
+Defined in: [src/nodesvg.ts:419](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L419)
 
 Sets primary, secondary, and tertiary colors for the node
 
@@ -823,7 +823,7 @@ Sets primary, secondary, and tertiary colors for the node
 
 > **setCommentText**(`text`): `void`
 
-Defined in: [src/nodesvg.ts:238](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L238)
+Defined in: [src/nodesvg.ts:238](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L238)
 
 Sets the text for the node's comment, creating one if needed
 
@@ -843,7 +843,7 @@ Sets the text for the node's comment, creating one if needed
 
 > **setConnection**(`prevOrNext`): `NodeSvg`
 
-Defined in: [src/nodesvg.ts:421](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L421)
+Defined in: [src/nodesvg.ts:430](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L430)
 
 Add or replace a previous/next connection based on argument
 
@@ -859,11 +859,35 @@ Add or replace a previous/next connection based on argument
 
 ***
 
+### setFieldValue()
+
+> **setFieldValue**(`name`, `value`): [`AnyField`](../type-aliases/AnyField.md) \| `null` \| `undefined`
+
+Defined in: [src/nodesvg.ts:280](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L280)
+
+Sets the value of a field by name
+
+#### Parameters
+
+##### name
+
+`string`
+
+##### value
+
+`any`
+
+#### Returns
+
+[`AnyField`](../type-aliases/AnyField.md) \| `null` \| `undefined`
+
+***
+
 ### setLabelText()
 
 > **setLabelText**(`text`): `NodeSvg`
 
-Defined in: [src/nodesvg.ts:415](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L415)
+Defined in: [src/nodesvg.ts:424](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L424)
 
 Sets the label text for the node
 
@@ -883,7 +907,7 @@ Sets the label text for the node
 
 > **setStyle**(`style`): `NodeSvg`
 
-Defined in: [src/nodesvg.ts:403](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L403)
+Defined in: [src/nodesvg.ts:412](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L412)
 
 Applies a ColorStyle to the node
 
@@ -903,7 +927,7 @@ Applies a ColorStyle to the node
 
 > **toJson**(): `object`
 
-Defined in: [src/nodesvg.ts:565](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L565)
+Defined in: [src/nodesvg.ts:574](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L574)
 
 Return a flattened version of the serialized node structure, which is non-circular.
 Any node reference inside connections or fields is replaced by its ID.
@@ -918,7 +942,7 @@ Any node reference inside connections or fields is replaced by its ID.
 
 > `static` **\_deserialize**(`data`, `allNodes`, `workspace?`): `NodeSvg`
 
-Defined in: [src/nodesvg.ts:621](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L621)
+Defined in: [src/nodesvg.ts:630](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L630)
 
 Reconstruct a NodeSvg from a SerializedNode structure (handles circular references)
 
@@ -944,7 +968,7 @@ Reconstruct a NodeSvg from a SerializedNode structure (handles circular referenc
 
 > `static` **deserialize**(`json`, `workspace`): `NodeSvg`
 
-Defined in: [src/nodesvg.ts:687](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L687)
+Defined in: [src/nodesvg.ts:702](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L702)
 
 Public: Deserialize a SerializedNode or plain object into a NodeSvg attached to a workspace
 
@@ -968,7 +992,7 @@ Public: Deserialize a SerializedNode or plain object into a NodeSvg attached to 
 
 > `static` **fromJson**(`flat`, `workspace`): `any`
 
-Defined in: [src/nodesvg.ts:691](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L691)
+Defined in: [src/nodesvg.ts:706](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L706)
 
 Reconstructs nodes from a flattened JSON structure into a NodeSvg tree
 

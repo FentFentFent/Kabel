@@ -6,6 +6,8 @@ import WorkspaceSvg from '../src/workspace-svg';
 import userState from '../util/user-state';
 import Renderer, { ConnectorToFrom, DrawState } from '../renderers/renderer';
 
+
+
 function initConnectionLine(element: Element, args: Record<string, any>): () => void {
     // click destroys the line
     const handleClick = () => {
@@ -32,9 +34,9 @@ function initConnectionLine(element: Element, args: Record<string, any>): () => 
     const midX = bbox.x + bbox.width / 2;
     const midY = bbox.y + bbox.height / 2;
     const xMark = (element.parent()! as Svg).text('X').font({
-        family: 'Arial, Helvetica, sans-serif',
+        family: 'Fredoka, sans-serif',
         size: 46,
-        weight: 'bold',
+        weight: '700',
         anchor: 'middle',
         leading: '1em'
     })
@@ -62,5 +64,5 @@ function initConnectionLine(element: Element, args: Record<string, any>): () => 
         xMark.remove();
     };
 }
-
+// ok
 eventer.registerEvent('k_connline', initConnectionLine as EventSetupFn);

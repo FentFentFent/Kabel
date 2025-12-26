@@ -1,6 +1,6 @@
 import Coordinates from "./coordinates";
 import NodeSvg from "./nodesvg";
-import { Svg, SVG } from '@svgdotjs/svg.js';
+import { Svg, SVG, Pattern, Rect } from '@svgdotjs/svg.js';
 import Renderer from '../renderers/renderer';
 import { InjectOptions } from "./inject";
 import WorkspaceCoords from "./workspace-coords";
@@ -15,7 +15,28 @@ import WidgetPrototypes from "./widget-prototypes";
 import ContextMenuHTML from "./context-menu";
 import CommentModel from "./comment";
 import Field, { ConnectableField } from "./field";
+import waitFrames from "../util/wait-anim-frames";
+import { addWindowListener } from "../util/window-listeners";
+import Grid from "./grid";
+import UndoRedoHistory from "./undo-redo";
+import hasProp from "../util/has-prop";
+import Workspace from "./workspace";
+import Themes from '../themes/themes';
+import { Color } from "./visual-types";
+import { parseColor } from "../util/parse-color";
 
+export interface IDragState {
+    isDragging: boolean;
+    startX: number;
+    startY: number;
+    lastX: number;
+    lastY: number;
+    deltaX: number;
+    deltaY: number;
+    offsetX: number;
+    offsetY: number;
+    node: NodeSvg | null;
+}
 
 function resolveController(options: InjectOptions): typeof WorkspaceController {
     if (options?.controls) {
@@ -25,11 +46,31 @@ function resolveController(options: InjectOptions): typeof WorkspaceController {
     }
     return WorkspaceController;
 }
+
+export interface WSTheme {
+    UIStyles?: {
+        workspaceBGColor?: Color;
+        toolboxCategoriesBG?: Partial<CSSStyleDeclaration>;
+        toolboxFlyoutBG?: Partial<CSSStyleDeclaration>;
+    }
+}
+type ThemeKeys = keyof typeof Themes; // "Classic" | "Dark"
 /** 
  * Represents the visual workspace containing nodes and connections.
  * Handles rendering, panning, and coordinate transformations.
  */
-class WorkspaceSvg {
+class WorkspaceSvg extends Workspace {
+    static get BACKGROUND_CLASS() {
+        return 'WorkspaceBackgroundRect';
+    }
+    /**
+     * Theme of the workspace
+     */
+    theme!: WSTheme;
+    /**
+     * Workspace background pattern items.
+     */
+    grid?: Grid;
     /** Top-left offset of the workspace viewport */
     _camera: WorkspaceCoords;
 
@@ -44,7 +85,8 @@ class WorkspaceSvg {
 
     /** SVG.js instance for rendering */
     svg: Svg;
-
+    /** The background element */
+    _backgroundRect!: Rect;
     /** Renderer instance for drawing nodes and connections */
     renderer: Renderer;
 
@@ -75,12 +117,36 @@ class WorkspaceSvg {
      */
     _commentDB: Set<CommentModel>;
     /**
+     * Undo/redo history
+     */
+    history: UndoRedoHistory;
+    /**
+     * Whether to record undo/redo history or not
+     */
+    recordHistory: boolean = true;
+    /**
+     * Stack of old recordHistory values for toggleHistory
+     */
+    recordHistoryRecord: boolean[];
+    /**
+     * Internal flag to indicate if the camera has moved this frame.
+     */
+    _didMove: boolean = false;
+    /**
+     * Listeners to call when the workspace moves.
+     */
+    moveListeners: (() => void)[];
+    /** Current drag state for node dragging */
+    dragState: IDragState | null = null;
+    /**
      * Creates a new WorkspaceSvg instance.
      * @param root - The root HTML element containing the workspace.
      * @param wsTop - The top-level wrapper element for the SVG.
      * @param options - Configuration and renderer override options.
      */
     constructor(root: HTMLElement, wsTop: HTMLElement, options: InjectOptions) {
+        super();
+        this.isHeadless = false;
         wsTop.style.width = '100%';
         wsTop.style.height = '100%';
 
@@ -90,9 +156,19 @@ class WorkspaceSvg {
         this.options = options;
         let RClass: typeof Renderer = RMap.resolve(options.renderer);
         this.renderer = new RClass(this, this.options.rendererOverrides || {});
+
+        const themeKey = (typeof options.theme === 'string' && options.theme in Themes)
+            ? options.theme as ThemeKeys
+            : 'Classic';
+
+        const theme = (typeof options.theme === 'object' && options.theme)
+            ? options.theme
+            : Themes[themeKey];
+
         if (this.options.toolbox) {
             this.toolbox = new Toolbox(this);
         }
+
         this._camera = new WorkspaceCoords(0, 0);
         this._nodeDB = new Map();
         this.noRedraw = false;
@@ -100,7 +176,205 @@ class WorkspaceSvg {
         this._widgetDB = new Map();
         this._ctxMenu = new ContextMenuHTML(this);
         this._commentDB = new Set();
+        this.history = new UndoRedoHistory(this);
+        this.recordHistoryRecord = [];
+        this.moveListeners = [];
+        if (options.initUndoRedo !== false) {
+            this.history.emitChange();
+        }
+        this.theme = {}; //placeholder
+        this._initBackground();
+
+        this.setTheme(theme); // set theme to user-defined theme.
     }
+    setTheme(theme: WSTheme) {
+        try {
+            this.theme = structuredClone(theme);
+        } catch {
+            this.theme = Object.assign({}, theme);
+        }
+        // Clone theme so you can mutate ws.theme seperate from Kabels.Themes[ThemeName]
+        if (this.toolbox) this.toolbox.updateStyles(this.theme);
+        if (this.theme.UIStyles) {
+            this._backgroundRect.fill(parseColor(this.theme.UIStyles.workspaceBGColor || '#fffffff'))
+        }
+    }
+    /**
+     * Getter and setter for whether we moved or not this frame.
+     */
+    get didMove() { return this._didMove; }
+    set didMove(value: boolean) {
+        this._didMove = value;
+        if (value) {
+            waitFrames(1, () => { this._didMove = false; });
+        }
+    }
+    /**
+     * Sets the drag state of the workspace.
+     * @param params - Drag state parameters.
+     * @returns Void.
+     */
+    setDragState(params: {
+        node: NodeSvg | null;
+        startX: number;
+        startY: number;
+        currentX: number;
+        currentY: number;
+        offsetX?: number;
+        offsetY?: number;
+    }) {
+        if (!params.node) {
+            this.dragState = null;
+            return;
+        }
+
+        const {
+            node,
+            startX,
+            startY,
+            currentX,
+            currentY,
+            offsetX = 0,
+            offsetY = 0
+        } = params;
+
+        this.dragState = {
+            isDragging: true,
+            node,
+            startX,
+            startY,
+            offsetX,
+            offsetY,
+            lastX: currentX,
+            lastY: currentY,
+            deltaX: currentX - startX,
+            deltaY: currentY - startY
+        };
+    }
+    beginDrag(node: NodeSvg, startX: number, startY: number, offsetX: number = 0, offsetY: number = 0) {
+        this.dragState = {
+            isDragging: true,
+            node,
+            startX,
+            startY,
+            offsetX,
+            offsetY,
+            lastX: startX,
+            lastY: startY,
+            deltaX: 0,
+            deltaY: 0
+        };
+    }
+    /**
+     * Updates the current drag position.
+     * @param currentX - Current X position.
+     * @param currentY - Current Y position.
+     * @returns Void.
+     */
+    updateDrag(currentX: number, currentY: number) {
+        if (!this.dragState || !this.dragState.node) return;
+
+        this.dragState.lastX = currentX;
+        this.dragState.lastY = currentY;
+        this.dragState.deltaX = currentX - this.dragState.startX;
+        this.dragState.deltaY = currentY - this.dragState.startY;
+    }
+    endDrag() {
+        // Set drag state.isDragging to false instead of clearing.
+        if (this.dragState) this.dragState.isDragging = false;
+    }
+
+
+    /**
+     * Fires all move listeners registered to this workspace.
+     */
+    fireMoveListeners() {
+        this.moveListeners.forEach(e => e());
+    }
+    /**
+     * Adds a move listener to the workspace.
+     * @param listener - The listener function to add.
+     * @returns A function to remove the added listener.
+     */
+    addMoveListener(listener: () => void): () => void {
+        this.moveListeners.push(listener);
+        return () => {
+            this.removeMoveListener(listener);
+        }
+    }
+    /**
+     * Removes a move listener from the workspace.
+     * @param listener - The listener function to remove.
+     */
+    removeMoveListener(listener: () => void) {
+        this.moveListeners = this.moveListeners.filter(e => e != listener);
+    }
+    /**
+     * Emits a change event for the workspace, triggering
+     * undo/redo history tracking.
+     */
+    emitChange() {
+        this.history.emitChange();
+    }
+
+    /**
+     * Temporarily sets the workspace's history recording state.
+     * Pushes the previous state onto a stack for later restoration.
+     * 
+     * @param {boolean} value - Whether history recording should be enabled.
+     */
+    toggleHistory(value: boolean) {
+        this.recordHistoryRecord.push(this.recordHistory);
+        this.recordHistory = value;
+    }
+
+    /**
+     * Restores the previous history recording state from the stack.
+     * Use after a temporary toggle to revert to the previous state.
+     */
+    untoggleHistory() {
+        if (this.recordHistoryRecord.length == 0 || this.recordHistoryRecord.length < 0) return;
+        this.recordHistory = this.recordHistoryRecord.pop() as boolean;
+    }
+
+    /**
+     * Sets the background grid up based on user selected options.
+     */
+    _initBackground() {
+        try {
+            this._backgroundRect = this.svg.rect(this.svg.width(), this.svg.height())
+                .fill(parseColor(this.theme.UIStyles?.workspaceBGColor || '#ffffff'))
+                .addClass(WorkspaceSvg.BACKGROUND_CLASS)
+                .addTo(this.svg);
+
+            // ensure it has a parent
+            this.svg.add(this._backgroundRect);
+
+            // now you can safely move it to the back
+            this._backgroundRect.back();
+        } catch (e) {
+            console.error(e);
+        }
+        if (this.options.grid) {
+            this.grid = new Grid(this, this.svg, this.options.grid);
+        }
+    }
+    /**
+     * Updates the transform of the background grid
+     */
+    _updateBackgroundTransform() {
+        this.grid?.updateTransform?.();
+        try {
+            this._backgroundRect.back();
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    /**
+     * Get the current zoom factor of the workspace.
+     * @returns - The zoom factor
+     */
     getZoom() {
         return this.controller.getZoom();
     }
@@ -190,6 +464,7 @@ class WorkspaceSvg {
      */
     refresh() {
         this.renderer.refreshNodeTransforms();
+        this._updateBackgroundTransform();
     }
 
     /** Draws all nodes in the workspace. Very heavy. */
@@ -260,17 +535,19 @@ class WorkspaceSvg {
         }
         this._nodeDB.set(id, node);
         this.drawNode(id);
+        this.history.emitChange();
+
     }
 
     /**
      * Create a new node of *type*.
      * @param type - The node's prototype name.
      */
-    newNode(type: keyof typeof NodePrototypes): NodeSvg | undefined {
+    newNode(type: keyof typeof NodePrototypes, add: boolean = true): NodeSvg | undefined {
         if (!NodePrototypes[type]) return;
         const node = newHeadlessNode(type as string);
         if (!node) return;
-        this.addNode(node);
+        if (add) this.addNode(node);
         return node;
     }
     /**
@@ -281,9 +558,10 @@ class WorkspaceSvg {
      * @returns {Node} - The new node
      */
     spawnAt(type: keyof typeof NodePrototypes, x: number, y: number): NodeSvg | undefined {
-        const node = this.newNode(type);
+        const node = this.newNode(type, false);
         if (!node) return;
         node.relativeCoords.set(x, y);
+        this.addNode(node);
         this.drawNode(node.id);
         return node;
     }
@@ -319,10 +597,14 @@ class WorkspaceSvg {
     removeNodeById(id: string) {
         const node = this._nodeDB.get(id);
         if (!node) return;
+
         this.derefNode(node);
         this._nodeDB.delete(id);
         this.redraw();
+        this.history.emitChange();
+
     }
+
 
     /**
      * Removes a node by its instance.
@@ -338,7 +620,8 @@ class WorkspaceSvg {
      * @param id - The ID of the node.
      * @returns The NodeSvg instance or undefined if not found.
      */
-    getNode(id: string): NodeSvg | undefined {
+    getNode(id: string | NodeSvg): NodeSvg | undefined {
+        if (id instanceof NodeSvg) return id;
         return this._nodeDB.get(id);
     }
 
@@ -348,8 +631,7 @@ class WorkspaceSvg {
      * @param dy - Change in Y direction.
      */
     pan(dx: number, dy: number) {
-        this._camera.x += dx;
-        this._camera.y += dy;
+        this.controller.pan(dx, dy);
     }
     /**
      * Comment methods
@@ -401,7 +683,12 @@ class WorkspaceSvg {
      * Deserialize this workspace from json data.
      * @param json - Serialized workspace
      */
-    fromJson(json: {nodes: any[], circular: boolean }) {
+    fromJson(json: { nodes: any[]; circular: boolean }, recordBigEvent: boolean = false) {
+        this.toggleHistory(false); // disable recording
+
+        for (let [_, node] of this._nodeDB.entries()) {
+            this.removeNode(node);
+        }
         if (json.circular) {
             for (let node of json.nodes) {
                 NodeSvg.deserialize(node, this);
@@ -411,7 +698,15 @@ class WorkspaceSvg {
                 NodeSvg.fromJson(node, this);
             }
         }
+
+        this.untoggleHistory(); // restore previous history state
+
+        // only emit a single snapshot if we were told to treat it as a user-level event
+        if (recordBigEvent && this.recordHistory) {
+            this.history.emitChange();
+        }
     }
+
     /**
      * Serialize this workspace, optionally using circular references.
      */

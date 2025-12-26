@@ -17,7 +17,7 @@ import Field, {
 } from "./field";
 import inject, { 
     InjectMsg, InjectOptions, TblxCategoryStruct, TblxObjStruct, 
-    TblxFieldStruct, TblxNodeStruct 
+    TblxFieldStruct, TblxNodeStruct, GridOptions
 } from "./inject";
 import { clearMainWorkspace, getMainWorkspace, setMainWorkspace } from "./main-workspace";
 import NodeSvg, { NodeJson, NodeEvents, InputFieldJson, SerializedNode } from "./nodesvg";
@@ -95,7 +95,8 @@ export {
     KabelUIX,
     KabelUtils,
     Showable,
-    RegisteredEl
+    RegisteredEl,
+    GridOptions
 };
 
 // Core classes used by public API

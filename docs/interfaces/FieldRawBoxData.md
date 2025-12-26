@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: FieldRawBoxData
 
-Defined in: [src/field.ts:32](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L32)
+Defined in: [src/field.ts:32](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L32)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [src/field.ts:32](https://github.com/FentFentFent/Kabel/blob/c687975
 
 > **box**: `Rect`
 
-Defined in: [src/field.ts:33](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L33)
+Defined in: [src/field.ts:33](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L33)
 
 ***
 
@@ -22,4 +22,4 @@ Defined in: [src/field.ts:33](https://github.com/FentFentFent/Kabel/blob/c687975
 
 > **txt**: `Text`
 
-Defined in: [src/field.ts:34](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L34)
+Defined in: [src/field.ts:34](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L34)

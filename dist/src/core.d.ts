@@ -22,7 +22,6 @@ import WASDController from '../controllers/wasd';
 import { RMap } from './renderer-map';
 import { Styler } from '../util/styler';
 import Widget from './widget';
-import { Showable } from './context-menu';
 import escapeAttr from '../util/escape-html';
 import unescapeAttr from '../util/unescape-html';
 import waitFrames from '../util/wait-anim-frames';
@@ -30,24 +29,59 @@ import CommentModel from './comment';
 import CommentRenderer from '../comment-renderer/renderer';
 import Representer from '../renderers/representer';
 import { RepresenterNode } from '../renderers/representer-node';
+import { addWindowListener, clearWindowListeners, removeWindowListener } from '../util/window-listeners';
+import * as FontManager from './fonts-manager';
+import Workspace from './workspace';
+import injectHeadless from './inject-headless';
+import createHeadlessNode from './headless-node';
+import * as apollo from '../renderers/apollo/apollo';
+import * as atlas from '../renderers/atlas/atlas';
 /**
  * Central Kabel object exposing all main modules, utilities, and defaults
  */
 declare const Kabel: {
-    UIX: {
-        events: Eventer;
-        /** * State Manager, Makes things possible: E.G (the 'typing' state when you type in a input box..) * Used in controllers so you dont move when typing characters like a w s or d etc. */ userState: import("../util/user-state").UserState;
+    env: {
+        isBrowser: boolean;
+        isNode: boolean;
+        isWebWorker: boolean;
     };
+    UIX: {
+        /** Event manager, loads events from '../events' and lets us attach them to svg.js elements to give them behavior that's seperated from the renderer. */
+        events: Eventer;
+        /** Font manager, used to load fonts. */
+        FontManager: typeof FontManager;
+        /** * State Manager, Makes things possible: E.G (the 'typing' state when you type in a input box..) * Used in controllers so you dont move when typing characters like a w s or d etc. */
+        userState: import("../util/user-state").UserState;
+        /** Window listeners manager */
+        windowListeners: {
+            addWindowListener: typeof addWindowListener;
+            removeWindowListener: typeof removeWindowListener;
+            clearWindowListeners: typeof clearWindowListeners;
+            windowListeners: {
+                resize: ((event: Event) => void)[];
+                scroll: ((event: Event) => void)[];
+                blur: ((event: Event) => void)[];
+                focus: ((event: Event) => void)[];
+                visibilitychange: ((event: Event) => void)[];
+                pointerlockchange: ((event: Event) => void)[];
+                beforeunload: ((event: Event) => void)[];
+            };
+        };
+    };
+    Themes: {
+        Classic: import("./workspace-svg").WSTheme;
+        Dark: import("./workspace-svg").WSTheme;
+    };
+    /** Context menu manager */
     ContextMenu: {
-        registerOption(id: string, option: {
-            click: (target: NodeSvg | WorkspaceSvg | HTMLElement | CommentModel) => void;
-            onHoverStart?: () => void;
-            onHoverEnd?: () => void;
-            label: string;
-            showFor: Showable | Showable[];
-        }): void;
+        registerOption(id: string, option: Omit<import("./context-menu").ContextMenuOpts, "id">): void;
         unregisterOption(id: string): void;
     };
+    /**
+     * Utility methods and constants for various purposes.
+     * @property Path - Utility methods for handling SVG paths.
+     * @property waitFrames - Utility method to wait for a certain number of animation frames.
+     */
     Utils: {
         Path: typeof Path;
         waitFrames: typeof waitFrames;
@@ -82,6 +116,8 @@ declare const Kabel: {
     OptConnectField: typeof OptConnectField;
     TextField: typeof TextField;
     inject: typeof inject;
+    injectHeadless: typeof injectHeadless;
+    createHeadlessNode: typeof createHeadlessNode;
     InjectMsg: typeof InjectMsg;
     clearMainWorkspace: typeof clearMainWorkspace;
     getMainWorkspace: typeof getMainWorkspace;
@@ -92,15 +128,21 @@ declare const Kabel: {
     };
     Widgets: import("./widget-prototypes").WidgetPrototypeList;
     WorkspaceSvg: typeof WorkspaceSvg;
+    Workspace: typeof Workspace;
     WorkspaceController: typeof WorkspaceController;
     WASDController: typeof WASDController;
     nodeRendering: {
+        SVG: typeof SVG;
         rendererMap: typeof RMap;
+        Apollo: typeof apollo;
+        Atlas: typeof atlas;
         Renderer: typeof Renderer;
         RendererConstants: typeof RendererConstants;
         Representer: typeof Representer;
         RepresenterNode: typeof RepresenterNode;
     };
+    atlas: typeof atlas;
+    apollo: typeof apollo;
     commentRendering: {
         CommentModel: typeof CommentModel;
         CommentRenderer: typeof CommentRenderer;

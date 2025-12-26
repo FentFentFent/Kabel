@@ -15,25 +15,14 @@ const ContextMenu = {
      * @param id - Unique identifier for the option
      * @param option - Configuration for the context menu item
      */
-    registerOption(id: string, option: {
-        /** Callback when the option is clicked */
-        click: (target: NodeSvg | WorkspaceSvg | HTMLElement | CommentModel) => void;
-        /** Callback when hovering starts */
-        onHoverStart?: () => void;
-        /** Callback when hovering ends */
-        onHoverEnd?: () => void;
-        /** Label text for the menu item */
-        label: string;
-        /** Target type(s) the option should appear for */
-        showFor: Showable | Showable[];
-    }) {
+    registerOption(id: string, option: Omit<ContextMenuOpts, 'id'>) {
         const opt = {
             id,
             click: option.click,
             label: option.label,
             onHoverStart: option.onHoverStart || (() => { }),
             onHoverEnd: option.onHoverEnd || (() => { }),
-            showFor: option.showFor || undefined
+            showFor: option.showFor || 'any'
         };
         ContextOptsRegistry.push(opt);
     },
@@ -89,7 +78,44 @@ ContextMenu.registerOption('k_addcomment', {
         }
     }
 });
-
+ContextMenu.registerOption('k_undo', {
+    showFor: ['ws', 'node', 'comment'],
+    label: 'Undo',
+    click: (t) => {
+        if (t instanceof NodeSvg) {
+            t.workspace?.history?.undo();
+        } else if (t instanceof CommentModel) {
+            t.getWorkspace()?.history?.undo();
+        } else if (t instanceof WorkspaceSvg) {
+            t.history.undo();
+        }
+    },
+    onDraw(el, ws, opt) {
+        console.log('onDrawCalled');
+        if (!ws.history.canUndo()) {
+            (el as HTMLElement).classList.add('disabled')
+        }
+    }
+})
+ContextMenu.registerOption('k_redo', {
+    showFor: ['ws', 'node', 'comment'],
+    label: 'Redo',
+    click: (t) => {
+        if (t instanceof NodeSvg) {
+            t.workspace?.history?.redo();
+        } else if (t instanceof CommentModel) {
+            t.getWorkspace()?.history?.redo();
+        } else if (t instanceof WorkspaceSvg) {
+            t.history.redo();
+        }
+    },
+    onDraw(el, ws, opt) {
+        console.log('onDrawCalled');
+        if (!ws.history.canRedo()) {
+            (el as HTMLElement).classList.add('disabled')
+        }
+    }
+})
 ContextMenu.registerOption('k_deletecomment', {
     showFor: 'comment',
     label: 'Delete Comment',

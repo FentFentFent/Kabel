@@ -1,17 +1,18 @@
+import Workspace from "./workspace";
 import WorkspaceSvg from "./workspace-svg";
 
 /**
  * Holds a reference to the main WorkspaceSvg instance.
  * Mimics Blockly's getMainWorkspace API for Kabel.
  */
-let mainws: WorkspaceSvg | null = null;
+let mainws: WorkspaceSvg | Workspace | null = null;
 
 /**
  * Returns the current main workspace instance.
  * 
  * @returns The main WorkspaceSvg or null if none is set.
  */
-function getMainWorkspace(): WorkspaceSvg | null {
+function getMainWorkspace(): WorkspaceSvg | Workspace | null {
     return mainws;
 }
 
@@ -22,7 +23,7 @@ function getMainWorkspace(): WorkspaceSvg | null {
  * @param ws - The WorkspaceSvg instance to set as main, or null to clear.
  * @returns The workspace that was set.
  */
-function setMainWorkspace(ws: WorkspaceSvg | null) {
+function setMainWorkspace(ws: WorkspaceSvg | Workspace | null) {
     return (mainws = ws);
 }
 

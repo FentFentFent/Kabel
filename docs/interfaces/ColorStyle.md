@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: ColorStyle
 
-Defined in: [src/visual-types.ts:24](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/visual-types.ts#L24)
+Defined in: [src/visual-types.ts:24](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/visual-types.ts#L24)
 
 Stores color data for a visual element on screen.
 
@@ -16,7 +16,7 @@ Stores color data for a visual element on screen.
 
 > `optional` **category**: `string`
 
-Defined in: [src/visual-types.ts:28](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/visual-types.ts#L28)
+Defined in: [src/visual-types.ts:28](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/visual-types.ts#L28)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [src/visual-types.ts:28](https://github.com/FentFentFent/Kabel/blob/
 
 > **primary**: [`Color`](../type-aliases/Color.md)
 
-Defined in: [src/visual-types.ts:25](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/visual-types.ts#L25)
+Defined in: [src/visual-types.ts:25](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/visual-types.ts#L25)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [src/visual-types.ts:25](https://github.com/FentFentFent/Kabel/blob/
 
 > **secondary**: [`Color`](../type-aliases/Color.md)
 
-Defined in: [src/visual-types.ts:26](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/visual-types.ts#L26)
+Defined in: [src/visual-types.ts:26](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/visual-types.ts#L26)
 
 ***
 
@@ -40,4 +40,4 @@ Defined in: [src/visual-types.ts:26](https://github.com/FentFentFent/Kabel/blob/
 
 > **tertiary**: [`Color`](../type-aliases/Color.md)
 
-Defined in: [src/visual-types.ts:27](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/visual-types.ts#L27)
+Defined in: [src/visual-types.ts:27](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/visual-types.ts#L27)

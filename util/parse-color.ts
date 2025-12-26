@@ -16,7 +16,7 @@ export function parseColor(color: Color): Hex {
 			const parts = color.split(',').map(s => parseInt(s.trim(), 10));
 			if (parts.length !== 3) throw new Error(`Invalid RGB string: ${color}`);
 			const [r, g, b] = parts;
-            if (!r || !g || !b) {
+            if ((!r && r!== 0) || (!g && g!== 0) || (!b && b !== 0)) {
                 console.warn(
                     "Invalid RGB tuple"
                 );

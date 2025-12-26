@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: WorkspaceController
 
-Defined in: [controllers/base.ts:6](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/controllers/base.ts#L6)
+Defined in: [controllers/base.ts:6](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L6)
 
 ## Extended by
 
@@ -18,7 +18,7 @@ Defined in: [controllers/base.ts:6](https://github.com/FentFentFent/Kabel/blob/c
 
 > **new WorkspaceController**(`workspace`): `WorkspaceController`
 
-Defined in: [controllers/base.ts:19](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/controllers/base.ts#L19)
+Defined in: [controllers/base.ts:23](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L23)
 
 #### Parameters
 
@@ -32,11 +32,43 @@ Defined in: [controllers/base.ts:19](https://github.com/FentFentFent/Kabel/blob/
 
 ## Properties
 
+### \_lastMoveFire
+
+> **\_lastMoveFire**: `number` = `0`
+
+Defined in: [controllers/base.ts:17](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L17)
+
+***
+
+### \_moveThrottleMs
+
+> **\_moveThrottleMs**: `number` = `100`
+
+Defined in: [controllers/base.ts:18](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L18)
+
+***
+
+### \_moveTimeout
+
+> **\_moveTimeout**: `any` = `null`
+
+Defined in: [controllers/base.ts:20](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L20)
+
+***
+
+### \_queuedMove
+
+> **\_queuedMove**: `boolean` = `false`
+
+Defined in: [controllers/base.ts:19](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L19)
+
+***
+
 ### \_updateInt
 
-> `private` **\_updateInt**: `any`
+> **\_updateInt**: `any`
 
-Defined in: [controllers/base.ts:17](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/controllers/base.ts#L17)
+Defined in: [controllers/base.ts:21](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L21)
 
 ***
 
@@ -44,7 +76,7 @@ Defined in: [controllers/base.ts:17](https://github.com/FentFentFent/Kabel/blob/
 
 > **isDragging**: `boolean`
 
-Defined in: [controllers/base.ts:13](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/controllers/base.ts#L13)
+Defined in: [controllers/base.ts:13](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L13)
 
 ***
 
@@ -52,7 +84,7 @@ Defined in: [controllers/base.ts:13](https://github.com/FentFentFent/Kabel/blob/
 
 > **keysDown**: `Set`\<`string`\>
 
-Defined in: [controllers/base.ts:9](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/controllers/base.ts#L9)
+Defined in: [controllers/base.ts:9](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L9)
 
 ***
 
@@ -60,7 +92,7 @@ Defined in: [controllers/base.ts:9](https://github.com/FentFentFent/Kabel/blob/c
 
 > **lastMousePos**: `Vec2`
 
-Defined in: [controllers/base.ts:12](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/controllers/base.ts#L12)
+Defined in: [controllers/base.ts:12](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L12)
 
 ***
 
@@ -68,7 +100,7 @@ Defined in: [controllers/base.ts:12](https://github.com/FentFentFent/Kabel/blob/
 
 > **mouseBtns**: `Set`\<`number`\>
 
-Defined in: [controllers/base.ts:10](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/controllers/base.ts#L10)
+Defined in: [controllers/base.ts:10](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L10)
 
 ***
 
@@ -76,7 +108,19 @@ Defined in: [controllers/base.ts:10](https://github.com/FentFentFent/Kabel/blob/
 
 > **mousePos**: `Vec2`
 
-Defined in: [controllers/base.ts:11](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/controllers/base.ts#L11)
+Defined in: [controllers/base.ts:11](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L11)
+
+***
+
+### movedListeners
+
+> **movedListeners**: () => `void`[]
+
+Defined in: [controllers/base.ts:16](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L16)
+
+#### Returns
+
+`void`
 
 ***
 
@@ -84,7 +128,7 @@ Defined in: [controllers/base.ts:11](https://github.com/FentFentFent/Kabel/blob/
 
 > **wheelDelta**: `number`
 
-Defined in: [controllers/base.ts:15](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/controllers/base.ts#L15)
+Defined in: [controllers/base.ts:15](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L15)
 
 ***
 
@@ -92,7 +136,7 @@ Defined in: [controllers/base.ts:15](https://github.com/FentFentFent/Kabel/blob/
 
 > **workspace**: [`WorkspaceSvg`](WorkspaceSvg.md)
 
-Defined in: [controllers/base.ts:7](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/controllers/base.ts#L7)
+Defined in: [controllers/base.ts:7](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L7)
 
 ## Methods
 
@@ -100,7 +144,37 @@ Defined in: [controllers/base.ts:7](https://github.com/FentFentFent/Kabel/blob/c
 
 > `private` **\_setupListeners**(): `void`
 
-Defined in: [controllers/base.ts:39](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/controllers/base.ts#L39)
+Defined in: [controllers/base.ts:91](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L91)
+
+#### Returns
+
+`void`
+
+***
+
+### \_throttledFireDidMove()
+
+> **\_throttledFireDidMove**(): `void`
+
+Defined in: [controllers/base.ts:63](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L63)
+
+#### Returns
+
+`void`
+
+***
+
+### addMoveListener()
+
+> **addMoveListener**(`cb`): `void`
+
+Defined in: [controllers/base.ts:38](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L38)
+
+#### Parameters
+
+##### cb
+
+() => `void`
 
 #### Returns
 
@@ -112,7 +186,7 @@ Defined in: [controllers/base.ts:39](https://github.com/FentFentFent/Kabel/blob/
 
 > **canMove**(): `boolean`
 
-Defined in: [controllers/base.ts:36](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/controllers/base.ts#L36)
+Defined in: [controllers/base.ts:88](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L88)
 
 #### Returns
 
@@ -124,7 +198,7 @@ Defined in: [controllers/base.ts:36](https://github.com/FentFentFent/Kabel/blob/
 
 > **centerOn**(`pos`): `void`
 
-Defined in: [controllers/base.ts:80](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/controllers/base.ts#L80)
+Defined in: [controllers/base.ts:146](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L146)
 
 #### Parameters
 
@@ -138,11 +212,23 @@ Defined in: [controllers/base.ts:80](https://github.com/FentFentFent/Kabel/blob/
 
 ***
 
+### fireDidMove()
+
+> **fireDidMove**(): `void`
+
+Defined in: [controllers/base.ts:47](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L47)
+
+#### Returns
+
+`void`
+
+***
+
 ### getZoom()
 
 > **getZoom**(): `number`
 
-Defined in: [controllers/base.ts:33](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/controllers/base.ts#L33)
+Defined in: [controllers/base.ts:85](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L85)
 
 #### Returns
 
@@ -154,7 +240,7 @@ Defined in: [controllers/base.ts:33](https://github.com/FentFentFent/Kabel/blob/
 
 > **pan**(`dx`, `dy`): `void`
 
-Defined in: [controllers/base.ts:68](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/controllers/base.ts#L68)
+Defined in: [controllers/base.ts:120](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L120)
 
 #### Parameters
 
@@ -176,7 +262,7 @@ Defined in: [controllers/base.ts:68](https://github.com/FentFentFent/Kabel/blob/
 
 > **redraw**(): `void`
 
-Defined in: [controllers/base.ts:112](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/controllers/base.ts#L112)
+Defined in: [controllers/base.ts:178](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L178)
 
 #### Returns
 
@@ -188,7 +274,25 @@ Defined in: [controllers/base.ts:112](https://github.com/FentFentFent/Kabel/blob
 
 > **refreshPos**(): `void`
 
-Defined in: [controllers/base.ts:108](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/controllers/base.ts#L108)
+Defined in: [controllers/base.ts:174](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L174)
+
+#### Returns
+
+`void`
+
+***
+
+### removeMoveListener()
+
+> **removeMoveListener**(`cb`): `void`
+
+Defined in: [controllers/base.ts:42](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L42)
+
+#### Parameters
+
+##### cb
+
+() => `void`
 
 #### Returns
 
@@ -200,7 +304,7 @@ Defined in: [controllers/base.ts:108](https://github.com/FentFentFent/Kabel/blob
 
 > **screenToWorkspace**(`x`, `y`): `Vec2`
 
-Defined in: [controllers/base.ts:91](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/controllers/base.ts#L91)
+Defined in: [controllers/base.ts:157](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L157)
 
 #### Parameters
 
@@ -222,7 +326,7 @@ Defined in: [controllers/base.ts:91](https://github.com/FentFentFent/Kabel/blob/
 
 > **setCamera**(`pos`): `void`
 
-Defined in: [controllers/base.ts:74](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/controllers/base.ts#L74)
+Defined in: [controllers/base.ts:133](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L133)
 
 #### Parameters
 
@@ -240,7 +344,7 @@ Defined in: [controllers/base.ts:74](https://github.com/FentFentFent/Kabel/blob/
 
 > **stop**(): `void`
 
-Defined in: [controllers/base.ts:117](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/controllers/base.ts#L117)
+Defined in: [controllers/base.ts:183](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L183)
 
 #### Returns
 
@@ -252,7 +356,7 @@ Defined in: [controllers/base.ts:117](https://github.com/FentFentFent/Kabel/blob
 
 > **update**(): `void`
 
-Defined in: [controllers/base.ts:63](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/controllers/base.ts#L63)
+Defined in: [controllers/base.ts:115](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L115)
 
 #### Returns
 
@@ -264,7 +368,7 @@ Defined in: [controllers/base.ts:63](https://github.com/FentFentFent/Kabel/blob/
 
 > **workspaceToScreen**(`x`, `y`): `Vec2`
 
-Defined in: [controllers/base.ts:99](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/controllers/base.ts#L99)
+Defined in: [controllers/base.ts:165](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/controllers/base.ts#L165)
 
 #### Parameters
 

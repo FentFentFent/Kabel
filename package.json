@@ -1,20 +1,33 @@
 {
     "name": "@kabel-project/kabel",
-    "version": "1.0.4",
+    "version": "1.0.6",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "node test-server.js",
         "build": "npx webpack",
         "docs": "typedoc --out docs src"
     },
-    "keywords": [],
-    "author": "",
+    "keywords": [
+        "editor",
+        "code",
+        "script",
+        "visual",
+        "programming",
+        "node",
+        "graph"
+    ],
+    "repository": "https://github.com/FentFentFent/Kabel",
+    "author": "fentiefentfent",
     "license": "ISC",
-    "description": "",
+    "description": "A blockly-inspired visual programming interface.",
     "devDependencies": {
         "@types/node": "^24.3.1",
+        "chokidar": "^5.0.0",
+        "connect-livereload": "^0.6.1",
         "css-minimizer-webpack-plugin": "^7.0.2",
+        "express": "^5.2.1",
         "jsdoc": "^4.0.5",
+        "livereload": "^0.10.3",
         "raw-loader": "^4.0.2",
         "source-map-loader": "^5.0.0",
         "terser-webpack-plugin": "^5.3.14",
@@ -25,8 +38,12 @@
         "webpack-cli": "^6.0.1"
     },
     "dependencies": {
+        "@fontsource/fredoka": "^5.2.10",
         "@svgdotjs/svg.js": "^3.2.4",
         "svgpath": "^2.6.0",
         "typedoc-plugin-markdown": "^4.9.0"
+    },
+    "publishConfig": {
+        "access": "public"
     }
 }

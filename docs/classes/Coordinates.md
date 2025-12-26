@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: Coordinates
 
-Defined in: [src/coordinates.ts:4](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/coordinates.ts#L4)
+Defined in: [src/coordinates.ts:4](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/coordinates.ts#L4)
 
 Represents a 2D coordinate in space.
 
@@ -20,7 +20,7 @@ Represents a 2D coordinate in space.
 
 > **new Coordinates**(`x`, `y`): `Coordinates`
 
-Defined in: [src/coordinates.ts:15](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/coordinates.ts#L15)
+Defined in: [src/coordinates.ts:15](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/coordinates.ts#L15)
 
 Creates a new Coordinates instance
 
@@ -48,7 +48,7 @@ The y value (default 0)
 
 > **x**: `number`
 
-Defined in: [src/coordinates.ts:6](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/coordinates.ts#L6)
+Defined in: [src/coordinates.ts:6](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/coordinates.ts#L6)
 
 X position
 
@@ -58,7 +58,7 @@ X position
 
 > **y**: `number`
 
-Defined in: [src/coordinates.ts:8](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/coordinates.ts#L8)
+Defined in: [src/coordinates.ts:8](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/coordinates.ts#L8)
 
 Y position
 
@@ -68,7 +68,7 @@ Y position
 
 > **clone**(): `Coordinates`
 
-Defined in: [src/coordinates.ts:34](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/coordinates.ts#L34)
+Defined in: [src/coordinates.ts:34](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/coordinates.ts#L34)
 
 Returns a copy of this coordinate
 
@@ -84,7 +84,7 @@ A new Coordinates instance with the same x and y
 
 > **distanceTo**(`other`): `number`
 
-Defined in: [src/coordinates.ts:43](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/coordinates.ts#L43)
+Defined in: [src/coordinates.ts:43](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/coordinates.ts#L43)
 
 Calculate the Euclidean distance to another coordinate
 
@@ -108,7 +108,7 @@ The distance as a number
 
 > **set**(`x`, `y`): `void`
 
-Defined in: [src/coordinates.ts:25](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/coordinates.ts#L25)
+Defined in: [src/coordinates.ts:25](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/coordinates.ts#L25)
 
 Set the coordinates to new values
 
@@ -136,7 +136,7 @@ The new y value
 
 > **toArray**(): \[`number`, `number`\]
 
-Defined in: [src/coordinates.ts:61](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/coordinates.ts#L61)
+Defined in: [src/coordinates.ts:61](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/coordinates.ts#L61)
 
 Convert the coordinate to an array [x, y]
 
@@ -152,7 +152,7 @@ Tuple of numbers [x, y]
 
 > **toObject**(): `object`
 
-Defined in: [src/coordinates.ts:69](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/coordinates.ts#L69)
+Defined in: [src/coordinates.ts:69](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/coordinates.ts#L69)
 
 Convert the coordinate to an object { x, y }
 
@@ -176,7 +176,7 @@ Object with x and y properties
 
 > **toString**(): `string`
 
-Defined in: [src/coordinates.ts:53](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/coordinates.ts#L53)
+Defined in: [src/coordinates.ts:53](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/coordinates.ts#L53)
 
 Convert the coordinate to a string representation
 

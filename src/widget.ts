@@ -1,6 +1,7 @@
 import WorkspaceSvg from "./workspace-svg";
 import Coordinates from "./coordinates";
 import { generateUID } from "../util/uid";
+import Workspace from "./workspace";
 
 export interface WidgetOptions {
     /**
@@ -41,7 +42,7 @@ export interface WidgetOptions {
     init?: (this: WidgetOptions, widget: Widget, html: HTMLElement) => void;
 }
 class Widget {
-    workspace: WorkspaceSvg;
+    workspace: WorkspaceSvg|Workspace;
     container: HTMLDivElement;
     coords: Coordinates;
     width: number;
@@ -51,7 +52,7 @@ class Widget {
     id: string;
     options: WidgetOptions;
     static WIDGET_GLOBAL_ID = 0;
-    constructor(workspace: WorkspaceSvg, options: WidgetOptions = { name: `Untitled(${Widget.WIDGET_GLOBAL_ID++})` }) {
+    constructor(workspace: WorkspaceSvg|Workspace, options: WidgetOptions = { name: `Untitled(${Widget.WIDGET_GLOBAL_ID++})` }) {
         this.workspace = workspace;
         this.coords = options.coords ?? new Coordinates(0, 0);
         this.width = options.width ?? 200;
@@ -76,7 +77,7 @@ class Widget {
 
         if (options.html) this.container.innerHTML = options.html;
 
-        this.workspace._wsTop.appendChild(this.container);
+        if (!this.workspace.isHeadless) (this.workspace as WorkspaceSvg)._wsTop.appendChild(this.container);
         this.hide();
         if (typeof options.init !== 'undefined' && options.init) {
             options.init(this, this.container);
@@ -123,8 +124,9 @@ class Widget {
         this.container.style.zIndex = "1000"; // overlays nodes
         
         if (this.options.html) this.container.innerHTML = this.options.html;
+        if (this.workspace.isHeadless) return;
 
-        this.workspace._wsTop.appendChild(this.container);
+        (this.workspace as WorkspaceSvg)._wsTop.appendChild(this.container);
         this.workspace._addWidgetToDB(this);
     }
     // Destroy widget & cleanup.

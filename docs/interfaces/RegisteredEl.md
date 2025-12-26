@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: RegisteredEl
 
-Defined in: [util/eventer.ts:7](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/util/eventer.ts#L7)
+Defined in: [util/eventer.ts:7](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/util/eventer.ts#L7)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [util/eventer.ts:7](https://github.com/FentFentFent/Kabel/blob/c6879
 
 > `optional` **args**: [`EventArgs`](../type-aliases/EventArgs.md)
 
-Defined in: [util/eventer.ts:11](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/util/eventer.ts#L11)
+Defined in: [util/eventer.ts:11](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/util/eventer.ts#L11)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [util/eventer.ts:11](https://github.com/FentFentFent/Kabel/blob/c687
 
 > `optional` **destroyFn**: () => `void`
 
-Defined in: [util/eventer.ts:12](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/util/eventer.ts#L12)
+Defined in: [util/eventer.ts:12](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/util/eventer.ts#L12)
 
 #### Returns
 
@@ -34,7 +34,7 @@ Defined in: [util/eventer.ts:12](https://github.com/FentFentFent/Kabel/blob/c687
 
 > **el**: `Element`
 
-Defined in: [util/eventer.ts:9](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/util/eventer.ts#L9)
+Defined in: [util/eventer.ts:9](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/util/eventer.ts#L9)
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: [util/eventer.ts:9](https://github.com/FentFentFent/Kabel/blob/c6879
 
 > **tags**: `string`[]
 
-Defined in: [util/eventer.ts:8](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/util/eventer.ts#L8)
+Defined in: [util/eventer.ts:8](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/util/eventer.ts#L8)
 
 ***
 
@@ -50,4 +50,4 @@ Defined in: [util/eventer.ts:8](https://github.com/FentFentFent/Kabel/blob/c6879
 
 > **type**: `string`
 
-Defined in: [util/eventer.ts:10](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/util/eventer.ts#L10)
+Defined in: [util/eventer.ts:10](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/util/eventer.ts#L10)

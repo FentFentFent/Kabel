@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: InjectMsg
 
-Defined in: [src/inject.ts:108](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/inject.ts#L108)
+Defined in: [src/inject.ts:138](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/inject.ts#L138)
 
 Utility class for logging injection messages in a structured way.
 
@@ -16,7 +16,7 @@ Utility class for logging injection messages in a structured way.
 
 > **new InjectMsg**(`msg`): `InjectMsg`
 
-Defined in: [src/inject.ts:116](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/inject.ts#L116)
+Defined in: [src/inject.ts:146](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/inject.ts#L146)
 
 Creates a new InjectMsg instance.
 
@@ -38,7 +38,7 @@ Message text
 
 > **msg**: `string`
 
-Defined in: [src/inject.ts:110](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/inject.ts#L110)
+Defined in: [src/inject.ts:140](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/inject.ts#L140)
 
 Message content
 
@@ -48,7 +48,7 @@ Message content
 
 > **err**(): `void`
 
-Defined in: [src/inject.ts:121](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/inject.ts#L121)
+Defined in: [src/inject.ts:151](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/inject.ts#L151)
 
 Log as error
 
@@ -62,7 +62,7 @@ Log as error
 
 > **info**(): `void`
 
-Defined in: [src/inject.ts:131](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/inject.ts#L131)
+Defined in: [src/inject.ts:161](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/inject.ts#L161)
 
 Log as info
 
@@ -76,7 +76,7 @@ Log as info
 
 > **wrn**(): `void`
 
-Defined in: [src/inject.ts:126](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/inject.ts#L126)
+Defined in: [src/inject.ts:156](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/inject.ts#L156)
 
 Log as warning
 

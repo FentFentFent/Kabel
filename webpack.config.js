@@ -34,9 +34,9 @@ module.exports = {
                 loader: 'source-map-loader',
             },
             {
-                test: /\.css$/,
+                test: /\.(css|svg)$/,
                 use: 'raw-loader'
-            }
+            },
         ],
     },
     optimization: {

@@ -5,6 +5,7 @@ import userState from '../util/user-state';
 import Field, { AnyField } from '../src/field';
 import NodeSvg from '../src/nodesvg';
 import waitFrames from '../util/wait-anim-frames';
+import WorkspaceSvg from '../src/workspace-svg';
 interface ConnectionV {
     conn: Connection,
     el: Element,
@@ -91,12 +92,18 @@ function initConnector(el: Element, args?: EventArgs) {
             waitFrames(2, () => {
                 if (cState.one?.args?.node) {
                     cState.one.args.node.workspace?.redraw();
+                    (cState.one.args.node.workspace as WorkspaceSvg).emitChange();
                 } else if (cState.two?.args?.node) {
                     cState.two.args.node.workspace?.redraw();
+                    (cState!.two!.args.node!.workspace as WorkspaceSvg).emitChange();
+
                 }
+                
+                
                 cState.one = null;
                 cState.two = null;
                 userState.removeState('connecting');
+
             });
         }
     });

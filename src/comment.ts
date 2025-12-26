@@ -3,7 +3,15 @@ import NodeSvg from "./nodesvg";
 import WorkspaceSvg from "./workspace-svg";
 import Coordinates from "./coordinates";
 import { generateUID } from "../util/uid";
+import Workspace from "./workspace";
 
+
+export interface CommentSerialized {
+    id: string;
+    text: string;
+    coords: { x: number; y: number };
+    parent: string | null; // node ID if node comment, null if workspace comment
+}
 /**
  * Represents a comment attached to either a NodeSvg or a WorkspaceSvg.
  */
@@ -15,16 +23,16 @@ class CommentModel {
     _isWorkspaceComment: boolean;
 
     /** Parent NodeSvg or WorkspaceSvg to which this comment belongs */
-    _parent: NodeSvg | WorkspaceSvg;
+    _parent: NodeSvg | WorkspaceSvg | Workspace;
 
     /** SVG group representing this comment in the DOM */
-    svgGroup?: G|undefined;
+    svgGroup?: G | undefined;
 
     /** Coordinates relative to parent */
     relativeCoords: Coordinates;
 
     /** Optional SVG line connecting the comment to its node */
-    svgLine?: Line|undefined;
+    svgLine?: Line | undefined;
 
     /** Temporary bounding box info for input handling */
     _tempInputBBox?: { width: number; height: number; textX: number; textY: number };
@@ -36,7 +44,7 @@ class CommentModel {
      * Creates a new comment attached to a node or workspace.
      * @param parent - NodeSvg or WorkspaceSvg this comment belongs to
      */
-    constructor(parent: NodeSvg | WorkspaceSvg) {
+    constructor(parent: NodeSvg | WorkspaceSvg | Workspace) {
         this._parent = parent;
         this._isWorkspaceComment = parent instanceof WorkspaceSvg;
         this._text = "";
@@ -47,7 +55,7 @@ class CommentModel {
     }
 
     /**
-     * Sets the text of the comment without triggering a redraw.
+     * Sets the text of the comment without triggering a comment redraw.
      * @param value - New text content
      * @returns The updated text
      */
@@ -70,6 +78,7 @@ class CommentModel {
      */
     setText(value: string): string {
         const res = (this._text = value);
+        if (this.getWorkspace().isHeadless) return res;
         this.getWorkspace().renderer.clearComments();
         this.getWorkspace().renderer.drawComments();
         return res;
@@ -98,6 +107,34 @@ class CommentModel {
         } else {
             return (this._parent as NodeSvg)?.workspace as WorkspaceSvg;
         }
+    }
+    /**
+     * Convert to JSON structure holding all important data.
+     */
+    toJson(): CommentSerialized {
+        return {
+            text: this.getText(),
+            coords: { x: this.relativeCoords.x, y: this.relativeCoords.y },
+            parent: this.isWorkspaceComment() ? null : (this._parent as NodeSvg).id,
+            id: this.id
+        }
+    }
+
+    /**
+     * Creates a CommentModel from serialized data.
+     * @param data - The serialized comment
+     * @param workspace - The workspace to attach the comment to
+     * @param nodeMap - Optional map of node IDs to NodeSvg instances
+     */
+    static fromJson(
+        data: CommentSerialized,
+    ): CommentModel {
+        const comment = new CommentModel(null as any as WorkspaceSvg | NodeSvg);
+        comment.id = data.id;
+        comment.relativeCoords = new Coordinates(data.coords.x, data.coords.y);
+        comment.setTextNoRedraw(data.text);
+
+        return comment;
     }
 }
 

@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: NodeEvents
 
-Defined in: [src/nodesvg.ts:134](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L134)
+Defined in: [src/nodesvg.ts:134](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L134)
 
 Events emitted by NodeSvg instances.
 Consumers can listen to these events to react to node lifecycle changes.
@@ -17,7 +17,7 @@ Consumers can listen to these events to react to node lifecycle changes.
 
 > **INITING**: `null`
 
-Defined in: [src/nodesvg.ts:139](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L139)
+Defined in: [src/nodesvg.ts:139](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L139)
 
 Triggered immediately after node initialization
 
@@ -27,7 +27,7 @@ Triggered immediately after node initialization
 
 > **NODE\_DRAG**: `null`
 
-Defined in: [src/nodesvg.ts:142](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L142)
+Defined in: [src/nodesvg.ts:142](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L142)
 
 Triggered while the node is being dragged
 
@@ -37,6 +37,6 @@ Triggered while the node is being dragged
 
 > **REMOVING**: `null`
 
-Defined in: [src/nodesvg.ts:136](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L136)
+Defined in: [src/nodesvg.ts:136](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L136)
 
 Triggered before the node is removed from the workspace

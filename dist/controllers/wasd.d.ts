@@ -14,9 +14,11 @@ export default class WASDController extends WorkspaceController {
     zoomSpeed: number;
     minZoom: number;
     maxZoom: number;
+    isFalloff: boolean;
     constructor(workspace: WorkspaceSvg, moveSpeed?: number);
     canMove(): boolean;
     update(): void;
+    pan(dx: number, dy: number): void;
     /**
      * Handles wheel events for zooming.
      * Zooms around the mouse position for intuitive zooming.

@@ -1,8 +1,8 @@
-[**Kabel Project Docs v1.0.4**](README.md)
+[**Kabel Project Docs v1.0.6**](README.md)
 
 ***
 
-# Kabel Project Docs v1.0.4
+# Kabel Project Docs v1.0.6
 
 ## Classes
 
@@ -41,6 +41,7 @@
 - [FieldOptions](interfaces/FieldOptions.md)
 - [FieldRawBoxData](interfaces/FieldRawBoxData.md)
 - [FieldVisualInfo](interfaces/FieldVisualInfo.md)
+- [GridOptions](interfaces/GridOptions.md)
 - [InjectOptions](interfaces/InjectOptions.md)
 - [InputFieldJson](interfaces/InputFieldJson.md)
 - [KabelCommentRendering](interfaces/KabelCommentRendering.md)

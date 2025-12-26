@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: FieldVisualInfo
 
-Defined in: [src/field.ts:23](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L23)
+Defined in: [src/field.ts:23](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L23)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [src/field.ts:23](https://github.com/FentFentFent/Kabel/blob/c687975
 
 > **background**: `Rect`
 
-Defined in: [src/field.ts:26](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L26)
+Defined in: [src/field.ts:26](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L26)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [src/field.ts:26](https://github.com/FentFentFent/Kabel/blob/c687975
 
 > **fieldGroup**: `G`
 
-Defined in: [src/field.ts:29](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L29)
+Defined in: [src/field.ts:29](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L29)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [src/field.ts:29](https://github.com/FentFentFent/Kabel/blob/c687975
 
 > **measuredHeight**: `number`
 
-Defined in: [src/field.ts:25](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L25)
+Defined in: [src/field.ts:25](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L25)
 
 ***
 
@@ -38,7 +38,7 @@ Defined in: [src/field.ts:25](https://github.com/FentFentFent/Kabel/blob/c687975
 
 > **measuredWidth**: `number`
 
-Defined in: [src/field.ts:24](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L24)
+Defined in: [src/field.ts:24](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L24)
 
 ***
 
@@ -46,7 +46,7 @@ Defined in: [src/field.ts:24](https://github.com/FentFentFent/Kabel/blob/c687975
 
 > **nodeGroup**: `G`
 
-Defined in: [src/field.ts:28](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L28)
+Defined in: [src/field.ts:28](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L28)
 
 ***
 
@@ -54,7 +54,7 @@ Defined in: [src/field.ts:28](https://github.com/FentFentFent/Kabel/blob/c687975
 
 > **svg**: `Svg`
 
-Defined in: [src/field.ts:27](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L27)
+Defined in: [src/field.ts:27](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L27)
 
 ***
 
@@ -62,4 +62,4 @@ Defined in: [src/field.ts:27](https://github.com/FentFentFent/Kabel/blob/c687975
 
 > **xUsed**: `number`
 
-Defined in: [src/field.ts:30](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L30)
+Defined in: [src/field.ts:30](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L30)

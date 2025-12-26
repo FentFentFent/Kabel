@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: Toolbox
 
-Defined in: [src/toolbox.ts:10](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/toolbox.ts#L10)
+Defined in: [src/toolbox.ts:10](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/toolbox.ts#L10)
 
 Represents the toolbox in a Kabel workspace.
 The toolbox can be either a flyout or a category-based toolbox.
@@ -17,7 +17,7 @@ The toolbox can be either a flyout or a category-based toolbox.
 
 > **new Toolbox**(`workspace`): `Toolbox`
 
-Defined in: [src/toolbox.ts:36](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/toolbox.ts#L36)
+Defined in: [src/toolbox.ts:36](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/toolbox.ts#L36)
 
 Creates a new Toolbox instance attached to a workspace.
 
@@ -39,7 +39,7 @@ The workspace instance to attach this toolbox to
 
 > **\_categories**: `Category`[] = `[]`
 
-Defined in: [src/toolbox.ts:30](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/toolbox.ts#L30)
+Defined in: [src/toolbox.ts:30](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/toolbox.ts#L30)
 
 List of categories (if using a category toolbox)
 
@@ -49,7 +49,7 @@ List of categories (if using a category toolbox)
 
 > **\_contents**: [`TblxNodeStruct`](../interfaces/TblxNodeStruct.md)[] \| [`TblxCategoryStruct`](../interfaces/TblxCategoryStruct.md)[]
 
-Defined in: [src/toolbox.ts:24](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/toolbox.ts#L24)
+Defined in: [src/toolbox.ts:24](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/toolbox.ts#L24)
 
 Contents of the toolbox (nodes or categories)
 
@@ -59,7 +59,7 @@ Contents of the toolbox (nodes or categories)
 
 > **\_flyout**: `Flyout`
 
-Defined in: [src/toolbox.ts:21](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/toolbox.ts#L21)
+Defined in: [src/toolbox.ts:21](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/toolbox.ts#L21)
 
 Flyout instance for node display
 
@@ -69,7 +69,7 @@ Flyout instance for node display
 
 > **container**: `HTMLDivElement`
 
-Defined in: [src/toolbox.ts:27](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/toolbox.ts#L27)
+Defined in: [src/toolbox.ts:27](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/toolbox.ts#L27)
 
 DOM container element for the toolbox
 
@@ -79,7 +79,7 @@ DOM container element for the toolbox
 
 > **type**: `1` \| `2`
 
-Defined in: [src/toolbox.ts:12](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/toolbox.ts#L12)
+Defined in: [src/toolbox.ts:12](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/toolbox.ts#L12)
 
 Toolbox type: 1 = category toolbox, 2 = flyout toolbox
 
@@ -89,7 +89,7 @@ Toolbox type: 1 = category toolbox, 2 = flyout toolbox
 
 > **workspace**: [`WorkspaceSvg`](WorkspaceSvg.md)
 
-Defined in: [src/toolbox.ts:15](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/toolbox.ts#L15)
+Defined in: [src/toolbox.ts:15](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/toolbox.ts#L15)
 
 Reference to the workspace this toolbox belongs to
 
@@ -99,7 +99,7 @@ Reference to the workspace this toolbox belongs to
 
 > **wsOptions**: [`InjectOptions`](../interfaces/InjectOptions.md)
 
-Defined in: [src/toolbox.ts:18](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/toolbox.ts#L18)
+Defined in: [src/toolbox.ts:18](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/toolbox.ts#L18)
 
 Workspace options for initialization
 
@@ -109,7 +109,7 @@ Workspace options for initialization
 
 > **getOptions**(): [`InjectOptions`](../interfaces/InjectOptions.md)
 
-Defined in: [src/toolbox.ts:68](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/toolbox.ts#L68)
+Defined in: [src/toolbox.ts:95](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/toolbox.ts#L95)
 
 Retrieves the workspace options.
 
@@ -125,7 +125,7 @@ The workspace's InjectOptions
 
 > **initCategoryToolbox**(): `void`
 
-Defined in: [src/toolbox.ts:76](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/toolbox.ts#L76)
+Defined in: [src/toolbox.ts:103](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/toolbox.ts#L103)
 
 Initializes a category-based toolbox.
 Converts the toolbox contents into Category instances and attaches them.
@@ -140,10 +140,32 @@ Converts the toolbox contents into Category instances and attaches them.
 
 > **initFlyoutToolbox**(): `void`
 
-Defined in: [src/toolbox.ts:91](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/toolbox.ts#L91)
+Defined in: [src/toolbox.ts:118](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/toolbox.ts#L118)
 
 Initializes a flyout toolbox.
 Fills the flyout with the node definitions from the toolbox contents.
+
+#### Returns
+
+`void`
+
+***
+
+### updateStyles()
+
+> **updateStyles**(`theme`): `void`
+
+Defined in: [src/toolbox.ts:67](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/toolbox.ts#L67)
+
+Applies a WSTheme to the toolbox and flyout elements.
+
+#### Parameters
+
+##### theme
+
+`WSTheme`
+
+The workspace theme to apply
 
 #### Returns
 

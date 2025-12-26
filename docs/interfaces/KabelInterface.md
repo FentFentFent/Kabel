@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: KabelInterface
 
-Defined in: [src/types.ts:95](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L95)
+Defined in: [src/types.ts:109](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L109)
 
 The main Kabel interface exposing core functionality, utilities, renderers, and UI components.
 
@@ -16,9 +16,29 @@ The main Kabel interface exposing core functionality, utilities, renderers, and 
 
 > **\_mainWorkspace**: [`WorkspaceSvg`](../classes/WorkspaceSvg.md)
 
-Defined in: [src/types.ts:175](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L175)
+Defined in: [src/types.ts:199](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L199)
 
 The currently active main workspace instance.
+
+***
+
+### apollo
+
+> **apollo**: `__module`
+
+Defined in: [src/types.ts:193](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L193)
+
+A bunch of apollo renderer related classes
+
+***
+
+### atlas
+
+> **atlas**: `__module`
+
+Defined in: [src/types.ts:189](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L189)
+
+A bunch of atlas renderer related classes.
 
 ***
 
@@ -26,7 +46,7 @@ The currently active main workspace instance.
 
 > **CategoryColors**: `object`
 
-Defined in: [src/types.ts:109](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L109)
+Defined in: [src/types.ts:124](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L124)
 
 Color categories for nodes and other UI elements.
 
@@ -40,7 +60,7 @@ Color categories for nodes and other UI elements.
 
 > **clearMainWorkspace**: () => `null`
 
-Defined in: [src/types.ts:142](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L142)
+Defined in: [src/types.ts:158](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L158)
 
 Clears the main workspace.
 
@@ -59,7 +79,7 @@ Always returns null.
 
 > **commentRendering**: [`KabelCommentRendering`](KabelCommentRendering.md)
 
-Defined in: [src/types.ts:172](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L172)
+Defined in: [src/types.ts:196](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L196)
 
 Comment rendering container, contains CommentModel and CommentRenderer classes.
 
@@ -69,7 +89,7 @@ Comment rendering container, contains CommentModel and CommentRenderer classes.
 
 > **Connection**: *typeof* [`Connection`](../classes/Connection.md)
 
-Defined in: [src/types.ts:112](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L112)
+Defined in: [src/types.ts:127](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L127)
 
 Connection system for nodes.
 
@@ -79,7 +99,7 @@ Connection system for nodes.
 
 > **ContextMenu**: `object`
 
-Defined in: [src/types.ts:100](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L100)
+Defined in: [src/types.ts:115](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L115)
 
 Context menu utilities.
 
@@ -99,37 +119,9 @@ Unique identifier for the option
 
 ###### option
 
+`Omit`\<`ContextMenuOpts`, `"id"`\>
+
 Configuration for the context menu item
-
-###### click
-
-(`target`) => `void`
-
-Callback when the option is clicked
-
-###### label
-
-`string`
-
-Label text for the menu item
-
-###### onHoverEnd?
-
-() => `void`
-
-Callback when hovering ends
-
-###### onHoverStart?
-
-() => `void`
-
-Callback when hovering starts
-
-###### showFor
-
-`Showable` \| `Showable`[]
-
-Target type(s) the option should appear for
 
 ##### Returns
 
@@ -159,7 +151,7 @@ ID of the option to remove
 
 > **Coordinates**: *typeof* [`Coordinates`](../classes/Coordinates.md)
 
-Defined in: [src/types.ts:115](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L115)
+Defined in: [src/types.ts:130](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L130)
 
 Coordinates utility.
 
@@ -169,7 +161,7 @@ Coordinates utility.
 
 > **Dropdown**: [`DropdownContainer`](../classes/DropdownContainer.md)
 
-Defined in: [src/types.ts:178](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L178)
+Defined in: [src/types.ts:202](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L202)
 
 Dropdown UI singleton container.
 
@@ -179,9 +171,17 @@ Dropdown UI singleton container.
 
 > **DummyField**: *typeof* [`DummyField`](../classes/DummyField.md)
 
-Defined in: [src/types.ts:121](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L121)
+Defined in: [src/types.ts:136](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L136)
 
 Dummy field placeholder class.
+
+***
+
+### env
+
+> **env**: `KabelEnv`
+
+Defined in: [src/types.ts:110](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L110)
 
 ***
 
@@ -189,7 +189,7 @@ Dummy field placeholder class.
 
 > **Field**: *typeof* [`Field`](../classes/Field.md)
 
-Defined in: [src/types.ts:118](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L118)
+Defined in: [src/types.ts:133](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L133)
 
 Base field class for node inputs.
 
@@ -199,7 +199,7 @@ Base field class for node inputs.
 
 > **FieldMap**: `object`
 
-Defined in: [src/types.ts:124](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L124)
+Defined in: [src/types.ts:139](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L139)
 
 Mapping of fields by type or ID.
 
@@ -235,9 +235,9 @@ Mapping of fields by type or ID.
 
 ### getMainWorkspace()
 
-> **getMainWorkspace**: () => [`WorkspaceSvg`](../classes/WorkspaceSvg.md) \| `null`
+> **getMainWorkspace**: () => [`WorkspaceSvg`](../classes/WorkspaceSvg.md) \| `Workspace` \| `null`
 
-Defined in: [src/types.ts:145](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L145)
+Defined in: [src/types.ts:161](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L161)
 
 Retrieves the main workspace instance.
 
@@ -245,7 +245,7 @@ Returns the current main workspace instance.
 
 #### Returns
 
-[`WorkspaceSvg`](../classes/WorkspaceSvg.md) \| `null`
+[`WorkspaceSvg`](../classes/WorkspaceSvg.md) \| `Workspace` \| `null`
 
 The main WorkspaceSvg or null if none is set.
 
@@ -255,7 +255,7 @@ The main WorkspaceSvg or null if none is set.
 
 > **inject**: (`element`, `options`) => [`WorkspaceSvg`](../classes/WorkspaceSvg.md) \| `undefined`
 
-Defined in: [src/types.ts:136](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L136)
+Defined in: [src/types.ts:151](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L151)
 
 Function to create a new workspace in kabel
 
@@ -285,11 +285,25 @@ The newly created WorkspaceSvg instance, or undefined if injection failed
 
 ***
 
+### injectHeadless()
+
+> **injectHeadless**: () => `Workspace` \| `undefined`
+
+Defined in: [src/types.ts:153](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L153)
+
+Function to create a new workspace in kabel (headless)
+
+#### Returns
+
+`Workspace` \| `undefined`
+
+***
+
 ### InjectMsg
 
 > **InjectMsg**: *typeof* [`InjectMsg`](../classes/InjectMsg.md)
 
-Defined in: [src/types.ts:139](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L139)
+Defined in: [src/types.ts:155](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L155)
 
 Message type for injections.
 
@@ -299,7 +313,7 @@ Message type for injections.
 
 > **nodeRendering**: [`KabelNodeRendering`](KabelNodeRendering.md)
 
-Defined in: [src/types.ts:169](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L169)
+Defined in: [src/types.ts:185](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L185)
 
 Node rendering container, contains Renderer and RendererConstants classes
 
@@ -309,7 +323,7 @@ Node rendering container, contains Renderer and RendererConstants classes
 
 > **Nodes**: `object`
 
-Defined in: [src/types.ts:154](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L154)
+Defined in: [src/types.ts:170](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L170)
 
 Collection of registered node prototypes.
 
@@ -323,7 +337,7 @@ Collection of registered node prototypes.
 
 > **NodeSvg**: *typeof* [`NodeSvg`](../classes/NodeSvg.md)
 
-Defined in: [src/types.ts:151](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L151)
+Defined in: [src/types.ts:167](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L167)
 
 NodeSVG class, represents a node in the workspace
 
@@ -333,7 +347,7 @@ NodeSVG class, represents a node in the workspace
 
 > **NumberField**: *typeof* [`NumberField`](../classes/NumberField.md)
 
-Defined in: [src/types.ts:127](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L127)
+Defined in: [src/types.ts:142](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L142)
 
 Number input field for nodes.
 
@@ -343,7 +357,7 @@ Number input field for nodes.
 
 > **OptConnectField**: *typeof* [`OptConnectField`](../classes/OptConnectField.md)
 
-Defined in: [src/types.ts:130](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L130)
+Defined in: [src/types.ts:145](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L145)
 
 Optional connection field.
 
@@ -351,9 +365,9 @@ Optional connection field.
 
 ### setMainWorkspace()
 
-> **setMainWorkspace**: (`ws`) => [`WorkspaceSvg`](../classes/WorkspaceSvg.md) \| `null`
+> **setMainWorkspace**: (`ws`) => [`WorkspaceSvg`](../classes/WorkspaceSvg.md) \| `Workspace` \| `null`
 
-Defined in: [src/types.ts:148](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L148)
+Defined in: [src/types.ts:164](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L164)
 
 Sets the main workspace instance.
 
@@ -366,11 +380,11 @@ Calling this updates the global "main workspace" for Kabel.
 
 The WorkspaceSvg instance to set as main, or null to clear.
 
-[`WorkspaceSvg`](../classes/WorkspaceSvg.md) | `null`
+[`WorkspaceSvg`](../classes/WorkspaceSvg.md) | `Workspace` | `null`
 
 #### Returns
 
-[`WorkspaceSvg`](../classes/WorkspaceSvg.md) \| `null`
+[`WorkspaceSvg`](../classes/WorkspaceSvg.md) \| `Workspace` \| `null`
 
 The workspace that was set.
 
@@ -380,7 +394,7 @@ The workspace that was set.
 
 > **TextField**: *typeof* [`TextField`](../classes/TextField.md)
 
-Defined in: [src/types.ts:133](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L133)
+Defined in: [src/types.ts:148](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L148)
 
 Text input field for nodes.
 
@@ -390,7 +404,7 @@ Text input field for nodes.
 
 > **UIX**: [`KabelUIX`](KabelUIX.md)
 
-Defined in: [src/types.ts:97](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L97)
+Defined in: [src/types.ts:112](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L112)
 
 UI experience utilities section
 
@@ -400,7 +414,7 @@ UI experience utilities section
 
 > **Utils**: [`KabelUtils`](KabelUtils.md)
 
-Defined in: [src/types.ts:103](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L103)
+Defined in: [src/types.ts:118](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L118)
 
 Utility functions and classes.
 
@@ -410,7 +424,7 @@ Utility functions and classes.
 
 > **WASDController**: *typeof* [`WASDController`](../classes/WASDController.md)
 
-Defined in: [src/types.ts:166](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L166)
+Defined in: [src/types.ts:182](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L182)
 
 WASD controller for navigating the workspace.
 
@@ -420,7 +434,7 @@ WASD controller for navigating the workspace.
 
 > **Widget**: *typeof* [`Widget`](../classes/Widget.md)
 
-Defined in: [src/types.ts:106](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L106)
+Defined in: [src/types.ts:121](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L121)
 
 Widget system for creating interactive UI components.
 
@@ -430,7 +444,7 @@ Widget system for creating interactive UI components.
 
 > **Widgets**: [`WidgetPrototypeList`](WidgetPrototypeList.md)
 
-Defined in: [src/types.ts:157](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L157)
+Defined in: [src/types.ts:173](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L173)
 
 Collection of registered widget prototypes.
 
@@ -440,7 +454,7 @@ Collection of registered widget prototypes.
 
 > **WorkspaceController**: *typeof* [`WorkspaceController`](../classes/WorkspaceController.md)
 
-Defined in: [src/types.ts:163](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L163)
+Defined in: [src/types.ts:179](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L179)
 
 Workspace controller class which moves the workspace camera based on user interactions.
 
@@ -450,6 +464,6 @@ Workspace controller class which moves the workspace camera based on user intera
 
 > **WorkspaceSvg**: *typeof* [`WorkspaceSvg`](../classes/WorkspaceSvg.md)
 
-Defined in: [src/types.ts:160](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/types.ts#L160)
+Defined in: [src/types.ts:176](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/types.ts#L176)
 
 Workspace SVG class.

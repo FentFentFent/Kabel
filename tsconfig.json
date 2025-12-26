@@ -5,7 +5,7 @@
 		"outDir": "./dist",
 
 		// Environment Settings
-		"module": "nodeNext",
+		"module": "node20",
 		"target": "ES2022",
 		"types": ["node"],
 
@@ -20,6 +20,6 @@
 		"exactOptionalPropertyTypes": true,
 		"skipLibCheck": true
 	},
-	"include": ["src/**/*", "util", "controllers", "events", ""],
+	"include": ["src/**/*", "util", "controllers", "events", "comment-renderer", "renderers", "*.d.ts"],
 	"exclude": ["node_modules", "dist"]
 }

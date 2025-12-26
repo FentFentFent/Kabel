@@ -1,8 +1,8 @@
 import WorkspaceController from "../controllers/base";
 import Renderer from "../renderers/renderer";
-import WorkspaceSvg from "./workspace-svg";
+import WorkspaceSvg, { WSTheme } from "./workspace-svg";
 import NodePrototypes from "./prototypes";
-import { Color } from "./visual-types";
+import { Color, Hex } from "./visual-types";
 /**
  * Represents a field in a toolbox node.
  * Can contain any extra properties as needed by the field type.
@@ -52,6 +52,30 @@ export type TblxObjStruct = {
     type?: undefined;
     contents: TblxCategoryStruct[];
 };
+export interface GridOptions {
+    /**
+     * The grid's type.
+     * 'celled' - The grid is celled.
+     * 'dotted' - The grid is dotted.
+     */
+    type: 'celled' | 'dotted';
+    /**
+     * Spacing, optional. Default is 40.
+     */
+    spacing?: number;
+    /**
+     * Dot size for 'dotted' grid type.
+     */
+    dotSize?: number;
+    /**
+     * stroke width for 'celled' grid type.
+     */
+    strokeWidth?: number;
+    /**
+     * Option color for any grid type. Color is #bebebeff by default.
+     */
+    color?: Hex;
+}
 /**
  * Options used when injecting a new workspace.
  */
@@ -60,8 +84,12 @@ export interface InjectOptions {
     rendererOverrides?: {
         [key: string]: any;
     };
+    /** Theme for the workspace */
+    theme?: string | WSTheme;
     /** Optional custom controller class */
     Controller?: typeof WorkspaceController;
+    /** Init the workspace's undo state for you, or not. */
+    initUndoRedo?: boolean;
     /** Optional controls configuration */
     controls?: {
         zoomSpeed?: number;
@@ -78,6 +106,10 @@ export interface InjectOptions {
     moveSpeed?: number;
     /** Optional renderer: name string or class */
     renderer?: string | typeof Renderer;
+    /**
+     * Optional grid settings.
+     */
+    grid?: GridOptions;
 }
 /**
  * Utility class for logging injection messages in a structured way.

@@ -7,7 +7,7 @@ import EventEmitter from '../util/emitter';
 import { G } from "@svgdotjs/svg.js";
 import WorkspaceSvg from "./workspace-svg";
 import RendererConstants from "../renderers/constants";
-import CommentModel from "./comment";
+import CommentModel, { CommentSerialized } from "./comment";
 import { RepresenterNode } from '../renderers/representer-node';
 /**
  * Represents the JSON structure used to initialize a field on a node.
@@ -76,7 +76,7 @@ export interface SerializedNode {
         y: number;
     };
     /** Optional comment text attached to the node */
-    comment?: string | undefined;
+    comment?: CommentSerialized | undefined;
     /** Array of serialized fields, may contain any field-specific structure */
     fields?: any[] | undefined;
     /**
@@ -182,6 +182,8 @@ declare class NodeSvg extends EventEmitter<NodeEvents> {
     getFieldValue(name: string): any | undefined;
     /** Retrieves the display value of a field by name */
     getFieldDisplayValue(name: string): any | undefined;
+    /** Sets the value of a field by name */
+    setFieldValue(name: string, value: any): AnyField | null | undefined;
     /**
      * Initiates the node, calling prototype methods.
      */

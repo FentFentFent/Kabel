@@ -10,7 +10,7 @@ import EventEmitter from '../util/emitter';
 import { G } from "@svgdotjs/svg.js";
 import WorkspaceSvg from "./workspace-svg";
 import RendererConstants from "../renderers/constants";
-import CommentModel from "./comment";
+import CommentModel, { CommentSerialized } from "./comment";
 import { RepresenterNode } from '../renderers/representer-node';
 import NodePrototypes from "./prototypes";
 /**
@@ -95,7 +95,7 @@ export interface SerializedNode {
     relativeCoords: { x: number; y: number };
 
     /** Optional comment text attached to the node */
-    comment?: string | undefined;
+    comment?: CommentSerialized | undefined;
 
     /** Array of serialized fields, may contain any field-specific structure */
     fields?: any[] | undefined;
@@ -104,13 +104,13 @@ export interface SerializedNode {
      * Serialized representation of the previous connection.
      * If `field` is true, the connection originates from a field rather than a node.
      */
-    previousConnection?: { field?: boolean|undefined; node?: SerializedNode | undefined } | undefined;
+    previousConnection?: { field?: boolean | undefined; node?: SerializedNode | undefined } | undefined;
 
     /**
      * Serialized representation of the next connection.
      * If `field` is true, the connection originates from a field rather than a node.
      */
-    nextConnection?: { field?: boolean|undefined; node?: SerializedNode | undefined } | undefined;
+    nextConnection?: { field?: boolean | undefined; node?: SerializedNode | undefined } | undefined;
 }
 
 /**
@@ -276,6 +276,15 @@ class NodeSvg extends EventEmitter<NodeEvents> {
         }
         return undefined;
     }
+    /** Sets the value of a field by name */
+    setFieldValue(name: string, value: any) {
+        const fld: AnyField | null | undefined = this.getFieldByName(name);
+        if (fld) {
+            fld.setValue(value as never); // I don't like using the "as" statement here, but it's necessary to satisfy TypeScript.
+        }
+        return fld;
+    }
+
     /**
      * Initiates the node, calling prototype methods.
      */
@@ -531,7 +540,7 @@ class NodeSvg extends EventEmitter<NodeEvents> {
             previousConnection: undefined,
             nextConnection: undefined,
             relativeCoords: { x: this.relativeCoords.x, y: this.relativeCoords.y },
-            comment: this.comment?.getText?.(),
+            comment: this.comment?.toJson?.(),
             fields: [], // fill after placeholder
         };
         alreadyProcessed[this.id] = serialized;
@@ -626,16 +635,20 @@ class NodeSvg extends EventEmitter<NodeEvents> {
         // If already created, return the existing instance
         if (allNodes[data.id]) return allNodes[data.id] as NodeSvg;
 
+        if (workspace && workspace.getNode(data.id)) {
+            workspace.removeNodeById(data.id); // remove old node which had the same id.
+        }
         // Create a new node with minimal prototype info (can be patched later)
         const node = new NodeSvg(NodePrototypes[data.type] as NodePrototype, workspace);
         node.id = data.id;
         node.init();
         node.type = data.type;
-        node.relativeCoords = new Coordinates(data.relativeCoords.x, data.relativeCoords.y);
+        node.relativeCoords.set(data.relativeCoords.x, data.relativeCoords.y);
         node.labelText = data.label || '';
-        if (data.comment) {
-            node.setCommentText(data.comment);
-
+        if (data.comment && workspace) {
+            node.comment = CommentModel.fromJson(data.comment as CommentSerialized);
+            node.comment._parent = node;
+            node.comment._isWorkspaceComment = false;
         }
         // IMPORTANT: restore colors from serialized data (if present)
         if (data.colors) {
@@ -679,8 +692,10 @@ class NodeSvg extends EventEmitter<NodeEvents> {
         if (data.nextConnection?.node) {
             node.nextConnection = new Connection(node, null, false);
             node.nextConnection.setTo(NodeSvg._deserialize(data.nextConnection.node, allNodes, workspace));
+        } else {
+            workspace?.redraw(); // redraw if we reached the end.
         }
-        workspace?.redraw();
+
         return node;
     }
     /** Public: Deserialize a SerializedNode or plain object into a NodeSvg attached to a workspace */
@@ -690,10 +705,10 @@ class NodeSvg extends EventEmitter<NodeEvents> {
     /** Reconstructs nodes from a flattened JSON structure into a NodeSvg tree */
     static fromJson(flat: Record<string, any>, workspace: WorkspaceSvg): any {
         const nodes: Record<string, any> = {};
-
         // shallow clone so we can safely mutate
-        for (const id in flat)
+        for (const id in flat) {
             nodes[id] = { ...flat[id] };
+        }
 
         // rebuild references
         for (const id in nodes) {

@@ -1,5 +1,5 @@
 import NodeSvg from "./nodesvg";
-import { Svg } from '@svgdotjs/svg.js';
+import { Svg, Rect } from '@svgdotjs/svg.js';
 import Renderer from '../renderers/renderer';
 import { InjectOptions } from "./inject";
 import WorkspaceCoords from "./workspace-coords";
@@ -9,11 +9,43 @@ import NodePrototypes from "./prototypes";
 import Widget from "./widget";
 import ContextMenuHTML from "./context-menu";
 import CommentModel from "./comment";
+import Grid from "./grid";
+import UndoRedoHistory from "./undo-redo";
+import Workspace from "./workspace";
+import { Color } from "./visual-types";
+export interface IDragState {
+    isDragging: boolean;
+    startX: number;
+    startY: number;
+    lastX: number;
+    lastY: number;
+    deltaX: number;
+    deltaY: number;
+    offsetX: number;
+    offsetY: number;
+    node: NodeSvg | null;
+}
+export interface WSTheme {
+    UIStyles?: {
+        workspaceBGColor?: Color;
+        toolboxCategoriesBG?: Partial<CSSStyleDeclaration>;
+        toolboxFlyoutBG?: Partial<CSSStyleDeclaration>;
+    };
+}
 /**
  * Represents the visual workspace containing nodes and connections.
  * Handles rendering, panning, and coordinate transformations.
  */
-declare class WorkspaceSvg {
+declare class WorkspaceSvg extends Workspace {
+    static get BACKGROUND_CLASS(): string;
+    /**
+     * Theme of the workspace
+     */
+    theme: WSTheme;
+    /**
+     * Workspace background pattern items.
+     */
+    grid?: Grid;
     /** Top-left offset of the workspace viewport */
     _camera: WorkspaceCoords;
     /** Node storage by unique ID */
@@ -24,6 +56,8 @@ declare class WorkspaceSvg {
     _wsTop: HTMLElement;
     /** SVG.js instance for rendering */
     svg: Svg;
+    /** The background element */
+    _backgroundRect: Rect;
     /** Renderer instance for drawing nodes and connections */
     renderer: Renderer;
     /** Options for workspace behavior and rendering overrides */
@@ -51,12 +85,107 @@ declare class WorkspaceSvg {
      */
     _commentDB: Set<CommentModel>;
     /**
+     * Undo/redo history
+     */
+    history: UndoRedoHistory;
+    /**
+     * Whether to record undo/redo history or not
+     */
+    recordHistory: boolean;
+    /**
+     * Stack of old recordHistory values for toggleHistory
+     */
+    recordHistoryRecord: boolean[];
+    /**
+     * Internal flag to indicate if the camera has moved this frame.
+     */
+    _didMove: boolean;
+    /**
+     * Listeners to call when the workspace moves.
+     */
+    moveListeners: (() => void)[];
+    /** Current drag state for node dragging */
+    dragState: IDragState | null;
+    /**
      * Creates a new WorkspaceSvg instance.
      * @param root - The root HTML element containing the workspace.
      * @param wsTop - The top-level wrapper element for the SVG.
      * @param options - Configuration and renderer override options.
      */
     constructor(root: HTMLElement, wsTop: HTMLElement, options: InjectOptions);
+    setTheme(theme: WSTheme): void;
+    /**
+     * Getter and setter for whether we moved or not this frame.
+     */
+    get didMove(): boolean;
+    set didMove(value: boolean);
+    /**
+     * Sets the drag state of the workspace.
+     * @param params - Drag state parameters.
+     * @returns Void.
+     */
+    setDragState(params: {
+        node: NodeSvg | null;
+        startX: number;
+        startY: number;
+        currentX: number;
+        currentY: number;
+        offsetX?: number;
+        offsetY?: number;
+    }): void;
+    beginDrag(node: NodeSvg, startX: number, startY: number, offsetX?: number, offsetY?: number): void;
+    /**
+     * Updates the current drag position.
+     * @param currentX - Current X position.
+     * @param currentY - Current Y position.
+     * @returns Void.
+     */
+    updateDrag(currentX: number, currentY: number): void;
+    endDrag(): void;
+    /**
+     * Fires all move listeners registered to this workspace.
+     */
+    fireMoveListeners(): void;
+    /**
+     * Adds a move listener to the workspace.
+     * @param listener - The listener function to add.
+     * @returns A function to remove the added listener.
+     */
+    addMoveListener(listener: () => void): () => void;
+    /**
+     * Removes a move listener from the workspace.
+     * @param listener - The listener function to remove.
+     */
+    removeMoveListener(listener: () => void): void;
+    /**
+     * Emits a change event for the workspace, triggering
+     * undo/redo history tracking.
+     */
+    emitChange(): void;
+    /**
+     * Temporarily sets the workspace's history recording state.
+     * Pushes the previous state onto a stack for later restoration.
+     *
+     * @param {boolean} value - Whether history recording should be enabled.
+     */
+    toggleHistory(value: boolean): void;
+    /**
+     * Restores the previous history recording state from the stack.
+     * Use after a temporary toggle to revert to the previous state.
+     */
+    untoggleHistory(): void;
+    /**
+     * Sets the background grid up based on user selected options.
+     */
+    _initBackground(): void;
+    /**
+     * Updates the transform of the background grid
+     */
+    _updateBackgroundTransform(): void;
+    /**
+     * Get the current zoom factor of the workspace.
+     * @returns - The zoom factor
+     */
     getZoom(): number;
     /**
      * Refresh comments.
@@ -155,7 +284,7 @@ declare class WorkspaceSvg {
      * Create a new node of *type*.
      * @param type - The node's prototype name.
      */
-    newNode(type: keyof typeof NodePrototypes): NodeSvg | undefined;
+    newNode(type: keyof typeof NodePrototypes, add?: boolean): NodeSvg | undefined;
     /**
      * Spawns a node at x, y of prototype type
      * @param type - The node prototype name
@@ -183,7 +312,7 @@ declare class WorkspaceSvg {
      * @param id - The ID of the node.
      * @returns The NodeSvg instance or undefined if not found.
      */
-    getNode(id: string): NodeSvg | undefined;
+    getNode(id: string | NodeSvg): NodeSvg | undefined;
     /**
      * Pans the camera by the given delta values.
      * @param dx - Change in X direction.
@@ -218,7 +347,7 @@ declare class WorkspaceSvg {
     fromJson(json: {
         nodes: any[];
         circular: boolean;
-    }): void;
+    }, recordBigEvent?: boolean): void;
     /**
      * Serialize this workspace, optionally using circular references.
      */

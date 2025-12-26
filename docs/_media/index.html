@@ -50,6 +50,7 @@
                             labelText: 'TopbarText',
                             type: 'my_node',
                             primaryColor: '#cc0c00',
+                            secondaryColor: '#990900', 
                             tertiaryColor: '#660500',
                             arguments: [
                                 {
@@ -62,7 +63,7 @@
                                     name: 'Dummy',
                                     type: 'field_dummy',
                                     label: 'Label with no input!'
-                                }, 
+                                },
                                 {
                                     name: 'Conn',
                                     type: 'connection',
@@ -79,14 +80,13 @@
                                     label: 'lowk dropdown?: ',
                                     options: [
                                         'Oooo option',
-                                        {text: 'Opt', value: 'opt'}
+                                        { text: 'Opt', value: 'opt' }
                                     ]
                                 }
                             ]
                         });
                     }
                 };
-                /**
                 k.Widgets['testWidget'] = {
                     name: 'Test Widget',
                     width: 150,
@@ -104,15 +104,21 @@
                         }
                     }
                 };
-                **/
                 // Use WASDController with acceleration
                 const ws = k.inject(el, {
+                    theme: k.Themes.Dark,
+                    renderer: 'apollo',
                     moveSpeed: 6, // optional, base speed
+                    initUndoRedo: false,
                     controls: {
                         wasd: true,
                         wasdSmooth: true,
                         wasdAccelerate: 1,
                         wasdFriction: 0.9
+                    },
+                    grid: {
+                        type: 'celled',
+                        color: '#333333'
                     },
                     toolbox: {
                         type: 'category',
@@ -130,6 +136,7 @@
                 // Define custom node type
 
                 // Create nodes
+                ws.toggleHistory(false);
                 const node = new k.NodeSvg(k.Nodes['my_node'], ws);
                 node.init();
 
@@ -139,8 +146,9 @@
 
                 node.nextConnection.to = node1;
                 node1.previousConnection.from = node;
-
+                ws.untoggleHistory();
                 ws.redraw();
+                ws.history.emitChange();
                 const myWidget = ws.newWidget('testWidget');
                 if (myWidget) myWidget.show(); // make it visible
                 // Expose for debugging

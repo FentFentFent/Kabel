@@ -1,4 +1,4 @@
-**Kabel Project Docs v1.0.4**
+**Kabel Project Docs v1.0.6**
 
 ***
 

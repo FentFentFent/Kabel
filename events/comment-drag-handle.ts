@@ -6,7 +6,7 @@ import WorkspaceSvg from '../src/workspace-svg';
 import userState from '../util/user-state';
 import CommentModel from '../src/comment';
 
-
+/** The drag handle for comments */
 function initDraggable(element: Element, args: Record<string, any>): () => void {
     const comment = args.comment as CommentModel;
     if (!comment) return () => { };

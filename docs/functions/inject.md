@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **inject**(`element`, `options`): [`WorkspaceSvg`](../classes/WorkspaceSvg.md) \| `undefined`
 
-Defined in: [src/inject.ts:145](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/inject.ts#L145)
+Defined in: [src/inject.ts:175](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/inject.ts#L175)
 
 Injects a new Kabel workspace into the document.
 Appends the workspace container to the given element (or element ID) and

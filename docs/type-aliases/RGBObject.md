@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **RGBObject** = `object`
 
-Defined in: [src/visual-types.ts:4](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/visual-types.ts#L4)
+Defined in: [src/visual-types.ts:4](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/visual-types.ts#L4)
 
 A RGB array (ex: {r: 255, g: 255, b: 255})
 
@@ -18,7 +18,7 @@ A RGB array (ex: {r: 255, g: 255, b: 255})
 
 > **b**: `number`
 
-Defined in: [src/visual-types.ts:4](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/visual-types.ts#L4)
+Defined in: [src/visual-types.ts:4](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/visual-types.ts#L4)
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: [src/visual-types.ts:4](https://github.com/FentFentFent/Kabel/blob/c
 
 > **g**: `number`
 
-Defined in: [src/visual-types.ts:4](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/visual-types.ts#L4)
+Defined in: [src/visual-types.ts:4](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/visual-types.ts#L4)
 
 ***
 
@@ -34,4 +34,4 @@ Defined in: [src/visual-types.ts:4](https://github.com/FentFentFent/Kabel/blob/c
 
 > **r**: `number`
 
-Defined in: [src/visual-types.ts:4](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/visual-types.ts#L4)
+Defined in: [src/visual-types.ts:4](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/visual-types.ts#L4)

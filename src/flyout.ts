@@ -2,136 +2,164 @@ import newHeadlessNode from "./headless-node";
 import { TblxNodeStruct } from "./inject";
 import Toolbox from "./toolbox";
 import { parseColor } from "../util/parse-color";
+import { Color } from "./visual-types";
 
 /**
  * Represents a flyout menu for a toolbox in Kabel.
  * Displays a list of nodes that can be dragged into a workspace.
  */
 class Flyout {
-    /** HTML container element for the flyout */
-    container: HTMLDivElement;
-    /** Visibility state of the flyout */
-    visible: boolean;
-    /** Optional reference to the parent Toolbox */
-    toolbox?: Toolbox;
+	container: HTMLDivElement;
+	visible: boolean;
+	toolbox?: Toolbox|undefined;
 
-    /**
-     * Creates a Flyout.
-     * @param toolbox - Optional parent toolbox to attach this flyout to.
-     */
-    constructor(toolbox?: Toolbox) {
-        this.toolbox = toolbox as Toolbox;
+	constructor(toolbox?: Toolbox) {
+		this.toolbox = toolbox;
 
-        this.container = document.createElement('div');
-        this.container.className = 'KabelFlyout';
+		this.container = document.createElement("div");
+		this.container.className = "KabelFlyout";
 
-        this.visible = false;
+		this.visible = false;
 
-        if (toolbox) {
-            toolbox.workspace._wsTop.appendChild(this.container);
-        } else {
-            document.body.appendChild(this.container);
-        }
-    }
+		if (toolbox) {
+			toolbox.workspace._wsTop.appendChild(this.container);
+		} else {
+			document.body.appendChild(this.container);
+		}
+	}
 
-    /**
-     * Populates the flyout with a list of nodes.
-     * Each node becomes draggable into the workspace.
-     * @param nodes - Array of node structures to display in the flyout.
-     */
-    fill(nodes: TblxNodeStruct[]) {
-        this.container.innerHTML = '';
-        nodes.forEach(node => {
-            const _headlessNode = newHeadlessNode(node.type as string);
-            if (!_headlessNode) return;
+	/**
+	 * Populates the flyout with a list of nodes.
+	 */
+	fill(nodes: TblxNodeStruct[]) {
+		this.clear();
+		nodes.forEach(node => {
+			const headlessNode = newHeadlessNode(node.type as string);
+			if (!headlessNode) return;
 
-            const nodeEl = document.createElement('div');
-            nodeEl.className = 'KabelFlyoutNode';
-            nodeEl.textContent = _headlessNode.labelText;
-            nodeEl.style.backgroundColor = parseColor(_headlessNode.colors.primary);
-            nodeEl.style.padding = '4px 8px';
-            nodeEl.style.cursor = 'pointer';
-            nodeEl.style.fontFamily = this.toolbox!.workspace!.renderer!.constants.FONT_FAMILY;
-            nodeEl.style.fontSize = `${this.toolbox!.workspace!.renderer!.constants.FONT_SIZE}px`;
-            nodeEl.style.color = parseColor(this.toolbox!.workspace!.renderer!.constants!.FONT_COLOR);
+			const nodeEl = this.createNodeElement(headlessNode);
+			this.container.appendChild(nodeEl);
+		});
 
-            /**
-             * Handles mousedown to start dragging a node from the flyout
-             */
-            nodeEl.addEventListener('mousedown', (e) => {
-                if (!this.toolbox) return;
+		this.show();
+	}
 
-                // Create ghost element to follow mouse
-                const ghostEl = document.createElement('div');
-                ghostEl.className = 'KabelGhostNode';
-                ghostEl.textContent = _headlessNode.labelText;
-                ghostEl.style.position = 'absolute';
-                ghostEl.style.pointerEvents = 'none';
-                ghostEl.style.backgroundColor = parseColor(_headlessNode.colors.primary);
-                ghostEl.style.padding = '4px 8px';
-                ghostEl.style.fontFamily = this.toolbox!.workspace!.renderer!.constants.FONT_FAMILY;
-                ghostEl.style.fontSize = `${this.toolbox!.workspace!.renderer!.constants.FONT_SIZE}px`;
-                ghostEl.style.color = parseColor(this.toolbox!.workspace!.renderer!.constants!.FONT_COLOR);
+	/**
+	 * Creates a DOM element for a node with event listeners attached.
+	 */
+	private createNodeElement(headlessNode: any): HTMLDivElement {
+		const nodeEl = document.createElement("div");
+		nodeEl.className = "KabelFlyoutNode";
+		nodeEl.textContent = headlessNode.labelText;
 
-                document.body.appendChild(ghostEl);
+		this.applyNodeStyles(nodeEl, headlessNode.colors.primary);
 
-                const moveGhost = (ev: MouseEvent) => {
-                    ghostEl.style.left = ev.clientX + 4 + 'px';
-                    ghostEl.style.top = ev.clientY + 4 + 'px';
-                };
+		nodeEl.addEventListener("mousedown", e => this.onNodeMouseDown(e, headlessNode));
+		return nodeEl;
+	}
 
-                const releaseGhost = (ev: MouseEvent) => {
-                    document.removeEventListener('mousemove', moveGhost);
-                    document.removeEventListener('mouseup', releaseGhost);
+	/**
+	 * Applies consistent styling to a node element.
+	 */
+	private applyNodeStyles(el: HTMLElement, bgColor: Color) {
+		el.style.backgroundColor = parseColor(bgColor);
+		el.style.padding = "4px 8px";
+		el.style.cursor = "pointer";
 
-                    // Drop node into workspace if over workspace SVG
-                    const svg = this.toolbox!.workspace.svg.node as SVGSVGElement;
-                    const rect = svg.getBoundingClientRect();
-                    if (
-                        ev.clientX >= rect.left &&
-                        ev.clientX <= rect.right &&
-                        ev.clientY >= rect.top &&
-                        ev.clientY <= rect.bottom
-                    ) {
-                        const svgX = ev.clientX - rect.left;
-                        const svgY = ev.clientY - rect.top;
+		if (this.toolbox?.workspace?.renderer?.constants) {
+			const c = this.toolbox.workspace.renderer.constants;
+			el.style.fontFamily = c.FONT_FAMILY;
+			el.style.fontSize = `${c.FONT_SIZE}px`;
+			el.style.color = parseColor(c.FONT_COLOR);
+		}
+	}
 
-                        const { x: wsX, y: wsY } = this.toolbox!.workspace.screenToWorkspace(svgX, svgY);
+	/**
+	 * Handles starting a drag operation for a node.
+	 */
+	private onNodeMouseDown(e: MouseEvent, headlessNode: any) {
+		if (!this.toolbox) return;
 
-                        this.toolbox!.workspace.spawnAt(node.type as string, wsX, wsY);
-                    }
+		const ghostEl = this.createGhostNode(headlessNode);
+		document.body.appendChild(ghostEl);
 
-                    ghostEl.remove();
-                };
+		const moveGhost = (ev: MouseEvent) => {
+			ghostEl.style.left = ev.clientX + 4 + "px";
+			ghostEl.style.top = ev.clientY + 4 + "px";
+		};
 
-                document.addEventListener('mousemove', moveGhost);
-                document.addEventListener('mouseup', releaseGhost);
+		const releaseGhost = (ev: MouseEvent) => {
+			document.removeEventListener("mousemove", moveGhost);
+			document.removeEventListener("mouseup", releaseGhost);
 
-                e.preventDefault();
-            });
+			this.dropNode(ev, headlessNode);
 
-            this.container.appendChild(nodeEl);
-        });
+			ghostEl.remove();
+		};
 
-        this.show();
-    }
+		document.addEventListener("mousemove", moveGhost);
+		document.addEventListener("mouseup", releaseGhost);
 
-    /** Shows the flyout */
-    show() {
-        this.container.style.display = 'block';
-        this.visible = true;
-    }
+		e.preventDefault();
+	}
 
-    /** Hides the flyout */
-    hide() {
-        this.container.style.display = 'none';
-        this.visible = false;
-    }
+	/**
+	 * Creates a ghost element that follows the mouse during drag.
+	 */
+	private createGhostNode(headlessNode: any): HTMLDivElement {
+		const ghostEl = document.createElement("div");
+		ghostEl.className = "KabelGhostNode";
+		ghostEl.textContent = headlessNode.labelText;
+		ghostEl.style.position = "absolute";
+		ghostEl.style.pointerEvents = "none";
 
-    /** Clears all nodes from the flyout */
-    clear() {
-        this.container.innerHTML = '';
-    }
+		this.applyNodeStyles(ghostEl, headlessNode.colors.primary);
+		return ghostEl;
+	}
+
+	/**
+	 * Handles dropping a node into the workspace if the mouse is over it.
+	 */
+	private dropNode(ev: MouseEvent, node: TblxNodeStruct) {
+		if (!this.toolbox) return;
+
+		const svg = this.toolbox.workspace.svg.node as SVGSVGElement;
+		const rect = svg.getBoundingClientRect();
+
+		if (
+			ev.clientX >= rect.left &&
+			ev.clientX <= rect.right &&
+			ev.clientY >= rect.top &&
+			ev.clientY <= rect.bottom
+		) {
+			const { x: wsX, y: wsY } = this.toolbox.workspace.screenToWorkspace(
+				ev.clientX - rect.left,
+				ev.clientY - rect.top
+			);
+
+			const nodews = this.toolbox.workspace.spawnAt(node.type as string, wsX, wsY);
+			if (nodews) {
+				for (let argName in node.arguments) {
+					nodews.setFieldValue(argName, node.arguments[argName]);
+				}
+				this.toolbox.workspace.drawNode(nodews.id);
+			}
+		}
+	}
+
+	show() {
+		this.container.style.display = "block";
+		this.visible = true;
+	}
+
+	hide() {
+		this.container.style.display = "none";
+		this.visible = false;
+	}
+
+	clear() {
+		this.container.innerHTML = "";
+	}
 }
 
 export default Flyout;

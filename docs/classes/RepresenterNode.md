@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: RepresenterNode
 
-Defined in: renderers/representer-node.ts:9
+Defined in: [renderers/representer-node.ts:9](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/representer-node.ts#L9)
 
 ## Constructors
 
@@ -14,7 +14,7 @@ Defined in: renderers/representer-node.ts:9
 
 > **new RepresenterNode**(`node`, `svgState`, `renderer`): `RepresenterNode`
 
-Defined in: renderers/representer-node.ts:13
+Defined in: [renderers/representer-node.ts:13](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/representer-node.ts#L13)
 
 #### Parameters
 
@@ -40,7 +40,7 @@ Defined in: renderers/representer-node.ts:13
 
 > **node**: [`NodeSvg`](NodeSvg.md)
 
-Defined in: renderers/representer-node.ts:10
+Defined in: [renderers/representer-node.ts:10](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/representer-node.ts#L10)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: renderers/representer-node.ts:10
 
 > **renderer**: [`Renderer`](Renderer.md)
 
-Defined in: renderers/representer-node.ts:12
+Defined in: [renderers/representer-node.ts:12](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/representer-node.ts#L12)
 
 ***
 
@@ -56,7 +56,7 @@ Defined in: renderers/representer-node.ts:12
 
 > **state**: [`DrawState`](../interfaces/DrawState.md)
 
-Defined in: renderers/representer-node.ts:11
+Defined in: [renderers/representer-node.ts:11](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/representer-node.ts#L11)
 
 ## Methods
 
@@ -64,7 +64,7 @@ Defined in: renderers/representer-node.ts:11
 
 > **applyTransform**(`transform`): `void`
 
-Defined in: renderers/representer-node.ts:35
+Defined in: [renderers/representer-node.ts:35](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/representer-node.ts#L35)
 
 Apply raw transform string
 
@@ -82,9 +82,9 @@ Apply raw transform string
 
 ### getConstant()
 
-> **getConstant**(`name`): `string` \| `number` \| `boolean` \| [`RGBObject`](../type-aliases/RGBObject.md) \| [`RGBTuple`](../type-aliases/RGBTuple.md)
+> **getConstant**(`name`): `string` \| `number` \| `boolean` \| [`RGBObject`](../type-aliases/RGBObject.md) \| [`RGBTuple`](../type-aliases/RGBTuple.md) \| \{\[`key`: `string`\]: `object`; \}
 
-Defined in: renderers/representer-node.ts:21
+Defined in: [renderers/representer-node.ts:21](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/representer-node.ts#L21)
 
 #### Parameters
 
@@ -94,7 +94,7 @@ keyof [`RendererConstants`](RendererConstants.md)
 
 #### Returns
 
-`string` \| `number` \| `boolean` \| [`RGBObject`](../type-aliases/RGBObject.md) \| [`RGBTuple`](../type-aliases/RGBTuple.md)
+`string` \| `number` \| `boolean` \| [`RGBObject`](../type-aliases/RGBObject.md) \| [`RGBTuple`](../type-aliases/RGBTuple.md) \| \{\[`key`: `string`\]: `object`; \}
 
 ***
 
@@ -102,7 +102,7 @@ keyof [`RendererConstants`](RendererConstants.md)
 
 > **getRaw**(): `G` \| `null` \| `undefined`
 
-Defined in: renderers/representer-node.ts:40
+Defined in: [renderers/representer-node.ts:40](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/representer-node.ts#L40)
 
 Access the raw SVG group
 
@@ -116,7 +116,7 @@ Access the raw SVG group
 
 > **highlight**(`color`): `void`
 
-Defined in: renderers/representer-node.ts:45
+Defined in: [renderers/representer-node.ts:45](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/representer-node.ts#L45)
 
 Optional: highlight node
 
@@ -136,7 +136,7 @@ Optional: highlight node
 
 > **moveTo**(`x`, `y`): `void`
 
-Defined in: renderers/representer-node.ts:25
+Defined in: [renderers/representer-node.ts:25](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/representer-node.ts#L25)
 
 Move node visually without changing its relativeCoords
 
@@ -160,7 +160,7 @@ Move node visually without changing its relativeCoords
 
 > **setScale**(`scale`): `void`
 
-Defined in: renderers/representer-node.ts:30
+Defined in: [renderers/representer-node.ts:30](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/representer-node.ts#L30)
 
 Scale node visually
 

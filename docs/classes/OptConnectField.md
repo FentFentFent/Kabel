@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: OptConnectField
 
-Defined in: [src/field.ts:382](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L382)
+Defined in: [src/field.ts:382](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L382)
 
 Optional connectable field.
 Can store either a number or string depending on fld_type.
@@ -21,7 +21,7 @@ Can store either a number or string depending on fld_type.
 
 > **new OptConnectField**(): `OptConnectField`
 
-Defined in: [src/field.ts:385](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L385)
+Defined in: [src/field.ts:385](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L385)
 
 #### Returns
 
@@ -37,7 +37,7 @@ Defined in: [src/field.ts:385](https://github.com/FentFentFent/Kabel/blob/c68797
 
 > **connection**: [`Connection`](Connection.md)
 
-Defined in: [src/field.ts:298](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L298)
+Defined in: [src/field.ts:298](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L298)
 
 #### Inherited from
 
@@ -49,7 +49,7 @@ Defined in: [src/field.ts:298](https://github.com/FentFentFent/Kabel/blob/c68797
 
 > **editable**: `boolean`
 
-Defined in: [src/field.ts:49](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L49)
+Defined in: [src/field.ts:49](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L49)
 
 #### Inherited from
 
@@ -61,7 +61,7 @@ Defined in: [src/field.ts:49](https://github.com/FentFentFent/Kabel/blob/c687975
 
 > **fldType**: `"string"` \| `"number"`
 
-Defined in: [src/field.ts:383](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L383)
+Defined in: [src/field.ts:383](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L383)
 
 ***
 
@@ -69,7 +69,7 @@ Defined in: [src/field.ts:383](https://github.com/FentFentFent/Kabel/blob/c68797
 
 > **label**: `string`
 
-Defined in: [src/field.ts:45](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L45)
+Defined in: [src/field.ts:45](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L45)
 
 #### Inherited from
 
@@ -81,7 +81,7 @@ Defined in: [src/field.ts:45](https://github.com/FentFentFent/Kabel/blob/c687975
 
 > **name**: `string`
 
-Defined in: [src/field.ts:46](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L46)
+Defined in: [src/field.ts:46](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L46)
 
 #### Inherited from
 
@@ -93,7 +93,7 @@ Defined in: [src/field.ts:46](https://github.com/FentFentFent/Kabel/blob/c687975
 
 > `optional` **node**: [`NodeSvg`](NodeSvg.md)
 
-Defined in: [src/field.ts:48](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L48)
+Defined in: [src/field.ts:48](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L48)
 
 #### Inherited from
 
@@ -105,7 +105,7 @@ Defined in: [src/field.ts:48](https://github.com/FentFentFent/Kabel/blob/c687975
 
 > `optional` **svgGroup**: `G`
 
-Defined in: [src/field.ts:50](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L50)
+Defined in: [src/field.ts:50](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L50)
 
 #### Inherited from
 
@@ -117,7 +117,7 @@ Defined in: [src/field.ts:50](https://github.com/FentFentFent/Kabel/blob/c687975
 
 > **type**: `string`
 
-Defined in: [src/field.ts:47](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L47)
+Defined in: [src/field.ts:47](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L47)
 
 #### Inherited from
 
@@ -129,7 +129,7 @@ Defined in: [src/field.ts:47](https://github.com/FentFentFent/Kabel/blob/c687975
 
 > `protected` **value**: `string` \| `number` \| [`NodeSvg`](NodeSvg.md) \| `null`
 
-Defined in: [src/field.ts:51](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L51)
+Defined in: [src/field.ts:51](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L51)
 
 #### Inherited from
 
@@ -141,7 +141,7 @@ Defined in: [src/field.ts:51](https://github.com/FentFentFent/Kabel/blob/c687975
 
 > **canEdit**(): `boolean`
 
-Defined in: [src/field.ts:392](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L392)
+Defined in: [src/field.ts:392](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L392)
 
 Ask whether or not we can edit this field.
 
@@ -159,7 +159,7 @@ Ask whether or not we can edit this field.
 
 > **canEditConnector**(): `boolean`
 
-Defined in: [src/field.ts:389](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L389)
+Defined in: [src/field.ts:389](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L389)
 
 #### Returns
 
@@ -175,7 +175,7 @@ Defined in: [src/field.ts:389](https://github.com/FentFentFent/Kabel/blob/c68797
 
 > **disconnect**(): `void`
 
-Defined in: [src/field.ts:314](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L314)
+Defined in: [src/field.ts:314](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L314)
 
 Disconnect this field from any connected Connectable
 
@@ -193,7 +193,7 @@ Disconnect this field from any connected Connectable
 
 > **drawMyself**(`fieldVisualInfo`): `void`
 
-Defined in: [src/field.ts:139](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L139)
+Defined in: [src/field.ts:139](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L139)
 
 Make the input's custom look.
 
@@ -219,7 +219,7 @@ The visual info of the field, mutate this if needed.
 
 > **fromJson**(`json`, `workspace?`): `OptConnectField`
 
-Defined in: [src/field.ts:422](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L422)
+Defined in: [src/field.ts:422](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L422)
 
 Initialize from JSON, respecting fld_type
 
@@ -249,7 +249,7 @@ FieldOptions
 
 > **getDisplayValue**(): `string`
 
-Defined in: [src/field.ts:443](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L443)
+Defined in: [src/field.ts:443](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L443)
 
 #### Returns
 
@@ -267,7 +267,7 @@ Display value for UI purposes (never null)
 
 > **getLabel**(): `string`
 
-Defined in: [src/field.ts:109](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L109)
+Defined in: [src/field.ts:109](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L109)
 
 #### Returns
 
@@ -285,7 +285,7 @@ The human-readable label
 
 > **getName**(): `string`
 
-Defined in: [src/field.ts:104](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L104)
+Defined in: [src/field.ts:104](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L104)
 
 #### Returns
 
@@ -303,7 +303,7 @@ The field's name/key
 
 > **getValue**(): `string` \| `number` \| [`NodeSvg`](NodeSvg.md) \| `null`
 
-Defined in: [src/field.ts:398](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L398)
+Defined in: [src/field.ts:398](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L398)
 
 #### Returns
 
@@ -321,7 +321,7 @@ The stored value
 
 > **hasConnectable**(): `boolean`
 
-Defined in: [src/field.ts:408](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L408)
+Defined in: [src/field.ts:408](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L408)
 
 #### Returns
 
@@ -339,7 +339,7 @@ Whether this field supports connections
 
 > **hasRaw**(): `boolean`
 
-Defined in: [src/field.ts:405](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L405)
+Defined in: [src/field.ts:405](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L405)
 
 #### Returns
 
@@ -357,7 +357,7 @@ Whether this field is a raw value field (text/number)
 
 > **isCustomEditor**(): `boolean`
 
-Defined in: [src/field.ts:132](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L132)
+Defined in: [src/field.ts:132](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L132)
 
 #### Returns
 
@@ -375,7 +375,7 @@ Whether we have a custom editor/input look
 
 > **measureMyself**(): `object`
 
-Defined in: [src/field.ts:143](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L143)
+Defined in: [src/field.ts:143](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L143)
 
 Return width & height of your field's custom editor
 
@@ -401,7 +401,7 @@ Return width & height of your field's custom editor
 
 > **onDraw**(`rawBox?`, `connectionBubble?`): `void`
 
-Defined in: [src/field.ts:61](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L61)
+Defined in: [src/field.ts:61](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L61)
 
 #### Parameters
 
@@ -427,7 +427,7 @@ Defined in: [src/field.ts:61](https://github.com/FentFentFent/Kabel/blob/c687975
 
 > **setEditable**(`val`): `void`
 
-Defined in: [src/field.ts:71](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L71)
+Defined in: [src/field.ts:71](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L71)
 
 Set whether or not you can edit this field.
 
@@ -453,7 +453,7 @@ The value to set to.
 
 > **setFieldType**(`type`): `void`
 
-Defined in: [src/field.ts:415](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L415)
+Defined in: [src/field.ts:415](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L415)
 
 Set field type.
 
@@ -475,7 +475,7 @@ Set field type.
 
 > **setLabel**(`label`): `string`
 
-Defined in: [src/field.ts:118](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L118)
+Defined in: [src/field.ts:118](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L118)
 
 Set the human-readable label
 
@@ -503,7 +503,7 @@ The updated label
 
 > **setName**(`name`): `string`
 
-Defined in: [src/field.ts:88](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L88)
+Defined in: [src/field.ts:88](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L88)
 
 Set field name to something else.
 
@@ -531,7 +531,7 @@ the new name.
 
 > **setValue**(`val`): `void`
 
-Defined in: [src/field.ts:435](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L435)
+Defined in: [src/field.ts:435](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L435)
 
 Set the value, converting to number or string depending on fld_type
 
@@ -557,7 +557,7 @@ The new value
 
 > **toJson**(`deep`, `alreadyProcessed`): [`FieldOptions`](../interfaces/FieldOptions.md)
 
-Defined in: [src/field.ts:448](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L448)
+Defined in: [src/field.ts:448](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L448)
 
 #### Parameters
 
@@ -581,7 +581,7 @@ Defined in: [src/field.ts:448](https://github.com/FentFentFent/Kabel/blob/c68797
 
 > `static` **register**(`name`, `cls`): `void`
 
-Defined in: [src/field.ts:52](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L52)
+Defined in: [src/field.ts:52](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L52)
 
 #### Parameters
 
@@ -607,7 +607,7 @@ Defined in: [src/field.ts:52](https://github.com/FentFentFent/Kabel/blob/c687975
 
 > `static` **unregister**(`name`): `void`
 
-Defined in: [src/field.ts:53](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L53)
+Defined in: [src/field.ts:53](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L53)
 
 #### Parameters
 

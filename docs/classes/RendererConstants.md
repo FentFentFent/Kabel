@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: RendererConstants
 
-Defined in: [renderers/constants.ts:3](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L3)
+Defined in: [renderers/constants.ts:3](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L3)
 
 ## Constructors
 
@@ -14,7 +14,7 @@ Defined in: [renderers/constants.ts:3](https://github.com/FentFentFent/Kabel/blo
 
 > **new RendererConstants**(`overrides`): `RendererConstants`
 
-Defined in: [renderers/constants.ts:46](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L46)
+Defined in: [renderers/constants.ts:53](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L53)
 
 #### Parameters
 
@@ -32,7 +32,7 @@ Defined in: [renderers/constants.ts:46](https://github.com/FentFentFent/Kabel/bl
 
 > **CONNECTION\_STROKE\_COLOR\_CHOICE**: `number`
 
-Defined in: [renderers/constants.ts:29](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L29)
+Defined in: [renderers/constants.ts:29](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L29)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [renderers/constants.ts:29](https://github.com/FentFentFent/Kabel/bl
 
 > **CONNECTION\_STROKE\_WIDTH**: `number`
 
-Defined in: [renderers/constants.ts:28](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L28)
+Defined in: [renderers/constants.ts:28](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L28)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: [renderers/constants.ts:28](https://github.com/FentFentFent/Kabel/bl
 
 > **CONNECTOR\_LINE\_CURVED**: `boolean` = `true`
 
-Defined in: [renderers/constants.ts:43](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L43)
+Defined in: [renderers/constants.ts:43](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L43)
 
 ***
 
@@ -56,7 +56,7 @@ Defined in: [renderers/constants.ts:43](https://github.com/FentFentFent/Kabel/bl
 
 > **CONNECTOR\_LINE\_WIDTH**: `number` = `6`
 
-Defined in: [renderers/constants.ts:42](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L42)
+Defined in: [renderers/constants.ts:42](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L42)
 
 ***
 
@@ -64,7 +64,7 @@ Defined in: [renderers/constants.ts:42](https://github.com/FentFentFent/Kabel/bl
 
 > **CONNECTOR\_RADIUS**: `number`
 
-Defined in: [renderers/constants.ts:31](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L31)
+Defined in: [renderers/constants.ts:31](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L31)
 
 ***
 
@@ -72,7 +72,7 @@ Defined in: [renderers/constants.ts:31](https://github.com/FentFentFent/Kabel/bl
 
 > **CONNECTOR\_TRI\_SIZE**: `number`
 
-Defined in: [renderers/constants.ts:30](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L30)
+Defined in: [renderers/constants.ts:30](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L30)
 
 ***
 
@@ -80,7 +80,7 @@ Defined in: [renderers/constants.ts:30](https://github.com/FentFentFent/Kabel/bl
 
 > **CONNECTOR\_TRIANGLE**: `boolean`
 
-Defined in: [renderers/constants.ts:27](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L27)
+Defined in: [renderers/constants.ts:27](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L27)
 
 ***
 
@@ -88,7 +88,7 @@ Defined in: [renderers/constants.ts:27](https://github.com/FentFentFent/Kabel/bl
 
 > **CORNER\_RADIUS**: `number`
 
-Defined in: [renderers/constants.ts:4](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L4)
+Defined in: [renderers/constants.ts:4](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L4)
 
 ***
 
@@ -96,7 +96,7 @@ Defined in: [renderers/constants.ts:4](https://github.com/FentFentFent/Kabel/blo
 
 > **FIELD\_CONN\_COLOR**: [`Color`](../type-aliases/Color.md) = `'#0c7cccff'`
 
-Defined in: [renderers/constants.ts:24](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L24)
+Defined in: [renderers/constants.ts:24](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L24)
 
 ***
 
@@ -104,7 +104,7 @@ Defined in: [renderers/constants.ts:24](https://github.com/FentFentFent/Kabel/bl
 
 > **FIELD\_MARGIN\_X**: `number`
 
-Defined in: [renderers/constants.ts:37](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L37)
+Defined in: [renderers/constants.ts:37](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L37)
 
 ***
 
@@ -112,7 +112,7 @@ Defined in: [renderers/constants.ts:37](https://github.com/FentFentFent/Kabel/bl
 
 > **FIELD\_MARGIN\_Y**: `number`
 
-Defined in: [renderers/constants.ts:38](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L38)
+Defined in: [renderers/constants.ts:38](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L38)
 
 ***
 
@@ -120,7 +120,7 @@ Defined in: [renderers/constants.ts:38](https://github.com/FentFentFent/Kabel/bl
 
 > **FIELD\_RAW\_BASE\_HEIGHT**: `number`
 
-Defined in: [renderers/constants.ts:15](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L15)
+Defined in: [renderers/constants.ts:15](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L15)
 
 ***
 
@@ -128,7 +128,7 @@ Defined in: [renderers/constants.ts:15](https://github.com/FentFentFent/Kabel/bl
 
 > **FIELD\_RAW\_BASE\_WIDTH**: `number`
 
-Defined in: [renderers/constants.ts:14](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L14)
+Defined in: [renderers/constants.ts:14](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L14)
 
 ***
 
@@ -136,7 +136,7 @@ Defined in: [renderers/constants.ts:14](https://github.com/FentFentFent/Kabel/bl
 
 > **FIELD\_RAW\_COLOR**: [`Color`](../type-aliases/Color.md) = `'#2b2d36ff'`
 
-Defined in: [renderers/constants.ts:20](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L20)
+Defined in: [renderers/constants.ts:20](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L20)
 
 ***
 
@@ -144,7 +144,7 @@ Defined in: [renderers/constants.ts:20](https://github.com/FentFentFent/Kabel/bl
 
 > **FIELD\_RAW\_OUTLINE\_COLOR**: [`Color`](../type-aliases/Color.md) = `'#1f2027ff'`
 
-Defined in: [renderers/constants.ts:22](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L22)
+Defined in: [renderers/constants.ts:22](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L22)
 
 ***
 
@@ -152,7 +152,7 @@ Defined in: [renderers/constants.ts:22](https://github.com/FentFentFent/Kabel/bl
 
 > **FIELD\_RAW\_OUTLINE\_STROKE**: `number`
 
-Defined in: [renderers/constants.ts:23](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L23)
+Defined in: [renderers/constants.ts:23](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L23)
 
 ***
 
@@ -160,7 +160,7 @@ Defined in: [renderers/constants.ts:23](https://github.com/FentFentFent/Kabel/bl
 
 > **FIELD\_RAW\_TEXT\_COLOR**: [`Color`](../type-aliases/Color.md) = `'#e0e2e8ff'`
 
-Defined in: [renderers/constants.ts:21](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L21)
+Defined in: [renderers/constants.ts:21](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L21)
 
 ***
 
@@ -168,7 +168,7 @@ Defined in: [renderers/constants.ts:21](https://github.com/FentFentFent/Kabel/bl
 
 > **FIELD\_SPACEX**: `number`
 
-Defined in: [renderers/constants.ts:13](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L13)
+Defined in: [renderers/constants.ts:13](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L13)
 
 ***
 
@@ -176,7 +176,7 @@ Defined in: [renderers/constants.ts:13](https://github.com/FentFentFent/Kabel/bl
 
 > **FIELD\_SPACEY**: `number`
 
-Defined in: [renderers/constants.ts:12](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L12)
+Defined in: [renderers/constants.ts:12](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L12)
 
 ***
 
@@ -184,7 +184,7 @@ Defined in: [renderers/constants.ts:12](https://github.com/FentFentFent/Kabel/bl
 
 > **FONT\_COLOR**: [`Color`](../type-aliases/Color.md) = `'#e0e2e8ff'`
 
-Defined in: [renderers/constants.ts:35](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L35)
+Defined in: [renderers/constants.ts:35](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L35)
 
 ***
 
@@ -192,7 +192,7 @@ Defined in: [renderers/constants.ts:35](https://github.com/FentFentFent/Kabel/bl
 
 > **FONT\_FAMILY**: `string` = `'"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'`
 
-Defined in: [renderers/constants.ts:32](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L32)
+Defined in: [renderers/constants.ts:32](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L32)
 
 ***
 
@@ -200,7 +200,7 @@ Defined in: [renderers/constants.ts:32](https://github.com/FentFentFent/Kabel/bl
 
 > **FONT\_SIZE**: `number`
 
-Defined in: [renderers/constants.ts:34](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L34)
+Defined in: [renderers/constants.ts:34](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L34)
 
 ***
 
@@ -208,7 +208,7 @@ Defined in: [renderers/constants.ts:34](https://github.com/FentFentFent/Kabel/bl
 
 > **FOOTER\_HEIGHT**: `number`
 
-Defined in: [renderers/constants.ts:8](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L8)
+Defined in: [renderers/constants.ts:8](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L8)
 
 ***
 
@@ -216,7 +216,7 @@ Defined in: [renderers/constants.ts:8](https://github.com/FentFentFent/Kabel/blo
 
 > **INPUT\_BOX\_PADDING**: `number`
 
-Defined in: [renderers/constants.ts:16](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L16)
+Defined in: [renderers/constants.ts:16](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L16)
 
 ***
 
@@ -224,7 +224,7 @@ Defined in: [renderers/constants.ts:16](https://github.com/FentFentFent/Kabel/bl
 
 > **INPUT\_BOX\_TEXT\_ANCHOR**: `"start"` \| `"middle"`
 
-Defined in: [renderers/constants.ts:17](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L17)
+Defined in: [renderers/constants.ts:17](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L17)
 
 ***
 
@@ -232,7 +232,7 @@ Defined in: [renderers/constants.ts:17](https://github.com/FentFentFent/Kabel/bl
 
 > **LABEL\_SPACING**: `number`
 
-Defined in: [renderers/constants.ts:18](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L18)
+Defined in: [renderers/constants.ts:18](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L18)
 
 ***
 
@@ -240,7 +240,7 @@ Defined in: [renderers/constants.ts:18](https://github.com/FentFentFent/Kabel/bl
 
 > **NODE\_BASE\_HEIGHT**: `number`
 
-Defined in: [renderers/constants.ts:6](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L6)
+Defined in: [renderers/constants.ts:6](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L6)
 
 ***
 
@@ -248,7 +248,7 @@ Defined in: [renderers/constants.ts:6](https://github.com/FentFentFent/Kabel/blo
 
 > **NODE\_BASE\_WIDTH**: `number`
 
-Defined in: [renderers/constants.ts:5](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L5)
+Defined in: [renderers/constants.ts:5](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L5)
 
 ***
 
@@ -256,7 +256,7 @@ Defined in: [renderers/constants.ts:5](https://github.com/FentFentFent/Kabel/blo
 
 > **NODE\_BG\_COLOR**: [`Color`](../type-aliases/Color.md) = `'#2c2d3aff'`
 
-Defined in: [renderers/constants.ts:25](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L25)
+Defined in: [renderers/constants.ts:25](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L25)
 
 ***
 
@@ -264,7 +264,7 @@ Defined in: [renderers/constants.ts:25](https://github.com/FentFentFent/Kabel/bl
 
 > **NODE\_OUTLINE\_COLOR**: [`Color`](../type-aliases/Color.md) = `'#1d1e25ff'`
 
-Defined in: [renderers/constants.ts:26](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L26)
+Defined in: [renderers/constants.ts:26](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L26)
 
 ***
 
@@ -272,7 +272,7 @@ Defined in: [renderers/constants.ts:26](https://github.com/FentFentFent/Kabel/bl
 
 > **PADDING\_BIG**: `number`
 
-Defined in: [renderers/constants.ts:9](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L9)
+Defined in: [renderers/constants.ts:9](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L9)
 
 ***
 
@@ -280,7 +280,7 @@ Defined in: [renderers/constants.ts:9](https://github.com/FentFentFent/Kabel/blo
 
 > **PADDING\_MEDIUM**: `number`
 
-Defined in: [renderers/constants.ts:10](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L10)
+Defined in: [renderers/constants.ts:10](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L10)
 
 ***
 
@@ -288,7 +288,19 @@ Defined in: [renderers/constants.ts:10](https://github.com/FentFentFent/Kabel/bl
 
 > **PADDING\_SMALL**: `number`
 
-Defined in: [renderers/constants.ts:11](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L11)
+Defined in: [renderers/constants.ts:11](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L11)
+
+***
+
+### SHAPES
+
+> **SHAPES**: `object` = `{}`
+
+Defined in: [renderers/constants.ts:46](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L46)
+
+#### Index Signature
+
+\[`key`: `string`\]: `object`
 
 ***
 
@@ -296,7 +308,7 @@ Defined in: [renderers/constants.ts:11](https://github.com/FentFentFent/Kabel/bl
 
 > **TOPBAR\_HEIGHT**: `number`
 
-Defined in: [renderers/constants.ts:7](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L7)
+Defined in: [renderers/constants.ts:7](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L7)
 
 ***
 
@@ -304,7 +316,7 @@ Defined in: [renderers/constants.ts:7](https://github.com/FentFentFent/Kabel/blo
 
 > **TOPBAR\_LABEL\_BOLDED**: `boolean`
 
-Defined in: [renderers/constants.ts:41](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L41)
+Defined in: [renderers/constants.ts:41](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L41)
 
 ***
 
@@ -312,7 +324,7 @@ Defined in: [renderers/constants.ts:41](https://github.com/FentFentFent/Kabel/bl
 
 > **TOPBAR\_LABEL\_MARGIN\_X**: `number`
 
-Defined in: [renderers/constants.ts:39](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L39)
+Defined in: [renderers/constants.ts:39](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L39)
 
 ***
 
@@ -320,7 +332,7 @@ Defined in: [renderers/constants.ts:39](https://github.com/FentFentFent/Kabel/bl
 
 > **TOPBAR\_LABEL\_MARGIN\_Y**: `number`
 
-Defined in: [renderers/constants.ts:40](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L40)
+Defined in: [renderers/constants.ts:40](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L40)
 
 ***
 
@@ -328,4 +340,4 @@ Defined in: [renderers/constants.ts:40](https://github.com/FentFentFent/Kabel/bl
 
 > **ZOOM\_BASE**: `number` = `1`
 
-Defined in: [renderers/constants.ts:44](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/renderers/constants.ts#L44)
+Defined in: [renderers/constants.ts:44](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/renderers/constants.ts#L44)

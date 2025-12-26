@@ -46,7 +46,7 @@ class DropdownContainer {
     private options: DropdownOptions | null = null;
     private constraint: { x: number; y: number; width: number; height: number };
     private offset: { dx: number; dy: number };
-
+    private currentRemoveListener: (() => void) | null = null;
     /**
      * Creates the dropdown container and attaches it to the DOM.
      */
@@ -110,7 +110,8 @@ class DropdownContainer {
         this.hide(); // close existing dropdown first
         this.owner = owner;
         if (options) this.options = options;
-
+        if (this.currentRemoveListener) this.currentRemoveListener();
+        this.currentRemoveListener = null;
         const groupRect = owner.svgGroup.node.getBoundingClientRect();
         this.constraint = {
             x: groupRect.left + window.scrollX,
@@ -138,7 +139,32 @@ class DropdownContainer {
                 this.rootEl.appendChild(el);
             });
         }
-
+        if (owner instanceof NodeSvg) {
+            // Add a move listener to the node's workspace.
+            const ws = owner.workspace;
+            let remove = ws?.addMoveListener(() => {
+                if (this.owner !== owner) {
+                    remove!(); // disconnect when owner changes.
+                    return;
+                }
+                this.hideIfOwner(owner)
+            });
+            this.currentRemoveListener = remove as () => void;
+        }
+        if (owner instanceof Field) {
+            // Add a move listener to the field's workspace.
+            const ws = owner.node!.workspace;
+            let remove = ws?.addMoveListener(() => {
+                if (this.owner !== owner) {
+                    console.log("Disconnecting..");
+                    remove!(); // disconnect when owner changes.
+                    return;
+                }
+                console.log("Hiding..");
+                this.hide();
+            });
+            this.currentRemoveListener = remove as () => void;
+        }
         this.updatePosition();
         DropdownContainer.current = this;
     }
@@ -153,6 +179,8 @@ class DropdownContainer {
         this.owner = null;
         this.options = null;
         DropdownContainer.current = null;
+        if (this.currentRemoveListener) this.currentRemoveListener();
+        this.currentRemoveListener = null;
     }
 
     /**

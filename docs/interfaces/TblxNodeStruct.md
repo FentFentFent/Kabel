@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: TblxNodeStruct
 
-Defined in: [src/inject.ts:29](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/inject.ts#L29)
+Defined in: [src/inject.ts:30](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/inject.ts#L30)
 
 Represents a node in a toolbox.
 
@@ -16,7 +16,7 @@ Represents a node in a toolbox.
 
 > **arguments**: `object`
 
-Defined in: [src/inject.ts:34](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/inject.ts#L34)
+Defined in: [src/inject.ts:35](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/inject.ts#L35)
 
 Map of field names to field data
 
@@ -30,6 +30,6 @@ Map of field names to field data
 
 > **type**: `string` \| `number`
 
-Defined in: [src/inject.ts:31](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/inject.ts#L31)
+Defined in: [src/inject.ts:32](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/inject.ts#L32)
 
 Node type (matches NodePrototypes key or arbitrary string)

@@ -1,10 +1,11 @@
+import Workspace from "./workspace";
 import WorkspaceSvg from "./workspace-svg";
 /**
  * Returns the current main workspace instance.
  *
  * @returns The main WorkspaceSvg or null if none is set.
  */
-declare function getMainWorkspace(): WorkspaceSvg | null;
+declare function getMainWorkspace(): WorkspaceSvg | Workspace | null;
 /**
  * Sets the main workspace reference.
  * Calling this updates the global "main workspace" for Kabel.
@@ -12,7 +13,7 @@ declare function getMainWorkspace(): WorkspaceSvg | null;
  * @param ws - The WorkspaceSvg instance to set as main, or null to clear.
  * @returns The workspace that was set.
  */
-declare function setMainWorkspace(ws: WorkspaceSvg | null): WorkspaceSvg | null;
+declare function setMainWorkspace(ws: WorkspaceSvg | Workspace | null): WorkspaceSvg | Workspace | null;
 /**
  * Clears the main workspace reference.
  * After calling, getMainWorkspace() will return null.

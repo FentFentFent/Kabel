@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **clearMainWorkspace**(): `null`
 
-Defined in: [src/main-workspace.ts:35](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/main-workspace.ts#L35)
+Defined in: [src/main-workspace.ts:36](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/main-workspace.ts#L36)
 
 Clears the main workspace reference.
 After calling, getMainWorkspace() will return null.

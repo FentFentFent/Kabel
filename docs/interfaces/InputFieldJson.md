@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: InputFieldJson
 
-Defined in: [src/nodesvg.ts:20](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L20)
+Defined in: [src/nodesvg.ts:20](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L20)
 
 Represents the JSON structure used to initialize a field on a node.
 Each field has a type, label, and name. Additional properties can be included for field-specific configuration.
@@ -25,7 +25,7 @@ default values, dropdown options, etc.
 
 > **label**: `string`
 
-Defined in: [src/nodesvg.ts:22](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L22)
+Defined in: [src/nodesvg.ts:22](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L22)
 
 Human-readable label for the field, shown on the node UI
 
@@ -35,7 +35,7 @@ Human-readable label for the field, shown on the node UI
 
 > **name**: `string`
 
-Defined in: [src/nodesvg.ts:28](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L28)
+Defined in: [src/nodesvg.ts:28](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L28)
 
 Unique field name within the node
 
@@ -45,6 +45,6 @@ Unique field name within the node
 
 > **type**: `string`
 
-Defined in: [src/nodesvg.ts:25](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L25)
+Defined in: [src/nodesvg.ts:25](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L25)
 
 Field type identifier, corresponding to a field constructor in FieldMap

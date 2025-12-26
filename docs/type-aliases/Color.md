@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -8,6 +8,6 @@
 
 > **Color** = [`RGBObject`](RGBObject.md) \| [`RGBString`](RGBString.md) \| [`RGBTuple`](RGBTuple.md) \| [`Hex`](Hex.md)
 
-Defined in: [src/visual-types.ts:20](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/visual-types.ts#L20)
+Defined in: [src/visual-types.ts:20](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/visual-types.ts#L20)
 
 A color, whether it be #ffffff, {r, g, b}, 'r, g, b', or [r, g, b]

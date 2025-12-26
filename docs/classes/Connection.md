@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: Connection
 
-Defined in: [src/connection.ts:12](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/connection.ts#L12)
+Defined in: [src/connection.ts:12](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/connection.ts#L12)
 
 Represents a connection between two connectable objects.
 
@@ -16,7 +16,7 @@ Represents a connection between two connectable objects.
 
 > **new Connection**(`from`, `to`, `isPrevious`): `Connection`
 
-Defined in: [src/connection.ts:26](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/connection.ts#L26)
+Defined in: [src/connection.ts:26](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/connection.ts#L26)
 
 Creates a new Connection.
 
@@ -50,7 +50,7 @@ True if this connection is a previous connection
 
 > **from**: [`Connectable`](../type-aliases/Connectable.md)
 
-Defined in: [src/connection.ts:14](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/connection.ts#L14)
+Defined in: [src/connection.ts:14](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/connection.ts#L14)
 
 The source of the connection
 
@@ -60,7 +60,7 @@ The source of the connection
 
 > **isPrevious**: `boolean`
 
-Defined in: [src/connection.ts:18](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/connection.ts#L18)
+Defined in: [src/connection.ts:18](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/connection.ts#L18)
 
 Whether this connection represents a previous connection (affects rendering/logic)
 
@@ -70,7 +70,7 @@ Whether this connection represents a previous connection (affects rendering/logi
 
 > **to**: [`Connectable`](../type-aliases/Connectable.md)
 
-Defined in: [src/connection.ts:16](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/connection.ts#L16)
+Defined in: [src/connection.ts:16](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/connection.ts#L16)
 
 The target of the connection
 
@@ -80,7 +80,7 @@ The target of the connection
 
 > **disconnectFrom**(): `void`
 
-Defined in: [src/connection.ts:71](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/connection.ts#L71)
+Defined in: [src/connection.ts:71](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/connection.ts#L71)
 
 Disconnects this connection from its source.
 Safely handles NodeSvg chains and ConnectableFields.
@@ -95,7 +95,7 @@ Safely handles NodeSvg chains and ConnectableFields.
 
 > **disconnectTo**(): `void`
 
-Defined in: [src/connection.ts:46](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/connection.ts#L46)
+Defined in: [src/connection.ts:46](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/connection.ts#L46)
 
 Disconnects this connection from its target.
 Safely handles NodeSvg chains and ConnectableFields.
@@ -110,7 +110,7 @@ Safely handles NodeSvg chains and ConnectableFields.
 
 > **getFrom**(): [`Connectable`](../type-aliases/Connectable.md)
 
-Defined in: [src/connection.ts:38](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/connection.ts#L38)
+Defined in: [src/connection.ts:38](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/connection.ts#L38)
 
 Returns the source of the connection
 
@@ -124,7 +124,7 @@ Returns the source of the connection
 
 > **getTo**(): [`Connectable`](../type-aliases/Connectable.md)
 
-Defined in: [src/connection.ts:33](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/connection.ts#L33)
+Defined in: [src/connection.ts:33](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/connection.ts#L33)
 
 Returns the target of the connection
 
@@ -138,7 +138,7 @@ Returns the target of the connection
 
 > **isolate**(): `void`
 
-Defined in: [src/connection.ts:108](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/connection.ts#L108)
+Defined in: [src/connection.ts:108](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/connection.ts#L108)
 
 Completely isolates this connection, clearing both ends
 
@@ -152,7 +152,7 @@ Completely isolates this connection, clearing both ends
 
 > **setFrom**(`source`): `void`
 
-Defined in: [src/connection.ts:103](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/connection.ts#L103)
+Defined in: [src/connection.ts:103](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/connection.ts#L103)
 
 Sets the source of this connection (used during deserialization)
 
@@ -174,7 +174,7 @@ New connection source
 
 > **setTo**(`target`): `void`
 
-Defined in: [src/connection.ts:95](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/connection.ts#L95)
+Defined in: [src/connection.ts:95](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/connection.ts#L95)
 
 Sets the target of this connection (used during deserialization)
 

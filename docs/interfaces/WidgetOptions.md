@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: WidgetOptions
 
-Defined in: [src/widget.ts:5](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/widget.ts#L5)
+Defined in: [src/widget.ts:6](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/widget.ts#L6)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [src/widget.ts:5](https://github.com/FentFentFent/Kabel/blob/c687975
 
 > `optional` **className**: `string`
 
-Defined in: [src/widget.ts:25](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/widget.ts#L25)
+Defined in: [src/widget.ts:26](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/widget.ts#L26)
 
 Class to give the widget's html container.
 
@@ -24,7 +24,7 @@ Class to give the widget's html container.
 
 > `optional` **cls**: *typeof* [`Widget`](../classes/Widget.md)
 
-Defined in: [src/widget.ts:9](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/widget.ts#L9)
+Defined in: [src/widget.ts:10](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/widget.ts#L10)
 
 Widget class to instantiate for the widget, by default it uses Kabel's
 
@@ -34,7 +34,7 @@ Widget class to instantiate for the widget, by default it uses Kabel's
 
 > `optional` **coords**: [`Coordinates`](../classes/Coordinates.md)
 
-Defined in: [src/widget.ts:13](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/widget.ts#L13)
+Defined in: [src/widget.ts:14](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/widget.ts#L14)
 
 Coordinates to spawn the widget at.
 
@@ -44,7 +44,7 @@ Coordinates to spawn the widget at.
 
 > `optional` **height**: `number`
 
-Defined in: [src/widget.ts:21](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/widget.ts#L21)
+Defined in: [src/widget.ts:22](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/widget.ts#L22)
 
 Height of the widget.
 
@@ -54,7 +54,7 @@ Height of the widget.
 
 > `optional` **html**: `string`
 
-Defined in: [src/widget.ts:29](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/widget.ts#L29)
+Defined in: [src/widget.ts:30](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/widget.ts#L30)
 
 Widget inner HTML default content.
 
@@ -64,7 +64,7 @@ Widget inner HTML default content.
 
 > `optional` **init**: (`this`, `widget`, `html`) => `void`
 
-Defined in: [src/widget.ts:41](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/widget.ts#L41)
+Defined in: [src/widget.ts:42](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/widget.ts#L42)
 
 Sets up a new widget of this type
 
@@ -100,7 +100,7 @@ The html container of the widget.
 
 > **name**: `string`
 
-Defined in: [src/widget.ts:33](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/widget.ts#L33)
+Defined in: [src/widget.ts:34](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/widget.ts#L34)
 
 Widget name
 
@@ -110,6 +110,6 @@ Widget name
 
 > `optional` **width**: `number`
 
-Defined in: [src/widget.ts:17](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/widget.ts#L17)
+Defined in: [src/widget.ts:18](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/widget.ts#L18)
 
 Width of the widget

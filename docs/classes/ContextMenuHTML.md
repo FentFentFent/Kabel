@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: ContextMenuHTML
 
-Defined in: [src/context-menu.ts:33](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/context-menu.ts#L33)
+Defined in: [src/context-menu.ts:37](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/context-menu.ts#L37)
 
 HTML context menu rendered on workspace right-click.
 
@@ -16,7 +16,7 @@ HTML context menu rendered on workspace right-click.
 
 > **new ContextMenuHTML**(`workspace`): `ContextMenuHTML`
 
-Defined in: [src/context-menu.ts:43](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/context-menu.ts#L43)
+Defined in: [src/context-menu.ts:59](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/context-menu.ts#L59)
 
 Create a new context menu for a workspace.
 
@@ -38,7 +38,9 @@ Workspace to attach the context menu to
 
 > **controller**: [`WorkspaceController`](WorkspaceController.md)
 
-Defined in: [src/context-menu.ts:35](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/context-menu.ts#L35)
+Defined in: [src/context-menu.ts:45](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/context-menu.ts#L45)
+
+The workspace's controller
 
 ***
 
@@ -46,7 +48,9 @@ Defined in: [src/context-menu.ts:35](https://github.com/FentFentFent/Kabel/blob/
 
 > **options**: `ContextMenuOpts`[]
 
-Defined in: [src/context-menu.ts:37](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/context-menu.ts#L37)
+Defined in: [src/context-menu.ts:53](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/context-menu.ts#L53)
+
+Options for the context menu.
 
 ***
 
@@ -54,7 +58,9 @@ Defined in: [src/context-menu.ts:37](https://github.com/FentFentFent/Kabel/blob/
 
 > **widget**: [`Widget`](Widget.md)
 
-Defined in: [src/context-menu.ts:36](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/context-menu.ts#L36)
+Defined in: [src/context-menu.ts:49](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/context-menu.ts#L49)
+
+The widget in the workspace to display the menu on.
 
 ***
 
@@ -62,7 +68,9 @@ Defined in: [src/context-menu.ts:36](https://github.com/FentFentFent/Kabel/blob/
 
 > **workspace**: [`WorkspaceSvg`](WorkspaceSvg.md)
 
-Defined in: [src/context-menu.ts:34](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/context-menu.ts#L34)
+Defined in: [src/context-menu.ts:41](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/context-menu.ts#L41)
+
+The workspace.
 
 ## Accessors
 
@@ -72,7 +80,7 @@ Defined in: [src/context-menu.ts:34](https://github.com/FentFentFent/Kabel/blob/
 
 > **get** **mousePos**(): `object`
 
-Defined in: [src/context-menu.ts:132](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/context-menu.ts#L132)
+Defined in: [src/context-menu.ts:154](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/context-menu.ts#L154)
 
 Returns the current mouse position in workspace coordinates
 
@@ -94,15 +102,15 @@ Returns the current mouse position in workspace coordinates
 
 #### Get Signature
 
-> **get** **target**(): [`CommentModel`](CommentModel.md) \| [`NodeSvg`](NodeSvg.md) \| [`WorkspaceSvg`](WorkspaceSvg.md) \| `HTMLElement` \| `null`
+> **get** **target**(): [`NodeSvg`](NodeSvg.md) \| [`WorkspaceSvg`](WorkspaceSvg.md) \| `HTMLElement` \| [`CommentModel`](CommentModel.md) \| `null`
 
-Defined in: [src/context-menu.ts:139](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/context-menu.ts#L139)
+Defined in: [src/context-menu.ts:161](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/context-menu.ts#L161)
 
 Returns the target element under the mouse for context menu.
 
 ##### Returns
 
-[`CommentModel`](CommentModel.md) \| [`NodeSvg`](NodeSvg.md) \| [`WorkspaceSvg`](WorkspaceSvg.md) \| `HTMLElement` \| `null`
+[`NodeSvg`](NodeSvg.md) \| [`WorkspaceSvg`](WorkspaceSvg.md) \| `HTMLElement` \| [`CommentModel`](CommentModel.md) \| `null`
 
 ## Methods
 
@@ -110,7 +118,7 @@ Returns the target element under the mouse for context menu.
 
 > **hide**(): `void`
 
-Defined in: [src/context-menu.ts:127](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/context-menu.ts#L127)
+Defined in: [src/context-menu.ts:149](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/context-menu.ts#L149)
 
 Hides the context menu
 
@@ -124,7 +132,7 @@ Hides the context menu
 
 > **initListeners**(): `void`
 
-Defined in: [src/context-menu.ts:108](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/context-menu.ts#L108)
+Defined in: [src/context-menu.ts:125](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/context-menu.ts#L125)
 
 Initializes event listeners for showing/hiding the menu.
 
@@ -138,7 +146,7 @@ Initializes event listeners for showing/hiding the menu.
 
 > **renderOptions**(`target`): `void`
 
-Defined in: [src/context-menu.ts:75](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/context-menu.ts#L75)
+Defined in: [src/context-menu.ts:91](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/context-menu.ts#L91)
 
 Renders context menu options for a given target.
 
@@ -148,7 +156,7 @@ Renders context menu options for a given target.
 
 The object the context menu is for
 
-[`CommentModel`](CommentModel.md) | [`NodeSvg`](NodeSvg.md) | [`WorkspaceSvg`](WorkspaceSvg.md) | `HTMLElement` | `null`
+[`NodeSvg`](NodeSvg.md) | [`WorkspaceSvg`](WorkspaceSvg.md) | `HTMLElement` | [`CommentModel`](CommentModel.md) | `null`
 
 #### Returns
 

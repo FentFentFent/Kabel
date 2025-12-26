@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: SerializedNode
 
-Defined in: [src/nodesvg.ts:81](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L81)
+Defined in: [src/nodesvg.ts:81](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L81)
 
 Represents a fully serialized node including its fields, colors, coordinates, connections, and optional comment.
 Used for saving or transferring node data.
@@ -17,7 +17,7 @@ Used for saving or transferring node data.
 
 > **colors**: [`ColorStyle`](ColorStyle.md)
 
-Defined in: [src/nodesvg.ts:92](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L92)
+Defined in: [src/nodesvg.ts:92](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L92)
 
 Node colors including primary, secondary, tertiary, and category
 
@@ -25,9 +25,9 @@ Node colors including primary, secondary, tertiary, and category
 
 ### comment?
 
-> `optional` **comment**: `string`
+> `optional` **comment**: `CommentSerialized`
 
-Defined in: [src/nodesvg.ts:98](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L98)
+Defined in: [src/nodesvg.ts:98](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L98)
 
 Optional comment text attached to the node
 
@@ -37,7 +37,7 @@ Optional comment text attached to the node
 
 > `optional` **fields**: `any`[]
 
-Defined in: [src/nodesvg.ts:101](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L101)
+Defined in: [src/nodesvg.ts:101](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L101)
 
 Array of serialized fields, may contain any field-specific structure
 
@@ -47,7 +47,7 @@ Array of serialized fields, may contain any field-specific structure
 
 > **id**: `string`
 
-Defined in: [src/nodesvg.ts:86](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L86)
+Defined in: [src/nodesvg.ts:86](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L86)
 
 Unique node ID
 
@@ -57,7 +57,7 @@ Unique node ID
 
 > **label**: `string`
 
-Defined in: [src/nodesvg.ts:89](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L89)
+Defined in: [src/nodesvg.ts:89](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L89)
 
 Display label of the node
 
@@ -67,7 +67,7 @@ Display label of the node
 
 > `optional` **nextConnection**: `object`
 
-Defined in: [src/nodesvg.ts:113](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L113)
+Defined in: [src/nodesvg.ts:113](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L113)
 
 Serialized representation of the next connection.
 If `field` is true, the connection originates from a field rather than a node.
@@ -86,7 +86,7 @@ If `field` is true, the connection originates from a field rather than a node.
 
 > `optional` **previousConnection**: `object`
 
-Defined in: [src/nodesvg.ts:107](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L107)
+Defined in: [src/nodesvg.ts:107](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L107)
 
 Serialized representation of the previous connection.
 If `field` is true, the connection originates from a field rather than a node.
@@ -105,7 +105,7 @@ If `field` is true, the connection originates from a field rather than a node.
 
 > **relativeCoords**: `object`
 
-Defined in: [src/nodesvg.ts:95](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L95)
+Defined in: [src/nodesvg.ts:95](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L95)
 
 Coordinates of the node relative to its workspace
 
@@ -123,6 +123,6 @@ Coordinates of the node relative to its workspace
 
 > **type**: `string`
 
-Defined in: [src/nodesvg.ts:83](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/nodesvg.ts#L83)
+Defined in: [src/nodesvg.ts:83](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/nodesvg.ts#L83)
 
 Node type string

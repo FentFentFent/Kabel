@@ -58,10 +58,22 @@
     cursor: pointer;
     transition: background 0.15s ease, color 0.15s ease;
 }
-
 .KabelContextOption:hover {
     background: #b0adb0;
     color: #fff;
+}
+.KabelContextOption.disabled {
+	opacity: 0.35;
+	cursor: not-allowed;
+	color: #777; /* dim it so it's obviously off */
+	background: transparent;
+	pointer-events: none;
+}
+
+/* make sure hover never triggers visually */
+.KabelContextOption.disabled:hover {
+	background: transparent;
+	color: #777;
 }
 
 /* Optional: active click effect */

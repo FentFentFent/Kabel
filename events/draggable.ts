@@ -1,4 +1,4 @@
-import { Element } from '@svgdotjs/svg.js';
+import { Element, G } from '@svgdotjs/svg.js';
 import NodeSvg from '../src/nodesvg';
 import eventer from '../util/eventer';
 import type { EventSetupFn } from '../util/eventer';
@@ -23,7 +23,7 @@ function initDraggable(element: Element, args: Record<string, any>): () => void 
 
     function onMouseDown(e: MouseEvent) {
         if (args.type === 2 && args.node) {
-            const ws = args.node.workspace;
+            const ws : WorkspaceSvg = args.node.workspace;
             if (!ws) return;
 
             const start = ws.screenToWorkspace(e.clientX, e.clientY);
@@ -31,6 +31,9 @@ function initDraggable(element: Element, args: Record<string, any>): () => void 
 
             offsetX = start.x - nodePos.x;
             offsetY = start.y - nodePos.y;
+            ws.beginDrag(args.node, start.x, start.y);
+            (args.group as G).front();
+            
         } else {
             const bbox = element.bbox();
             offsetX = e.clientX - bbox.x;
@@ -65,13 +68,13 @@ function initDraggable(element: Element, args: Record<string, any>): () => void 
             const mouseWS = ws.screenToWorkspace(e.clientX, e.clientY);
             const newX = mouseWS.x - offsetX;
             const newY = mouseWS.y - offsetY;
-
             args.node.relativeCoords.set(newX, newY);
+            ws.updateDrag(newX, newY);
             ws.refresh();
             // Move node visually
             const screenPos = ws.workspaceToScreen(newX, newY);
             element.attr({ transform: `translate(${screenPos.x}, ${screenPos.y}) scale(${ws.getZoom()})` });
-
+            
             args.node.emit('NODE_DRAG', null);
         } else if (args.type === 1 && args.onmove) {
             const newX = e.clientX - offsetX;
@@ -94,6 +97,12 @@ function initDraggable(element: Element, args: Record<string, any>): () => void 
         userState.removeState('dragging');
 
         if (args.type === 1 && args.enddrag) args.enddrag(e);
+        if (args.type === 2 && args.node && args.node instanceof NodeSvg) {
+            const ws: WorkspaceSvg = args.node.workspace as WorkspaceSvg;
+            if (!ws) return;
+            ws.emitChange();
+            ws.endDrag();
+        }
         isDragging = false;
     }
 

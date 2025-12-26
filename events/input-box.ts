@@ -83,7 +83,8 @@ function initInputBox(element: Element, args: Record<string, any>) {
 
         // --- caret ---
         if (editing) {
-            const caretX = args.startX + PADDING_X + measureTextWidth(buffer.slice(0, cursorPos));
+            const zoom = renderer.getWs().getZoom(); // workspace zoom
+            const caretX = (args.startX + PADDING_X + measureTextWidth(buffer.slice(0, cursorPos))); // scale pos
             const caretH = textBBox.height;
             // @ts-ignore
             if (!caretLine) caretLine = rect.parent()!.rect(1, caretH).fill(renderer.constants.FIELD_RAW_TEXT_COLOR);
@@ -165,12 +166,12 @@ function initInputBox(element: Element, args: Record<string, any>) {
         if (ev) {
             const rectBox = rect.node.getBoundingClientRect();
             const zoom = renderer.getWs().getZoom(); // workspace zoom
-            const clickX = (ev.clientX - rectBox.left - PADDING_X) / zoom; // divide by zoom
+            const clickX = (ev.clientX - rectBox.left - PADDING_X) / zoom;
 
             let cumulativeWidth = 0;
             cursorPos = 0;
             for (let i = 0; i < buffer.length; i++) {
-                const charWidth = measureTextWidth(buffer[i]) / zoom; // scale widths
+                const charWidth = measureTextWidth(buffer[i]); // scale widths
                 if (cumulativeWidth + charWidth / 2 >= clickX) break;
                 cumulativeWidth += charWidth;
                 cursorPos = i + 1;
@@ -193,6 +194,7 @@ function initInputBox(element: Element, args: Record<string, any>) {
         args.field.setValue(buffer);
         updateText();
         renderer.getWs().redraw();
+        renderer.getWs().emitChange();
     }
 
     rect.on("mousedown", (ev: Event) => startEditing(ev as MouseEvent));

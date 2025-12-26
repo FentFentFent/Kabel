@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: FieldConnectionData
 
-Defined in: [src/field.ts:36](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L36)
+Defined in: [src/field.ts:36](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L36)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [src/field.ts:36](https://github.com/FentFentFent/Kabel/blob/c687975
 
 > **connector**: `Path`
 
-Defined in: [src/field.ts:37](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L37)
+Defined in: [src/field.ts:37](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L37)
 
 ***
 
@@ -22,4 +22,4 @@ Defined in: [src/field.ts:37](https://github.com/FentFentFent/Kabel/blob/c687975
 
 > **connState**: [`ConnectorToFrom`](ConnectorToFrom.md)
 
-Defined in: [src/field.ts:38](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/field.ts#L38)
+Defined in: [src/field.ts:38](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/field.ts#L38)

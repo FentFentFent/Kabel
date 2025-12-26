@@ -1,4 +1,4 @@
-[**Kabel Project Docs v1.0.4**](../README.md)
+[**Kabel Project Docs v1.0.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: CommentModel
 
-Defined in: [src/comment.ts:10](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/comment.ts#L10)
+Defined in: [src/comment.ts:18](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/comment.ts#L18)
 
 Represents a comment attached to either a NodeSvg or a WorkspaceSvg.
 
@@ -16,7 +16,7 @@ Represents a comment attached to either a NodeSvg or a WorkspaceSvg.
 
 > **new CommentModel**(`parent`): `CommentModel`
 
-Defined in: [src/comment.ts:39](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/comment.ts#L39)
+Defined in: [src/comment.ts:47](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/comment.ts#L47)
 
 Creates a new comment attached to a node or workspace.
 
@@ -26,7 +26,7 @@ Creates a new comment attached to a node or workspace.
 
 NodeSvg or WorkspaceSvg this comment belongs to
 
-[`NodeSvg`](NodeSvg.md) | [`WorkspaceSvg`](WorkspaceSvg.md)
+[`NodeSvg`](NodeSvg.md) | [`WorkspaceSvg`](WorkspaceSvg.md) | `Workspace`
 
 #### Returns
 
@@ -38,7 +38,7 @@ NodeSvg or WorkspaceSvg this comment belongs to
 
 > **\_isWorkspaceComment**: `boolean`
 
-Defined in: [src/comment.ts:15](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/comment.ts#L15)
+Defined in: [src/comment.ts:23](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/comment.ts#L23)
 
 True if this comment belongs to the workspace instead of a node
 
@@ -46,9 +46,9 @@ True if this comment belongs to the workspace instead of a node
 
 ### \_parent
 
-> **\_parent**: [`NodeSvg`](NodeSvg.md) \| [`WorkspaceSvg`](WorkspaceSvg.md)
+> **\_parent**: [`NodeSvg`](NodeSvg.md) \| [`WorkspaceSvg`](WorkspaceSvg.md) \| `Workspace`
 
-Defined in: [src/comment.ts:18](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/comment.ts#L18)
+Defined in: [src/comment.ts:26](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/comment.ts#L26)
 
 Parent NodeSvg or WorkspaceSvg to which this comment belongs
 
@@ -58,7 +58,7 @@ Parent NodeSvg or WorkspaceSvg to which this comment belongs
 
 > `optional` **\_tempInputBBox**: `object`
 
-Defined in: [src/comment.ts:30](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/comment.ts#L30)
+Defined in: [src/comment.ts:38](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/comment.ts#L38)
 
 Temporary bounding box info for input handling
 
@@ -84,7 +84,7 @@ Temporary bounding box info for input handling
 
 > **\_text**: `string`
 
-Defined in: [src/comment.ts:12](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/comment.ts#L12)
+Defined in: [src/comment.ts:20](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/comment.ts#L20)
 
 The comment text
 
@@ -94,7 +94,7 @@ The comment text
 
 > **id**: `string`
 
-Defined in: [src/comment.ts:33](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/comment.ts#L33)
+Defined in: [src/comment.ts:41](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/comment.ts#L41)
 
 Unique identifier for this comment
 
@@ -104,7 +104,7 @@ Unique identifier for this comment
 
 > **relativeCoords**: [`Coordinates`](Coordinates.md)
 
-Defined in: [src/comment.ts:24](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/comment.ts#L24)
+Defined in: [src/comment.ts:32](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/comment.ts#L32)
 
 Coordinates relative to parent
 
@@ -114,7 +114,7 @@ Coordinates relative to parent
 
 > `optional` **svgGroup**: `G`
 
-Defined in: [src/comment.ts:21](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/comment.ts#L21)
+Defined in: [src/comment.ts:29](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/comment.ts#L29)
 
 SVG group representing this comment in the DOM
 
@@ -124,7 +124,7 @@ SVG group representing this comment in the DOM
 
 > `optional` **svgLine**: `Line`
 
-Defined in: [src/comment.ts:27](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/comment.ts#L27)
+Defined in: [src/comment.ts:35](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/comment.ts#L35)
 
 Optional SVG line connecting the comment to its node
 
@@ -134,7 +134,7 @@ Optional SVG line connecting the comment to its node
 
 > **getText**(): `string`
 
-Defined in: [src/comment.ts:62](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/comment.ts#L62)
+Defined in: [src/comment.ts:70](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/comment.ts#L70)
 
 Retrieves the current text of the comment.
 
@@ -150,7 +150,7 @@ The comment text
 
 > **getWorkspace**(): [`WorkspaceSvg`](WorkspaceSvg.md)
 
-Defined in: [src/comment.ts:95](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/comment.ts#L95)
+Defined in: [src/comment.ts:104](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/comment.ts#L104)
 
 Gets the workspace that owns this comment.
 
@@ -164,7 +164,7 @@ Gets the workspace that owns this comment.
 
 > **isNodeComment**(): `boolean`
 
-Defined in: [src/comment.ts:81](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/comment.ts#L81)
+Defined in: [src/comment.ts:90](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/comment.ts#L90)
 
 Returns true if this comment is attached to a node.
 
@@ -178,7 +178,7 @@ Returns true if this comment is attached to a node.
 
 > **isWorkspaceComment**(): `boolean`
 
-Defined in: [src/comment.ts:88](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/comment.ts#L88)
+Defined in: [src/comment.ts:97](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/comment.ts#L97)
 
 Returns true if this comment is attached to the workspace.
 
@@ -192,7 +192,7 @@ Returns true if this comment is attached to the workspace.
 
 > **setText**(`value`): `string`
 
-Defined in: [src/comment.ts:71](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/comment.ts#L71)
+Defined in: [src/comment.ts:79](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/comment.ts#L79)
 
 Sets the text of the comment and triggers a redraw of all comments in the workspace.
 
@@ -216,9 +216,9 @@ The updated text
 
 > **setTextNoRedraw**(`value`): `string`
 
-Defined in: [src/comment.ts:54](https://github.com/FentFentFent/Kabel/blob/c6879758347c3b72d279bd4d891c0f9066fe3112/src/comment.ts#L54)
+Defined in: [src/comment.ts:62](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/comment.ts#L62)
 
-Sets the text of the comment without triggering a redraw.
+Sets the text of the comment without triggering a comment redraw.
 
 #### Parameters
 
@@ -233,3 +233,39 @@ New text content
 `string`
 
 The updated text
+
+***
+
+### toJson()
+
+> **toJson**(): `CommentSerialized`
+
+Defined in: [src/comment.ts:114](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/comment.ts#L114)
+
+Convert to JSON structure holding all important data.
+
+#### Returns
+
+`CommentSerialized`
+
+***
+
+### fromJson()
+
+> `static` **fromJson**(`data`): `CommentModel`
+
+Defined in: [src/comment.ts:129](https://github.com/FentFentFent/Kabel/blob/6a658c7afa967c18ecfb5cdff24af90b7d7319c3/src/comment.ts#L129)
+
+Creates a CommentModel from serialized data.
+
+#### Parameters
+
+##### data
+
+`CommentSerialized`
+
+The serialized comment
+
+#### Returns
+
+`CommentModel`

@@ -2,10 +2,12 @@ import { Element as SvgElement, Rect as SvgRect, Text as SvgText } from "@svgdot
 import CommentModel from "../src/comment";
 import eventer, { EventSetupFn } from "../util/eventer";
 import userState from '../util/user-state';
+import Renderer from "../comment-renderer/renderer"
 
 type InitArgs = {
     comment: CommentModel;
     text: SvgText;
+    renderer: Renderer;
 };
 
 function initCommentInput(element: SvgElement, rawArgs: any) {
@@ -13,32 +15,17 @@ function initCommentInput(element: SvgElement, rawArgs: any) {
     const comment = args.comment;
     const txt = args.text as SvgText;
     const rect = element as unknown as SvgRect;
-    const ws = comment.getWorkspace();
-    const svg = ws.svg;
-    function measureTextWidth(text: string, fontSize: number, fontFamily: string): number {
-        if (!svg) return text.length * (fontSize) * 0.6;
-
-        // encode spaces so measurement matches display
-        const displayText = encodeForSvg(text);
-
-        const txt = svg.text(displayText)
-            .attr({ 'xml:space': 'preserve' })
-            .font({ family: fontFamily, size: fontSize, anchor: 'start' })
-            .opacity(0); // hide it
-
-        const width = txt.bbox().width;
-        txt.remove(); // clean up
-        return width;
-    }
+    const renderer = args.renderer;
 
     let editing = false;
     let skipNextClick = false;
     let buffer = comment.getText() ?? "";
     let cursorPos = buffer.length;
-    let anchorPos = buffer.length; // selection anchor
+    let anchorPos = buffer.length;
 
     const PADDING_X = 4;
     const PADDING_Y = 4;
+
     function getSelectionRange() {
         const start = Math.min(cursorPos, anchorPos);
         const end = Math.max(cursorPos, anchorPos);
@@ -58,47 +45,43 @@ function initCommentInput(element: SvgElement, rawArgs: any) {
         return true;
     }
 
-    // Helper: encode spaces into NBSPs for display so multiple spaces are visible.
-    // Simple and reliable: converts every regular space to NBSP.
-    // If you care about wrapping later we can make this fancier (only convert runs or leading spaces).
     function encodeForSvg(s: string) {
-        // replace spaces with NBSPs
-        // replace newlines with SVG line breaks
         return s.replace(/ /g, "\u00A0").replace(/\n/g, "&#10;");
     }
 
-
     function ensureTspansPreserve(node: Element) {
-        // set xml:space on all child elements (tspans)
         Array.from(node.childNodes).forEach((child) => {
-            if (child.nodeType === 1) {
-                (child as Element).setAttribute("xml:space", "preserve");
-            }
+            if (child.nodeType === 1) (child as Element).setAttribute("xml:space", "preserve");
         });
     }
 
     let caretLine: SvgRect | null = null;
     let selectionRect: SvgRect | null = null;
-    let measureText: SvgText | null = null; // hidden measurement element
+
+    // --- MEASURE TEXT WIDTH USING COMMENT RENDERER ---
+    function measureTextWidth(text: string, fontSize?: number, fontFamily?: string) {
+        // Delegate to renderer’s measureTextBbox logic
+        const tempText = renderer.getSvg().text(text).font({ size: fontSize || 12, family: fontFamily || "Arial" });
+        const bbox = renderer.measureTextBbox(tempText);
+        tempText.remove();
+        return bbox.width;
+    }
 
     function updateText() {
         const { start, end } = getSelectionRange();
         const hasSel = hasSelection();
 
-        // --- redraw main text (full buffer, always) ---
+        // redraw main text
         txt.clear().tspan(encodeForSvg(buffer));
         txt.attr({ "xml:space": "preserve" });
-
-
         try { ensureTspansPreserve(txt.node as Element); } catch { }
         txt.leading(1.2);
 
-        // --- selection highlight (same as before) ---
+        // --- selection highlight ---
         if (hasSel) {
             const fontSize = parseFloat(txt.attr('font-size') as string) || 14;
             const fontFamily = txt.attr('font-family') as string || 'Arial';
 
-            const { start, end } = getSelectionRange();
             const textBeforeStart = buffer.slice(0, start);
             const textBeforeEnd = buffer.slice(0, end);
 
@@ -112,14 +95,12 @@ function initCommentInput(element: SvgElement, rawArgs: any) {
             const highlightH = bbox.height;
 
             if (!selectionRect) {
-                // explicitly append to parent so it actually exists in DOM
-                // @ts-ignore
+                //@ts-ignore
                 selectionRect = rect!.parent()!.rect?.(highlightWidth, highlightH)
                     .fill('#3390ff')
                     .attr({ 'fill-opacity': 0.35 });
                 selectionRect!.node.parentNode!.insertBefore(selectionRect!.node, txt.node);
             } else {
-                console.log(highlightWidth, highlightH);
                 selectionRect.size(highlightWidth, highlightH);
             }
 
@@ -128,38 +109,24 @@ function initCommentInput(element: SvgElement, rawArgs: any) {
             if (selectionRect) { selectionRect.remove(); selectionRect = null; }
         }
 
-
-
-        // --- caret rect logic using measureTextWidth ---
+        // --- caret ---
         if (editing) {
-            const fontSize = parseFloat(txt.attr('font-size') as string) || 14; // fallback if needed
+            const fontSize = parseFloat(txt.attr('font-size') as string) || 14;
             const fontFamily = txt.attr('font-family') as string || 'Arial';
-
-            // get the width of all characters before the cursor
             const textBeforeCaret = buffer.slice(0, cursorPos);
             const caretXOffset = measureTextWidth(textBeforeCaret, fontSize, fontFamily);
 
-            // get bbox to know y and height
             const bbox = txt.bbox();
             const caretY = bbox.y;
             const caretH = bbox.height;
 
-            if (!caretLine) {
-                // @ts-ignore
-                caretLine = rect.parent().rect(1, caretH).fill('#000');
-            }
+            //@ts-ignore
+            if (!caretLine) caretLine = rect.parent().rect(1, caretH).fill('#000');
 
             caretLine!.size(1, caretH).move(bbox.x + caretXOffset, caretY);
         } else {
             if (caretLine) { caretLine.remove(); caretLine = null; }
         }
-
-
-
-
-
-
-
 
         // --- resize background rect ---
         const bbox = txt.bbox();
@@ -177,35 +144,44 @@ function initCommentInput(element: SvgElement, rawArgs: any) {
         };
     }
 
-
+    // --- editing lifecycle ---
     function startEditing(ev?: MouseEvent) {
         if (editing) return;
         editing = true;
         buffer = comment.getText() ?? "";
         cursorPos = buffer.length;
+        anchorPos = buffer.length;
 
-        userState.setState("typing");
+        userState.setState('typing');
 
-        if (ev && comment._tempInputBBox) {
-            let localX = ev.offsetX - comment._tempInputBBox.textX;
-            localX = Math.max(0, localX);
-            cursorPos = buffer.length / 2;
-            anchorPos = buffer.length / 2;
+        if (ev) {
+            const rectBox = txt.node.getBoundingClientRect();
+            //@ts-ignore
+            const zoom = renderer.getWs().getZoom();
+            const clickX = (ev.clientX - rectBox.left - PADDING_X) / zoom;
+
+            let cumulativeWidth = 0;
+            cursorPos = 0;
+            for (let i = 0; i < buffer.length; i++) {
+                const charWidth = measureTextWidth(buffer[i] as string);
+                if (cumulativeWidth + charWidth / 2 >= clickX) break;
+                cumulativeWidth += charWidth;
+                cursorPos = i + 1;
+            }
         }
 
+        anchorPos = cursorPos;
         updateText();
         skipNextClick = true;
 
-        document.addEventListener("keydown", onKeyDown, { capture: true });
+        document.addEventListener("keydown", onKeyDown);
         document.addEventListener("mousedown", onClickOutside);
     }
 
     function stopEditing(commit = true) {
         if (!editing) return;
         editing = false;
-
         userState.removeState("typing");
-
         document.removeEventListener("keydown", onKeyDown, { capture: true });
         document.removeEventListener("mousedown", onClickOutside);
 
@@ -213,6 +189,7 @@ function initCommentInput(element: SvgElement, rawArgs: any) {
         updateText();
         comment.getWorkspace()?.redraw?.();
     }
+
 
     function onKeyDown(e: KeyboardEvent) {
         if (!editing) return;

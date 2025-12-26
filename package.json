@@ -1,6 +1,6 @@
 {
     "name": "@kabel-project/kabel",
-    "version": "1.0.11",
+    "version": "1.0.12",
 	"main": "dist/kabel.js",         
 	"module": "dist/kabel.js",       
 	"types": "dist/src/index.d.ts",      

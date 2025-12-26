@@ -1146,7 +1146,7 @@ class Renderer {
         const wsSvg = this._ws.svg;
 
         this.fillAllNodeConnectorBubbles();
-        const drawnCircles = new Set<SvgPath>(); // store circles we've already drawn lines from/to
+        const drawnCircles = new Set<SvgPath>();
 
         for (const state of this._drawStates) {
             for (const connPair of state.pendingConnections) {
@@ -1154,17 +1154,14 @@ class Renderer {
                 if (connPair.from !== connPair.originConn) continue;
                 if (!fromCircle || !toCircle) continue;
 
-                // skip if either circle was already used
                 if (drawnCircles.has(fromCircle) || drawnCircles.has(toCircle)) continue;
 
-                // mark circles as used
                 drawnCircles.add(fromCircle);
                 drawnCircles.add(toCircle);
-                // Get DOM elements
+
                 const fromEl = fromCircle.node as SVGPathElement;
                 const toEl = toCircle.node as SVGPathElement;
 
-                // Use getBBox + getScreenCTM for absolute coordinates
                 const fromBBox = fromEl.getBBox();
                 const toBBox = toEl.getBBox();
 
@@ -1176,22 +1173,14 @@ class Renderer {
                 const endX = toBBox.x + toBBox.width / 2;
                 const endY = toBBox.y + toBBox.height / 2;
 
-                // Transform to screen coordinates
                 const absStartX = startX * fromCTM.a + startY * fromCTM.c + fromCTM.e;
                 const absStartY = startX * fromCTM.b + startY * fromCTM.d + fromCTM.f;
                 const absEndX = endX * toCTM.a + endY * toCTM.c + toCTM.e;
                 const absEndY = endX * toCTM.b + endY * toCTM.d + toCTM.f;
 
-                // Draw the line
-                let pathStr: string;
-                if (c.CONNECTOR_LINE_CURVED) {
-                    const dx = Math.abs(absEndX - absStartX);
-                    const cp1x = absStartX + Math.sign(absEndX - absStartX) * Math.max(30, dx * 0.3);
-                    const cp2x = absEndX - Math.sign(absEndX - absStartX) * Math.max(30, dx * 0.3);
-                    pathStr = `M ${absStartX} ${absStartY} C ${cp1x} ${absStartY}, ${cp2x} ${absEndY}, ${absEndX} ${absEndY}`;
-                } else {
-                    pathStr = `M ${absStartX} ${absStartY} L ${absEndX} ${absEndY}`;
-                }
+                // STRAIGHT LINE ONLY
+                const pathStr = `M ${absStartX} ${absStartY} L ${absEndX} ${absEndY}`;
+
                 const zoom = this._ws.getZoom();
                 const strokeWidth = c.CONNECTOR_LINE_WIDTH * zoom;
                 const line = wsSvg.path(pathStr)

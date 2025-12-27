@@ -66,8 +66,8 @@ class Flyout {
 		el.style.padding = "4px 8px";
 		el.style.cursor = "pointer";
 
-		if (this.toolbox?.workspace?.renderer?.constants) {
-			const c = this.toolbox.workspace.renderer.constants;
+		if (this.toolbox?.workspace?.renderer?._constants) {
+			const c = this.toolbox.workspace.renderer._constants;
 			el.style.fontFamily = c.FONT_FAMILY;
 			el.style.fontSize = `${c.FONT_SIZE}px`;
 			el.style.color = parseColor(c.FONT_COLOR);
@@ -99,7 +99,7 @@ class Flyout {
 
 		document.addEventListener("mousemove", moveGhost);
 		document.addEventListener("mouseup", releaseGhost);
-
+        moveGhost(e);
 		e.preventDefault();
 	}
 

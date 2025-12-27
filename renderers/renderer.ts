@@ -1146,7 +1146,7 @@ class Renderer {
         const wsSvg = this._ws.svg;
 
         this.fillAllNodeConnectorBubbles();
-        const drawnCircles = new Set<SvgPath>();
+        const drawnCircles = new Set();
 
         for (const state of this._drawStates) {
             for (const connPair of state.pendingConnections) {
@@ -1155,47 +1155,43 @@ class Renderer {
                 if (!fromCircle || !toCircle) continue;
 
                 if (drawnCircles.has(fromCircle) || drawnCircles.has(toCircle)) continue;
-
                 drawnCircles.add(fromCircle);
                 drawnCircles.add(toCircle);
 
-                const fromEl = fromCircle.node as SVGPathElement;
-                const toEl = toCircle.node as SVGPathElement;
+                // rbox = bbox relative to workspace SVG (handles zoom/pan FOR us)
+                const fromBox = fromCircle.rbox(wsSvg);
+                const toBox = toCircle.rbox(wsSvg);
 
-                const fromBBox = fromEl.getBBox();
-                const toBBox = toEl.getBBox();
+                const startX = fromBox.cx;
+                const startY = fromBox.cy;
+                const endX = toBox.cx;
+                const endY = toBox.cy;
 
-                const fromCTM = fromEl.getScreenCTM()!;
-                const toCTM = toEl.getScreenCTM()!;
-
-                const startX = fromBBox.x + fromBBox.width / 2;
-                const startY = fromBBox.y + fromBBox.height / 2;
-                const endX = toBBox.x + toBBox.width / 2;
-                const endY = toBBox.y + toBBox.height / 2;
-
-                const absStartX = startX * fromCTM.a + startY * fromCTM.c + fromCTM.e;
-                const absStartY = startX * fromCTM.b + startY * fromCTM.d + fromCTM.f;
-                const absEndX = endX * toCTM.a + endY * toCTM.c + toCTM.e;
-                const absEndY = endX * toCTM.b + endY * toCTM.d + toCTM.f;
-
-                // STRAIGHT LINE ONLY
-                const pathStr = `M ${absStartX} ${absStartY} L ${absEndX} ${absEndY}`;
-
-                const zoom = this._ws.getZoom();
-                const strokeWidth = c.CONNECTOR_LINE_WIDTH * zoom;
-                const line = wsSvg.path(pathStr)
-                    .stroke({ color: parseColor(fromCircle.fill() as Color), width: strokeWidth })
+                const line = wsSvg
+                    .path(`M ${startX} ${startY} L ${endX} ${endY}`)
+                    .stroke({
+                        color: parseColor(fromCircle.fill() as Color),
+                        width: c.CONNECTOR_LINE_WIDTH * this._ws.getZoom()
+                    })
                     .fill('none')
-                    .attr({ class: (this.constructor as typeof Renderer).CONN_LINE_TAG });
+                    .attr({
+                        class: (this.constructor as typeof Renderer).CONN_LINE_TAG
+                    });
 
-                eventer.addElement(line, 'k_connline', {
-                    fromConn: connPair.from,
-                    toConn: connPair.to,
-                    renderer: this
-                }).tagElement(line, [(this.constructor as typeof Renderer).ELEMENT_TAG, (this.constructor as typeof Renderer).LINE_X_MARK_TAG]);
+                eventer
+                    .addElement(line, 'k_connline', {
+                        fromConn: connPair.from,
+                        toConn: connPair.to,
+                        renderer: this
+                    })
+                    .tagElement(line, [
+                        (this.constructor as typeof Renderer).ELEMENT_TAG,
+                        (this.constructor as typeof Renderer).LINE_X_MARK_TAG
+                    ]);
             }
         }
     }
+
 
     /**
      * Clear connection lines and their X marks.

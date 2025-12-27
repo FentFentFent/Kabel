@@ -8,28 +8,21 @@ const { exec } = require('child_process');
 const app = express();
 const PORT = 3000;
 
-// Path to your dist folder
 const DIST_DIR = path.resolve(__dirname, 'dist');
 
-// ---- LiveReload server ----
 const liveReloadServer = livereload.createServer();
 liveReloadServer.watch(DIST_DIR);
 
-// Notify browser when files change
 liveReloadServer.server.once('connection', () => {
     setTimeout(() => {
         liveReloadServer.refresh('/');
     }, 100);
 });
 
-// Middleware to inject livereload script
 app.use(connectLivereload());
 
-// Serve all files relative to project root
 app.use(express.static(DIST_DIR, { index: 'index.html' }));
 
-// Watch source files for changes and rebuild
-// Watch multiple source directories for changes
 const watcher = chokidar.watch([
     path.resolve(__dirname, 'src'),
     path.resolve(__dirname, 'themes'),
@@ -40,7 +33,7 @@ const watcher = chokidar.watch([
     path.resolve(__dirname, 'media'),
     path.resolve(__dirname, 'comment-renderer')
 ], {
-    ignored: /(^|[\/\\])\../, // ignore dotfiles
+    ignored: /(^|[\/\\])\../, 
     persistent: true
 });
 
